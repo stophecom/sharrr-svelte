@@ -60,8 +60,8 @@
     <div class="flex w-9 h-9 mb-2">
       <MdFileUpload />
     </div>
-    <span class="text-center">Drag and drop file here, or click to select a file</span></Dropzone
-  >
+    <span class="text-center">Drag and drop file here, or click to select a file</span>
+  </Dropzone>
   <ol class="flex flex-col">
     {#each files.accepted as item}
       <li>{item.name}</li>
