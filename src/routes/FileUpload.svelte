@@ -21,7 +21,7 @@
 
     const content = await encryptFileMetaData(file, { someRefKey: 'foo' }, encryptionKey)
 
-    const res = await fetch('/api', {
+    const res = await fetch('/api/v1/secrets', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

@@ -8,7 +8,7 @@
     const alias = hashData[0]
     const decryptionKey = hashData[1]
 
-    const { content } = await fetch(`/api/${alias}`).then((response) => response.json())
+    const { content } = await fetch(`/api/v1/secrets/${alias}`).then((response) => response.json())
 
     const decryptedSecretFile = await decryptString(content, decryptionKey)
     secret = JSON.parse(decryptedSecretFile)
