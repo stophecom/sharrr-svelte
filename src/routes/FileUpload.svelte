@@ -21,6 +21,8 @@
   let progress: number = 0
 
   async function postSecret(file: File) {
+    const bucket = PUBLIC_FLOW_S3_BUCKET
+
     const alias = crypto.randomUUID()
     const encryptionKey = await generateEncryptionKeyString()
 
@@ -28,9 +30,9 @@
 
     const fileName = crypto.randomUUID()
 
-    const fileKeys = await handleFileEncryptionAndUpload({
+    const { numberOfChunks, chunkFileNames } = await handleFileEncryptionAndUpload({
       file,
-      bucket: PUBLIC_FLOW_S3_BUCKET,
+      bucket,
       fileName,
       encryptionKey,
       progressCallback: (p) => {
@@ -39,9 +41,11 @@
       }
     })
 
-    console.log('foo', fileKeys)
-
-    const content = await encryptFileReference(file, { someRefKey: 'foo' }, encryptionKey)
+    const content = await encryptFileReference(
+      file,
+      { bucket, numberOfChunks, chunkFileNames },
+      encryptionKey
+    )
 
     api<SecretsResponse>('/secrets', {
       method: 'POST',

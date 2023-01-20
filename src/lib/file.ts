@@ -4,15 +4,15 @@ import { api, asyncPool } from '$lib/api'
 type PresignedPostResponse = { url: string; fields: Record<string, string> }
 
 export interface FileMeta {
-  someRefKey: string
-  bucket?: string
-  message?: string
-  isEncryptedWithUserPassword?: boolean // TBD
-  receipt?: Record<string, unknown> // TBD
+  bucket: string
+  chunkFileNames: [string]
+  numberOfChunks?: number
 }
 
 export interface SecretFile extends FileMeta, Pick<File, 'name' | 'size' | 'type'> {
-  someRefKey: string
+  message?: string
+  isEncryptedWithUserPassword?: boolean // TBD
+  receipt?: Record<string, unknown> // TBD
 }
 
 export const MB = 10 ** 6 // 1000000 Bytes = 1 MB.
@@ -44,36 +44,45 @@ export const handleFileEncryptionAndUpload = async ({
   fileName,
   encryptionKey,
   progressCallback
-}: HandleFileEncryptionAndUpload): Promise<[string]> => {
-  const chunkSize = 10 * MB // 100MB
+}: HandleFileEncryptionAndUpload): Promise<Pick<FileMeta, 'numberOfChunks' | 'chunkFileNames'>> => {
+  const chunkSize = 10 * MB // @todo increase this
   const fileSize = file.size
   const numberOfChunks = typeof chunkSize === 'number' ? Math.ceil(fileSize / chunkSize) : 1
   const concurrentUploads = Math.min(3, numberOfChunks)
   let d = 0
   progressCallback(0)
 
-  return asyncPool(concurrentUploads, [...new Array(numberOfChunks).keys()], async (i) => {
-    const start = i * chunkSize
-    const end = i + 1 === numberOfChunks ? fileSize : (i + 1) * chunkSize
-    const chunk = file.slice(start, end)
+  const chunkFileNames = await asyncPool(
+    concurrentUploads,
+    [...new Array(numberOfChunks).keys()],
+    async (i) => {
+      const start = i * chunkSize
+      const end = i + 1 === numberOfChunks ? fileSize : (i + 1) * chunkSize
+      const chunk = file.slice(start, end)
 
-    const encryptedFile = await encryptFile(chunk, encryptionKey)
+      const encryptedFile = await encryptFile(chunk, encryptionKey)
 
-    // Adding the chunk index to the filename
-    const chunkFileName = `${fileName}-${i}`
+      // Adding the chunk index to the filename
+      const chunkFileName = `${fileName}-${i}`
 
-    return await uploadFileChunk({
-      chunk: encryptedFile,
-      chunkIndex: i,
-      bucket,
-      fileName: chunkFileName
-    })
-      .then(() => {
-        d++
-        progressCallback((d * 100) / numberOfChunks)
+      return await uploadFileChunk({
+        chunk: encryptedFile,
+        chunkIndex: i,
+        bucket,
+        fileName: chunkFileName
       })
-      .then(() => chunkFileName)
-  })
+        .then(() => {
+          d++
+          progressCallback((d * 100) / numberOfChunks)
+        })
+        .then(() => chunkFileName)
+    }
+  )
+
+  return {
+    chunkFileNames,
+    numberOfChunks
+  }
 }
 
 type UploadFileChunk = ({ chunk: Blob, bucket: string, fileName: string }) => Promise<void>
