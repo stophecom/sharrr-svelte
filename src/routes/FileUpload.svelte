@@ -2,8 +2,9 @@
   import Dropzone from 'svelte-file-dropzone'
   import MdFileUpload from 'svelte-icons/md/MdFileUpload.svelte'
 
+  import { PUBLIC_FLOW_S3_BUCKET } from '$env/static/public'
   import { encryptFileMetaData } from '$lib/file'
-  import { generateEncryptionKeyString } from '$lib/crypto'
+  import { generateEncryptionKeyString, encryptFile } from '$lib/crypto'
 
   let files = {
     accepted: [],
@@ -15,6 +16,7 @@
 
   async function postSecret(file: File) {
     const alias = crypto.randomUUID()
+    const fileName = crypto.randomUUID()
     const encryptionKey = await generateEncryptionKeyString()
 
     link = `localhost:3000/s#${alias}/${encryptionKey}`
@@ -33,6 +35,33 @@
     })
 
     result = await res.json()
+
+    const encryptedFile = await encryptFile(file, encryptionKey)
+
+    // Get presigned S3 post url
+    const { url, fields } = await fetch(`/api/v1/files?file=${fileName}`).then((res) => res.json())
+    console.log('s3 data', { url, fields })
+
+    // Prepare form data
+    const formData = new FormData()
+    Object.entries(fields).forEach(([key, value]) => {
+      if (typeof value !== 'string') {
+        return
+      }
+      formData.append(key, value)
+    })
+    formData.append('Content-type', 'application/octet-stream') // Setting content type a binary file.
+    formData.append('file', encryptedFile)
+
+    // @todo
+    // Post file to S3
+    // Unclear why we have to append bucket here.
+    await fetch(`${url}/${PUBLIC_FLOW_S3_BUCKET}`, {
+      method: 'POST',
+      body: formData
+    }).catch((err) => {
+      throw Error(`File upload failed. Make sure the file is within the size limit.`, err)
+    })
   }
 
   function handleFilesSelect(e) {

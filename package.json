@@ -39,6 +39,9 @@
   },
   "type": "module",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.254.0",
+    "@aws-sdk/s3-presigned-post": "^3.254.0",
+    "@aws-sdk/s3-request-presigner": "^3.254.0",
     "@prisma/client": "^4.9.0",
     "dotenv": "^16.0.3",
     "svelte-file-dropzone": "^1.0.0",
