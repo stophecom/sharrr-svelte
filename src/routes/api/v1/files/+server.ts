@@ -1,14 +1,13 @@
 import { GetObjectCommand, DeleteObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { createPresignedPost } from '@aws-sdk/s3-presigned-post'
+import { json } from '@sveltejs/kit'
 
 import { PUBLIC_FLOW_S3_BUCKET } from '$env/static/public'
 import { getS3Client } from '$lib/s3'
-import { json } from '@sveltejs/kit'
+import { MB } from '$lib/file'
 
-const MB = 10 ** 6 // 1000000 Bytes = 1 MB.
-
-const maxFileSize = 100 * MB
+const maxFileSize = 500 * MB
 
 export const GET: RequestHandler = async ({ url }) => {
   const Bucket = PUBLIC_FLOW_S3_BUCKET

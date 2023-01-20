@@ -3,8 +3,13 @@
   import MdFileUpload from 'svelte-icons/md/MdFileUpload.svelte'
 
   import { PUBLIC_FLOW_S3_BUCKET } from '$env/static/public'
-  import { encryptFileMetaData } from '$lib/file'
-  import { generateEncryptionKeyString, encryptFile } from '$lib/crypto'
+  import { api } from '$lib/api'
+  import { encryptFileReference, handleFileEncryptionAndUpload } from '$lib/file'
+  import { generateEncryptionKeyString } from '$lib/crypto'
+
+  type SecretsResponse = {
+    message: string
+  }
 
   let files = {
     accepted: [],
@@ -13,17 +18,32 @@
 
   let result: string
   let link: string
+  let progress: number = 0
 
   async function postSecret(file: File) {
     const alias = crypto.randomUUID()
-    const fileName = crypto.randomUUID()
     const encryptionKey = await generateEncryptionKeyString()
 
     link = `localhost:3000/s#${alias}/${encryptionKey}`
 
-    const content = await encryptFileMetaData(file, { someRefKey: 'foo' }, encryptionKey)
+    const fileName = crypto.randomUUID()
 
-    const res = await fetch('/api/v1/secrets', {
+    const fileKeys = await handleFileEncryptionAndUpload({
+      file,
+      bucket: PUBLIC_FLOW_S3_BUCKET,
+      fileName,
+      encryptionKey,
+      progressCallback: (p) => {
+        progress = p
+        console.log(`% Done = ${p.toFixed(2)}`)
+      }
+    })
+
+    console.log('foo', fileKeys)
+
+    const content = await encryptFileReference(file, { someRefKey: 'foo' }, encryptionKey)
+
+    api<SecretsResponse>('/secrets', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -32,35 +52,9 @@
         alias,
         content
       })
-    })
-
-    result = await res.json()
-
-    const encryptedFile = await encryptFile(file, encryptionKey)
-
-    // Get presigned S3 post url
-    const { url, fields } = await fetch(`/api/v1/files?file=${fileName}`).then((res) => res.json())
-    console.log('s3 data', { url, fields })
-
-    // Prepare form data
-    const formData = new FormData()
-    Object.entries(fields).forEach(([key, value]) => {
-      if (typeof value !== 'string') {
-        return
-      }
-      formData.append(key, value)
-    })
-    formData.append('Content-type', 'application/octet-stream') // Setting content type a binary file.
-    formData.append('file', encryptedFile)
-
-    // @todo
-    // Post file to S3
-    // Unclear why we have to append bucket here.
-    await fetch(`${url}/${PUBLIC_FLOW_S3_BUCKET}`, {
-      method: 'POST',
-      body: formData
-    }).catch((err) => {
-      throw Error(`File upload failed. Make sure the file is within the size limit.`, err)
+    }).then((data) => {
+      result = data.message
+      progress = 100
     })
   }
 
@@ -76,11 +70,15 @@
 </script>
 
 <div class="pt-8">
+  Upload process {progress.toFixed(2)} %
+
+  <progress value={progress * 0.01} />
+
   <pre>
 		{link}
 	</pre>
 
-  {result?.message}
+  {result}
   <Dropzone
     on:drop={handleFilesSelect}
     containerClasses="dropzone-custom cursor-pointer"
