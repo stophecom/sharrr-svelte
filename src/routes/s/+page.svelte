@@ -51,7 +51,7 @@
     fileMeta = JSON.parse(decryptedSecretFileMeta)
 
     if (fileMeta) {
-      downloadFile(fileMeta, decryptionKey)
+      await downloadFile(fileMeta, decryptionKey)
     }
 
     // history.replaceState(null, 'Secret destroyed', 'l/🔥')
@@ -81,16 +81,6 @@
 
         <p>{fileMeta?.name}</p>
         {fileMeta?.size}
-
-        {#if fileMeta?.chunkFileNames.length}
-          <ul>
-            {#each fileMeta?.chunkFileNames as chunk}
-              <li>
-                {chunk}
-              </li>
-            {/each}
-          </ul>
-        {/if}
 
         {fileMeta?.numberOfChunks}
       </div>

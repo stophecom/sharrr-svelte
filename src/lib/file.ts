@@ -1,6 +1,7 @@
+import axios from 'axios'
+
 import { encryptString, encryptFile, decryptData } from '$lib/crypto'
 import { api, asyncPool } from '$lib/api'
-
 type SignedUrlGetResponse = {
   url: string
 }
@@ -9,7 +10,6 @@ type PresignedPostResponse = { url: string; fields: Record<string, string> }
 export interface FileMeta {
   uuid: string
   bucket: string
-  chunkFileNames: string[]
   numberOfChunks: number
   mimeType?: string
 }
@@ -52,55 +52,60 @@ export const handleFileEncryptionAndUpload = async ({
   fileName,
   encryptionKey,
   progressCallback
-}: HandleFileEncryptionAndUpload): Promise<
-  Pick<FileMeta, 'numberOfChunks' | 'chunkFileNames' | 'uuid'>
-> => {
+}: HandleFileEncryptionAndUpload): Promise<Pick<FileMeta, 'numberOfChunks' | 'uuid'>> => {
   const fileSize = file.size
   const numberOfChunks = typeof chunkSize === 'number' ? Math.ceil(fileSize / chunkSize) : 1
   const concurrentUploads = Math.min(3, numberOfChunks)
-  let d = 0
+  let numberOfChunksUploaded = 0
   progressCallback(0)
 
-  const chunkFileNames = await asyncPool(
-    concurrentUploads,
-    [...new Array(numberOfChunks).keys()],
-    async (i: number) => {
-      const start = i * chunkSize
-      const end = i + 1 === numberOfChunks ? fileSize : (i + 1) * chunkSize
-      const chunk = file.slice(start, end)
+  await asyncPool(concurrentUploads, [...new Array(numberOfChunks).keys()], async (i: number) => {
+    const start = i * chunkSize
+    const end = i + 1 === numberOfChunks ? fileSize : (i + 1) * chunkSize
+    const chunk = file.slice(start, end)
 
-      const encryptedFile = await encryptFile(chunk, encryptionKey)
+    const encryptedFile = await encryptFile(chunk, encryptionKey)
 
-      // Adding the chunk index to the filename
-      const chunkFileName = `${fileName}-${i}`
+    const chunkFileSize = encryptedFile.size
+    // Adding the chunk index to the filename
+    const chunkFileName = `${fileName}-${i}`
 
-      await uploadFileChunk({
-        chunk: encryptedFile,
-        bucket,
-        fileName: chunkFileName
-      }).then(() => {
-        d++
-        progressCallback((d * 100) / numberOfChunks)
-      })
+    await uploadFileChunk({
+      bucket,
+      chunk: encryptedFile,
+      size: chunkFileSize,
+      fileName: chunkFileName,
+      progressCallback: (p) => {
+        const totalProgress = (numberOfChunksUploaded * 100) / numberOfChunks + p / numberOfChunks
+        progressCallback(totalProgress)
+      }
+    })
 
-      return chunkFileName
-    }
-  )
+    numberOfChunksUploaded++
+  })
 
   return {
     uuid: fileName,
-    chunkFileNames,
     numberOfChunks
   }
 }
 
-type UploadFileChunkParams = { chunk: Blob; bucket: string; fileName: string }
+type UploadFileChunkParams = {
+  bucket: string
+  chunk: Blob
+  fileName: string
+  size: number
+  progressCallback: (progress: number) => void
+}
 
 const uploadFileChunk = async ({
-  chunk,
   bucket,
-  fileName
+  chunk,
+  size,
+  fileName,
+  progressCallback
 }: UploadFileChunkParams): Promise<void> => {
+  progressCallback(0)
   // Get presigned S3 post url
   const { url, fields } = await api<PresignedPostResponse>(`/files?file=${fileName}`)
 
@@ -115,12 +120,16 @@ const uploadFileChunk = async ({
   formData.append('Content-type', 'application/octet-stream') // Setting content type a binary file.
   formData.append('file', chunk)
 
-  // @todo
   // Post file to S3
-  // Unclear why we have to append bucket here.
-  await fetch(`${url}/${bucket}`, {
+  // @todo Unclear why we have to append bucket here.
+  // Using axios b/c of built-in progress callback
+  await axios.request({
     method: 'POST',
-    body: formData
+    url: `${url}/${bucket}`,
+    data: formData,
+    onUploadProgress: (p) => {
+      progressCallback(p.loaded / (p.total || size))
+    }
   })
 }
 

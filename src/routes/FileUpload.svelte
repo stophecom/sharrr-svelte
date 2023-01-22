@@ -8,21 +8,20 @@
   import { generateEncryptionKeyString } from '$lib/crypto'
 
   import Button from '$components/Button.svelte'
+  import ProgressBar from '$components/ProgressBar.svelte'
 
   type SecretsResponse = {
     message: string
   }
 
-  let files = {
-    accepted: [],
-    rejected: []
-  }
+  let acceptedFile: File
 
   export let baseUrl: string
 
   let result: string
   let link: string
   let progress: number = 0
+  let promiseSaveFile: Promise<string>
 
   const copyLink = () => {
     navigator.clipboard.writeText(link).then(
@@ -45,7 +44,7 @@
 
     const fileName = crypto.randomUUID()
 
-    const { uuid, numberOfChunks, chunkFileNames } = await handleFileEncryptionAndUpload({
+    const { uuid, numberOfChunks } = await handleFileEncryptionAndUpload({
       file,
       bucket,
       fileName,
@@ -58,11 +57,11 @@
 
     const content = await encryptFileReference(
       file,
-      { uuid, bucket, numberOfChunks, chunkFileNames },
+      { uuid, bucket, numberOfChunks },
       encryptionKey
     )
 
-    api<SecretsResponse>('/secrets', {
+    return api<SecretsResponse>('/secrets', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -71,49 +70,52 @@
         alias,
         content
       })
-    }).then((data) => {
-      result = data.message
-      progress = 100
     })
+      .then((data) => {
+        progress = 100
+        return data.message
+      })
+      .catch((e) => {
+        throw new Error('Something went wrong.')
+      })
   }
 
   function handleFilesSelect(e) {
     const { acceptedFiles, fileRejections } = e.detail
-    files.accepted = [...files.accepted, ...acceptedFiles]
-    files.rejected = [...files.rejected, ...fileRejections]
 
-    if (files.accepted.length) {
-      postSecret(files.accepted[0])
+    if (acceptedFiles.length) {
+      acceptedFile = acceptedFiles[0]
+      promiseSaveFile = postSecret(acceptedFile)
     }
   }
 </script>
 
 <div class="pt-8">
-  Upload process {progress.toFixed(2)} %
-
-  <progress value={progress * 0.01} />
-
-  <pre>
-		{link}
-	</pre>
-  <Button primary on:click={copyLink}>COPY</Button>
-
-  {result}
-  <Dropzone
-    on:drop={handleFilesSelect}
-    containerClasses="dropzone-custom cursor-pointer"
-    multiple={false}
-  >
-    <div class="flex w-9 h-9 mb-2">
-      <MdFileUpload />
-    </div>
-    <span class="text-center">Drag and drop file here, or click to select a file</span>
-  </Dropzone>
-  <ol class="flex flex-col">
-    {#each files.accepted as item}
-      <li>{item.name}</li>
-    {/each}
-  </ol>
+  {#if acceptedFile}
+    <ProgressBar {progress} fileName={acceptedFile.name} />
+    {#await promiseSaveFile then message}
+      {#if message}
+        <p class="text-sm text-pink-500">{message}</p>
+        <div class="truncate">
+          {link}
+        </div>
+        <Button primary on:click={copyLink}>COPY</Button>
+      {/if}
+    {:catch error}
+      <p style="color: red">{error.message}</p>
+    {/await}
+  {:else}
+    <Dropzone
+      on:drop={handleFilesSelect}
+      containerClasses="dropzone-custom cursor-pointer"
+      multiple={false}
+    >
+      <div class="flex w-9 h-9 mb-2">
+        <MdFileUpload />
+      </div>
+      <span class="text-center">Drag and drop file here, or click to select a file</span>
+    </Dropzone>
+  {/if}
 </div>
 
 <style lang="postcss">
