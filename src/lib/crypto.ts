@@ -19,14 +19,14 @@ const importKeyFromString = async (key: string) =>
       kty: 'oct',
       k: key, // The encryption key
       alg: 'A256GCM',
-      ext: true,
+      ext: true
     },
     { name: 'AES-GCM' },
     true,
-    ['encrypt', 'decrypt'],
+    ['encrypt', 'decrypt']
   )
 
-const encryptData = async (data: ArrayBuffer, encryptionKey: string) => {
+export const encryptData = async (data: ArrayBuffer, encryptionKey: string) => {
   const iv = crypto.getRandomValues(new Uint8Array(16)) // Initialization Vector (IV)
   const cryptoKey = await importKeyFromString(encryptionKey)
   const result = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, cryptoKey, data)
@@ -40,16 +40,16 @@ export const decryptData = async (data: Blob, decryptionKey: string) => {
 
   const [iv, body] = await Promise.all([
     data.slice(0, 16).arrayBuffer(), // Extracting IV
-    data.slice(16).arrayBuffer(), // The actual body. e.g. file content
+    data.slice(16).arrayBuffer() // The actual body. e.g. file content
   ])
 
   const decryptedData = await crypto.subtle.decrypt(
     {
       name: 'AES-GCM',
-      iv: iv,
+      iv: iv
     },
     key,
-    body,
+    body
   )
   return decryptedData
 }
@@ -58,10 +58,10 @@ export const generateEncryptionKeyString = async () => {
   const key = await crypto.subtle.generateKey(
     {
       name: 'AES-GCM',
-      length: 256,
+      length: 256
     },
     true,
-    ['encrypt', 'decrypt'],
+    ['encrypt', 'decrypt']
   )
   const exportedKey = await crypto.subtle.exportKey('jwk', key)
 
@@ -72,12 +72,13 @@ export const generateEncryptionKeyString = async () => {
   return exportedKey.k
 }
 
-export const encryptFile = async (file: File, encryptionKey: string) => {
+export const encryptFile = async (file: File | Blob, encryptionKey: string) => {
   const data = await file.arrayBuffer()
 
   return encryptData(data, encryptionKey)
 }
 
+// Not in use. Could be used to decrypt smaller files at once.
 export const decryptFile = async (file: Blob, decryptionKey: string, fileName: string) => {
   const decryptedData = await decryptData(file, decryptionKey)
 
