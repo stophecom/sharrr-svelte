@@ -18,6 +18,8 @@
     rejected: []
   }
 
+  export let baseUrl: string
+
   let result: string
   let link: string
   let progress: number = 0
@@ -39,7 +41,7 @@
     const alias = crypto.randomUUID()
     const encryptionKey = await generateEncryptionKeyString()
 
-    link = `${process.env.VITE_VERCEL_URL}/s#${alias}/${encryptionKey}`
+    link = `${baseUrl}/s#${alias}/${encryptionKey}`
 
     const fileName = crypto.randomUUID()
 

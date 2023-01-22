@@ -1,7 +1,11 @@
-<script>
+<script lang="ts">
   import MdCheck from 'svelte-icons/md/MdCheck.svelte'
 
   import FileUpload from './FileUpload.svelte'
+
+  import type { PageServerData } from './$types'
+
+  export let data: PageServerData
 </script>
 
 <svelte:head>
@@ -26,7 +30,7 @@
     </p>
 
     <div class="mx-auto max-w-xl">
-      <FileUpload />
+      <FileUpload baseUrl={data.vercelUrl} />
     </div>
 
     <div class="flex  justify-center ">
