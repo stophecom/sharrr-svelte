@@ -7,6 +7,8 @@
   import { encryptFileReference, handleFileEncryptionAndUpload } from '$lib/file'
   import { generateEncryptionKeyString } from '$lib/crypto'
 
+  import Button from '$components/Button.svelte'
+
   type SecretsResponse = {
     message: string
   }
@@ -20,13 +22,24 @@
   let link: string
   let progress: number = 0
 
+  const copyLink = () => {
+    navigator.clipboard.writeText(link).then(
+      function () {
+        console.log('Async: Copying to clipboard was successful!')
+      },
+      function (err) {
+        console.error('Async: Could not copy text: ', err)
+      }
+    )
+  }
+
   async function postSecret(file: File) {
     const bucket = PUBLIC_FLOW_S3_BUCKET
 
     const alias = crypto.randomUUID()
     const encryptionKey = await generateEncryptionKeyString()
 
-    link = `localhost:3000/s#${alias}/${encryptionKey}`
+    link = `${import.meta.env.VITE_VERCEL_URL}/s#${alias}/${encryptionKey}`
 
     const fileName = crypto.randomUUID()
 
@@ -81,6 +94,7 @@
   <pre>
 		{link}
 	</pre>
+  <Button primary on:click={copyLink}>COPY</Button>
 
   {result}
   <Dropzone
