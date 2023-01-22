@@ -39,7 +39,7 @@
     const alias = crypto.randomUUID()
     const encryptionKey = await generateEncryptionKeyString()
 
-    link = `${import.meta.env.VITE_VERCEL_URL}/s#${alias}/${encryptionKey}`
+    link = `${process.env.VITE_VERCEL_URL}/s#${alias}/${encryptionKey}`
 
     const fileName = crypto.randomUUID()
 
