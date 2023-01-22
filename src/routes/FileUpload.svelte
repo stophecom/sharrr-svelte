@@ -30,7 +30,7 @@
 
     const fileName = crypto.randomUUID()
 
-    const { numberOfChunks, chunkFileNames } = await handleFileEncryptionAndUpload({
+    const { uuid, numberOfChunks, chunkFileNames } = await handleFileEncryptionAndUpload({
       file,
       bucket,
       fileName,
@@ -43,7 +43,7 @@
 
     const content = await encryptFileReference(
       file,
-      { bucket, numberOfChunks, chunkFileNames },
+      { uuid, bucket, numberOfChunks, chunkFileNames },
       encryptionKey
     )
 
