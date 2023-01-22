@@ -1,15 +1,21 @@
-import { encryptString, encryptFile } from '$lib/crypto'
+import { encryptString, encryptFile, decryptData } from '$lib/crypto'
 import { api, asyncPool } from '$lib/api'
 
+type SignedUrlGetResponse = {
+  url: string
+}
 type PresignedPostResponse = { url: string; fields: Record<string, string> }
 
 export interface FileMeta {
+  uuid: string
   bucket: string
-  chunkFileNames: [string]
-  numberOfChunks?: number
+  chunkFileNames: string[]
+  numberOfChunks: number
+  mimeType?: string
 }
 
-export interface SecretFile extends FileMeta, Pick<File, 'name' | 'size' | 'type'> {
+export interface SecretFile extends FileMeta, Pick<File, 'name' | 'size'> {
+  decryptionKey: string
   message?: string
   isEncryptedWithUserPassword?: boolean // TBD
   receipt?: Record<string, unknown> // TBD
@@ -18,13 +24,15 @@ export interface SecretFile extends FileMeta, Pick<File, 'name' | 'size' | 'type
 export const MB = 10 ** 6 // 1000000 Bytes = 1 MB.
 export const GB = 10 ** 9 // 1000000000 Bytes = 1 GB.
 
+const chunkSize = 1 * MB // @todo increase this
+
 export const encryptFileReference = async (file: File, meta: FileMeta, encryptionKey: string) => {
   const { name, size, type } = file
   const fileReference = {
     ...meta,
     name,
     size,
-    type
+    mimeType: type
   }
 
   return await encryptString(JSON.stringify(fileReference), encryptionKey)
@@ -44,8 +52,9 @@ export const handleFileEncryptionAndUpload = async ({
   fileName,
   encryptionKey,
   progressCallback
-}: HandleFileEncryptionAndUpload): Promise<Pick<FileMeta, 'numberOfChunks' | 'chunkFileNames'>> => {
-  const chunkSize = 10 * MB // @todo increase this
+}: HandleFileEncryptionAndUpload): Promise<
+  Pick<FileMeta, 'numberOfChunks' | 'chunkFileNames' | 'uuid'>
+> => {
   const fileSize = file.size
   const numberOfChunks = typeof chunkSize === 'number' ? Math.ceil(fileSize / chunkSize) : 1
   const concurrentUploads = Math.min(3, numberOfChunks)
@@ -55,7 +64,7 @@ export const handleFileEncryptionAndUpload = async ({
   const chunkFileNames = await asyncPool(
     concurrentUploads,
     [...new Array(numberOfChunks).keys()],
-    async (i) => {
+    async (i: number) => {
       const start = i * chunkSize
       const end = i + 1 === numberOfChunks ? fileSize : (i + 1) * chunkSize
       const chunk = file.slice(start, end)
@@ -65,28 +74,33 @@ export const handleFileEncryptionAndUpload = async ({
       // Adding the chunk index to the filename
       const chunkFileName = `${fileName}-${i}`
 
-      return await uploadFileChunk({
+      await uploadFileChunk({
         chunk: encryptedFile,
-        chunkIndex: i,
         bucket,
         fileName: chunkFileName
+      }).then(() => {
+        d++
+        progressCallback((d * 100) / numberOfChunks)
       })
-        .then(() => {
-          d++
-          progressCallback((d * 100) / numberOfChunks)
-        })
-        .then(() => chunkFileName)
+
+      return chunkFileName
     }
   )
 
   return {
+    uuid: fileName,
     chunkFileNames,
     numberOfChunks
   }
 }
 
-type UploadFileChunk = ({ chunk: Blob, bucket: string, fileName: string }) => Promise<void>
-const uploadFileChunk: UploadFileChunk = async ({ chunk, bucket, fileName }) => {
+type UploadFileChunkParams = { chunk: Blob; bucket: string; fileName: string }
+
+const uploadFileChunk = async ({
+  chunk,
+  bucket,
+  fileName
+}: UploadFileChunkParams): Promise<void> => {
   // Get presigned S3 post url
   const { url, fields } = await api<PresignedPostResponse>(`/files?file=${fileName}`)
 
@@ -108,4 +122,37 @@ const uploadFileChunk: UploadFileChunk = async ({ chunk, bucket, fileName }) => 
     method: 'POST',
     body: formData
   })
+}
+
+export const handleFileChunksDownload = ({
+  uuid,
+  numberOfChunks,
+  decryptionKey
+}: Pick<SecretFile, 'uuid' | 'numberOfChunks' | 'decryptionKey'>) => {
+  const decryptionStream = new ReadableStream({
+    async start(controller) {
+      // We download the chunks in sequence.
+      // We could do concurrent fetching but the order of the chunks in the stream is important.
+      let i = 0
+      while (i < numberOfChunks) {
+        const key = `${uuid}-${i}`
+        const { url } = await api<SignedUrlGetResponse>(`/files/${key}`, { method: 'GET' })
+        const response = await fetch(url)
+
+        if (!response.ok) {
+          throw new Error(`Couldn't retrieve file - it may no longer exist.`)
+        }
+
+        const encryptedFileChunk = await response.blob()
+        const decryptedFileChunk = await decryptData(encryptedFileChunk, decryptionKey)
+
+        controller.enqueue(new Uint8Array(decryptedFileChunk))
+        i++
+      }
+
+      controller.close()
+    }
+  })
+
+  return decryptionStream
 }
