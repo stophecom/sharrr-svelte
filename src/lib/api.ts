@@ -1,3 +1,13 @@
+export class CustomError extends Error {
+  public statusCode: number
+
+  constructor(statusCode: number, message: string) {
+    super(message) // 'Error' breaks prototype chain here
+    this.statusCode = statusCode
+    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
+  }
+}
+
 export async function api<T>(
   url: RequestInfo,
   options?: RequestInit,
@@ -32,7 +42,11 @@ export async function api<T>(
   }
 }
 
-export const asyncPool = async (concurrency, iterable, iteratorFn) => {
+export const asyncPool = async (
+  concurrency: number,
+  iterable: number[],
+  iteratorFn: (x: number, y: number[]) => any
+) => {
   const ret = [] // Store all asynchronous tasks
   const executing = new Set() // Stores executing asynchronous tasks
   for (const item of iterable) {
