@@ -21,37 +21,42 @@
 </svelte:head>
 
 <section class="container mx-auto">
-  <div class="relative pt-40 px-6 lg:px-8">
-    <h1 class="mb-5 text-2xl font-bold tracking-tight sm:text-center sm:text-6xl">
-      One-time encrypted file transfer.
+  <div class="relative pt-20 lg:pt-40 px-6 lg:px-8">
+    <h1 class="mb-5 text-3xl font-bold tracking-tight sm:text-center sm:text-6xl">
+      <!-- One-time encrypted file transfer. -->
+      Pretty secure file transfer.
     </h1>
-    <p class="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
-      The most secure way to transfer data over the web.
+    <p class="mt-6 mb-6 text-2xl leading-8 text-gray-700 sm:text-center">
+      <!-- The most secure way to transfer data over the web. -->
+      One-time, end-to-end encrypted file sharing for massive files.
     </p>
 
     <div class="mx-auto max-w-xl">
       <FileUpload baseUrl={data.vercelUrl} />
     </div>
 
-    <div class="flex  justify-center ">
-      <ul class="pt-8  text-gray-700 ">
-        <li class="flex items-center">
-          <div class="w-6 h-6 mr-2"><MdCheck /></div>
-          Up to 1TB files
-        </li>
-        <li class="flex items-center">
-          <div class="w-6 h-6 mr-2"><MdCheck /></div>
-          End-to-end encrypted (AES)
-        </li>
-        <li class="flex items-center">
-          <div class="w-6 h-6 mr-2"><MdCheck /></div>
-          Stored in Switzerland 🇨🇭
-        </li>
-        <li class="flex items-center">
-          <div class="w-6 h-6 mr-2"><MdCheck /></div>
-          Link expires after download
-        </li>
-      </ul>
+    <div class="flex justify-center ">
+      <div>
+        <ul class="pt-8  text-gray-700 ">
+          <li class="flex items-center">
+            <div class="w-6 h-6 mr-2"><MdCheck /></div>
+            Up to&nbsp;<strong>50GB</strong>&nbsp;files
+          </li>
+          <li class="flex items-center">
+            <div class="w-6 h-6 mr-2"><MdCheck /></div>
+            End-to-end encrypted (AES-GCM)
+          </li>
+          <li class="flex items-center">
+            <div class="w-6 h-6 mr-2"><MdCheck /></div>
+            Files stored in Switzerland 🇨🇭
+          </li>
+          <li class="flex items-center">
+            <div class="w-6 h-6 mr-2"><MdCheck /></div>
+            One-time download link
+          </li>
+        </ul>
+        <div class="ml-8"><a href="/about">Learn more</a></div>
+      </div>
     </div>
   </div>
 </section>
