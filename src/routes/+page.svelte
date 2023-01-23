@@ -1,7 +1,7 @@
 <script lang="ts">
   import MdCheck from 'svelte-icons/md/MdCheck.svelte'
 
-  import FileUpload from './FileUpload.svelte'
+  import FileUpload from '$components/FileUpload.svelte'
 
   import type { PageServerData } from './$types'
 

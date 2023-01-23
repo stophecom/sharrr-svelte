@@ -1,12 +1,10 @@
 <script lang="ts">
-  import Dropzone from 'svelte-file-dropzone'
-  import MdFileUpload from 'svelte-icons/md/MdFileUpload.svelte'
-
   import { PUBLIC_FLOW_S3_BUCKET } from '$env/static/public'
   import { api } from '$lib/api'
   import { encryptFileReference, handleFileEncryptionAndUpload } from '$lib/file'
   import { generateEncryptionKeyString } from '$lib/crypto'
 
+  import Dropzone from '$components/DropZone.svelte'
   import Button from '$components/Button.svelte'
   import ProgressBar from '$components/ProgressBar.svelte'
 
@@ -14,11 +12,9 @@
     message: string
   }
 
-  let acceptedFile: File
-
   export let baseUrl: string
 
-  let result: string
+  let selectedFile: File
   let link: string
   let progress: number = 0
   let promiseSaveFile: Promise<string>
@@ -80,19 +76,15 @@
       })
   }
 
-  function handleFilesSelect(e) {
-    const { acceptedFiles, fileRejections } = e.detail
-
-    if (acceptedFiles.length) {
-      acceptedFile = acceptedFiles[0]
-      promiseSaveFile = postSecret(acceptedFile)
-    }
+  const onDrop = (files: File[]) => {
+    selectedFile = files[0]
+    promiseSaveFile = postSecret(selectedFile)
   }
 </script>
 
 <div class="pt-8">
-  {#if acceptedFile}
-    <ProgressBar {progress} fileName={acceptedFile.name} />
+  {#if selectedFile}
+    <ProgressBar {progress} fileName={selectedFile.name} />
     {#await promiseSaveFile then message}
       {#if message}
         <p class="text-sm text-pink-500">{message}</p>
@@ -105,16 +97,7 @@
       <p style="color: red">{error.message}</p>
     {/await}
   {:else}
-    <Dropzone
-      on:drop={handleFilesSelect}
-      containerClasses="dropzone-custom cursor-pointer"
-      multiple={false}
-    >
-      <div class="flex w-9 h-9 mb-2">
-        <MdFileUpload />
-      </div>
-      <span class="text-center">Drag and drop file here, or click to select a file</span>
-    </Dropzone>
+    <Dropzone {onDrop} />
   {/if}
 </div>
 

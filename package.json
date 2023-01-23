@@ -45,7 +45,6 @@
     "@prisma/client": "^4.9.0",
     "axios": "^1.2.3",
     "dotenv": "^16.0.3",
-    "svelte-file-dropzone": "^1.0.0",
     "svelte-icons": "^2.1.0"
   }
 }

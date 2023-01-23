@@ -13,6 +13,15 @@ const config = {
     alias: {
       $components: '/src/components'
     }
+
+    // csp: {
+    //   directives: {
+    //     'script-src': ['self']
+    //   },
+    //   reportOnly: {
+    //     'script-src': ['self']
+    //   }
+    // }
   }
 }
 
