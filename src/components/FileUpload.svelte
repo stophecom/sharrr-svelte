@@ -82,12 +82,12 @@
   }
 </script>
 
-<div class="pt-8">
+<div>
   {#if selectedFile}
     <ProgressBar {progress} fileName={selectedFile.name} />
     {#await promiseSaveFile then message}
       {#if message}
-        <p class="text-sm text-pink-500">{message}</p>
+        <p class="text-sm text-primary">{message}</p>
         <div class="truncate">
           {link}
         </div>
