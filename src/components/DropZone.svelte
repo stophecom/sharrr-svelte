@@ -63,14 +63,14 @@
   on:dragleave={handleLeave}
 />
 <div
-  class="relative border-2 text-pink-500 bg-white border-dashed rounded-lg border-pink-500 hover:border-pink-600 focus-within:border-blue-500 focus-within:shadow-lg hover:shadow-lg hover:shadow-indigo-200/50 transition"
+  class="relative border-2 text-primary bg-white border-dashed rounded-lg border-primary  focus-within:border-blue-500 focus-within:shadow-lg hover:shadow-lg hover:shadow-black-200/50  hover:border-solid transition"
 >
   <slot>
     <div class="p-4 flex flex-col items-center justify-center">
       <div class="flex w-9 h-9 mb-2">
         <MdFileUpload />
       </div>
-      <span class="text-center">Drag and drop file here, or click to select a file</span>
+      <span class="text-center">Drop file here, or click to select a file</span>
     </div>
   </slot>
 

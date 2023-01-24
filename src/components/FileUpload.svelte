@@ -100,10 +100,3 @@
     <Dropzone {onDrop} />
   {/if}
 </div>
-
-<style lang="postcss">
-  :global(.dropzone-custom) {
-    color: theme(colors.pink.500) !important;
-    border-color: theme(colors.pink.500) !important;
-  }
-</style>
