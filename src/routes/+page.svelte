@@ -22,12 +22,12 @@
 
 <section class="container mx-auto">
   <div class="relative pt-24 sm:pt-28 md:pt-30 lg:pt-40 px-6 lg:px-8">
-    <h1 class="mb-5 text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-center ">
+    <h1 class="mb-5 text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight sm:text-center ">
       <!-- One-time encrypted file transfer. -->
       Pretty secure file transfer.
     </h1>
     <p
-      class="mx-auto  max-w-xs sm:max-w-sm md:max-w-xl mt-6 mb-8 md:mb-12 text-lg sm:text-xl md:text-2xl  text-gray-700 text-center"
+      class="sm:mx-auto max-w-xs sm:max-w-sm md:max-w-xl mt-6 mb-8 md:mb-12 text-lg sm:text-xl md:text-2xl  text-gray-700 sm:text-center"
     >
       <!-- The most secure way to transfer data over the web. -->
       One-time, end-to-end encrypted file sharing for massive files.
