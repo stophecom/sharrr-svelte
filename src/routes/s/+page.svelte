@@ -2,6 +2,8 @@
   import type { SecretFile } from '$lib/file'
   import { decryptString } from '$lib/crypto'
 
+  import Page from '$components/Page.svelte'
+
   let fileMeta: SecretFile | undefined
 
   const downloadFile = async (secretFile: SecretFile, decryptionKey: string) => {
@@ -62,28 +64,19 @@
   <title>Sharrr. Share end-to-end encrypted files.</title>
 </svelte:head>
 
-<section class="container mx-auto">
-  <div class="relative pt-40 px-6 lg:px-8">
-    <h1 class="mb-5 text-2xl font-bold tracking-tight sm:text-center sm:text-6xl">
-      You received a file
-    </h1>
-    <p class="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
-      The most secure way to transfer data over the web.
-    </p>
+<Page title={'You received a file'} subtitle={`The most secure way to transfer data over the web.`}>
+  <div class="mt-8 flex justify-center">
+    <div class="flex flex-col items-center justify-center">
+      <button
+        class="mb-3 px-4 py-1 text-sm text-white font-semibold rounded-md border border-pink-500 bg-pink-500 hover:text-white hover:bg-pink-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-pink-600 focus:ring-offset-2"
+        type="button"
+        on:click={fetchSecretFile}>Download and Decrypt</button
+      >
 
-    <div class="mt-8 flex justify-center">
-      <div class="flex flex-col items-center justify-center">
-        <button
-          class="mb-3 px-4 py-1 text-sm text-white font-semibold rounded-md border border-pink-500 bg-pink-500 hover:text-white hover:bg-pink-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-pink-600 focus:ring-offset-2"
-          type="button"
-          on:click={fetchSecretFile}>Download and Decrypt</button
-        >
+      <p>{fileMeta?.name}</p>
+      {fileMeta?.size}
 
-        <p>{fileMeta?.name}</p>
-        {fileMeta?.size}
-
-        {fileMeta?.numberOfChunks}
-      </div>
+      {fileMeta?.numberOfChunks}
     </div>
   </div>
-</section>
+</Page>
