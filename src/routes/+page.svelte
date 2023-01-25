@@ -42,7 +42,7 @@
         <ul class="pt-8  text-gray-700 ">
           <li class="flex items-center">
             <div class="w-6 h-6 mr-2"><MdCheck /></div>
-            Up to&nbsp;<strong>50GB</strong>&nbsp;files
+            Up to&nbsp;<strong>100GB</strong>&nbsp;files
           </li>
           <li class="flex items-center">
             <div class="w-6 h-6 mr-2"><MdCheck /></div>
@@ -56,8 +56,12 @@
             <div class="w-6 h-6 mr-2"><MdCheck /></div>
             One-time download link
           </li>
+          <li class="flex items-center">
+            <div class="w-6 h-6 mr-2"><MdCheck /></div>
+            FREE and open source
+          </li>
         </ul>
-        <div class="ml-8"><a href="/about">Learn more</a></div>
+        <div class="ml-8"><a href="/about" class="text-primary underline">...and more.</a></div>
       </div>
     </div>
   </div>

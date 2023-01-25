@@ -1,4 +1,4 @@
-<footer class="p-12 text-center">
+<footer class="p-12 pt-24 text-center">
   <small>
     Created by{' '}
     <a class="underline text-primary" href="https://twitter.com/stophecom"> @stophecom</a>
