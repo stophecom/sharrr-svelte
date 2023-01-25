@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte'
   import MdFileUpload from 'svelte-icons/md/MdFileUpload.svelte'
-
   import gif from '$lib/images/snoop.webp'
 
   type OnDrop = (files: File[]) => void
@@ -17,7 +15,6 @@
   export let accept: string = '' // image/*, .gif etc.
 
   let isOver = false
-  let isDragAndDropApiSupported = false
 
   const handleEnter = () => {
     isOver = true
@@ -57,16 +54,6 @@
     let files: FileList = <FileList>(<HTMLInputElement>e.target).files
     onDrop(Array.from(files))
   }
-
-  onMount(async () => {
-    if ('draggable' in document.createElement('div')) {
-      isDragAndDropApiSupported = true
-    }
-  })
-
-  $: dropZoneStyles = isDragAndDropApiSupported
-    ? 'text-primary bg-white border-dashed'
-    : 'bg-primary text-white shadow-lg hover:shadow-xl rounded-2xl uppercase'
 </script>
 
 <svelte:body
@@ -76,23 +63,16 @@
   on:dragleave={handleLeave}
 />
 <div
-  class="{dropZoneStyles} relative border-2 rounded-lg border-primary  focus-within:border-blue-500 focus-within:shadow-lg hover:shadow-lg hover:shadow-black-200/50  hover:border-solid transition"
+  class="relative border-2 text-primary bg-white border-dashed rounded-lg border-primary  focus-within:border-blue-500 focus-within:shadow-lg hover:shadow-lg hover:shadow-black-200/50  hover:border-solid transition"
 >
-  {#if isDragAndDropApiSupported}
-    <div class="flex p-4  flex-col items-center justify-center">
+  <slot>
+    <div class="p-4 flex flex-col items-center justify-center">
       <div class="flex w-9 h-9 mb-2">
         <MdFileUpload />
       </div>
       <span class="text-center">Drop file here, or click to select a file</span>
     </div>
-  {:else}
-    <div class="flex p-4  flex-col items-center justify-center">
-      <div class="flex w-9 h-9 mb-2">
-        <MdFileUpload />
-      </div>
-      <span class="text-center">Select a file</span>
-    </div>
-  {/if}
+  </slot>
 
   <div
     id="overlay"
