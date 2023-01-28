@@ -28,6 +28,9 @@ npx prisma init
 
 # Push schema to PlanetScale
 npx prisma db push
+
+# Open prisma studio locally
+npx prisma studio
 ```
 
 ## Building
