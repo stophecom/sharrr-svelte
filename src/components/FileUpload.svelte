@@ -2,7 +2,7 @@
   import { PUBLIC_FLOW_S3_BUCKET } from '$env/static/public'
   import { api } from '$lib/api'
   import { encryptFileReference, handleFileEncryptionAndUpload } from '$lib/file'
-  import { generateEncryptionKeyString } from '$lib/crypto'
+  import { generateMasterKey } from '$lib/crypto'
 
   import Dropzone from '$components/DropZone.svelte'
   import Button from '$components/Button.svelte'
@@ -34,7 +34,8 @@
     const bucket = PUBLIC_FLOW_S3_BUCKET
 
     const alias = crypto.randomUUID()
-    const encryptionKey = await generateEncryptionKeyString()
+    const token = crypto.randomUUID()
+    const encryptionKey = await generateMasterKey()
 
     link = `${baseUrl}/s#${alias}/${encryptionKey}`
 
@@ -64,6 +65,7 @@
       },
       body: JSON.stringify({
         alias,
+        token,
         content
       })
     })

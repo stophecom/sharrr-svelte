@@ -14,5 +14,6 @@ model Secret {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   alias     String   @unique
+  publicKey String
   content   String   @db.Text
 }
