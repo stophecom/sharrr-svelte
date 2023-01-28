@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-import { encryptString, encryptFile, decryptData } from '$lib/crypto'
+import { encryptFile, decryptData, createHash, signMessage } from '$lib/crypto'
 import { api, asyncPool } from '$lib/api'
 type SignedUrlGetResponse = {
   url: string
@@ -26,68 +26,59 @@ export const GB = 10 ** 9 // 1000000000 Bytes = 1 GB.
 
 const chunkSize = 1 * MB // @todo increase this
 
-export const encryptFileReference = async (file: File, meta: FileMeta, encryptionKey: string) => {
-  const { name, size, type } = file
-  const fileReference = {
-    ...meta,
-    name,
-    size,
-    mimeType: type
-  }
-
-  return await encryptString(JSON.stringify(fileReference), encryptionKey)
-}
-
 type HandleFileEncryptionAndUpload = {
   file: File
   bucket: string
-  fileName: string
-  encryptionKey: string
+  masterKey: string
+  privateKey: CryptoKey
   progressCallback: (progress: number) => void
 }
 
+type Chunk = {
+  key: string
+  signature: string
+}
 export const handleFileEncryptionAndUpload = async ({
   file,
   bucket,
-  fileName,
-  encryptionKey,
+  masterKey,
+  privateKey,
   progressCallback
-}: HandleFileEncryptionAndUpload): Promise<Pick<FileMeta, 'numberOfChunks' | 'uuid'>> => {
+}: HandleFileEncryptionAndUpload): Promise<Chunk[]> => {
   const fileSize = file.size
   const numberOfChunks = typeof chunkSize === 'number' ? Math.ceil(fileSize / chunkSize) : 1
   const concurrentUploads = Math.min(3, numberOfChunks)
   let numberOfChunksUploaded = 0
   progressCallback(0)
 
-  await asyncPool(concurrentUploads, [...new Array(numberOfChunks).keys()], async (i: number) => {
+  return asyncPool(concurrentUploads, [...new Array(numberOfChunks).keys()], async (i: number) => {
     const start = i * chunkSize
     const end = i + 1 === numberOfChunks ? fileSize : (i + 1) * chunkSize
     const chunk = file.slice(start, end)
 
-    const encryptedFile = await encryptFile(chunk, encryptionKey)
+    const encryptedFile = await encryptFile(chunk, masterKey)
 
     const chunkFileSize = encryptedFile.size
-    // Adding the chunk index to the filename
-    const chunkFileName = `${fileName}-${i}`
+    const fileName = crypto.randomUUID()
+    const signature = await signMessage(fileName, privateKey)
 
     await uploadFileChunk({
       bucket,
       chunk: encryptedFile,
+      fileName: await createHash(fileName),
       size: chunkFileSize,
-      fileName: chunkFileName,
       progressCallback: (p) => {
         const totalProgress = (numberOfChunksUploaded * 100) / numberOfChunks + p / numberOfChunks
         progressCallback(totalProgress)
       }
     })
-
     numberOfChunksUploaded++
-  })
 
-  return {
-    uuid: fileName,
-    numberOfChunks
-  }
+    return {
+      key: fileName,
+      signature
+    }
+  })
 }
 
 type UploadFileChunkParams = {

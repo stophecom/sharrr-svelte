@@ -18,7 +18,7 @@ const base64ToBinary = (base64: string) => {
   return uint8Array.buffer
 }
 
-const exportRawKey = async (key: CryptoKey) => {
+export const exportRawKey = async (key: CryptoKey) => {
   const exportedKey = await crypto.subtle.exportKey('raw', key)
   return binaryToBase64(exportedKey)
 }
@@ -168,7 +168,7 @@ export const generateKeyPair = async () =>
   )
 
 // Create a signature using the private key
-export const signMessage = async (privateKey: CryptoKey, message: string) => {
+export const signMessage = async (message: string, privateKey: CryptoKey) => {
   const encoded = encodeText(message)
   const signature = await window.crypto.subtle.sign(
     {

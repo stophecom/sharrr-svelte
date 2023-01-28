@@ -1,8 +1,14 @@
 <script lang="ts">
   import { PUBLIC_FLOW_S3_BUCKET } from '$env/static/public'
   import { api } from '$lib/api'
-  import { encryptFileReference, handleFileEncryptionAndUpload } from '$lib/file'
-  import { generateMasterKey } from '$lib/crypto'
+  import { handleFileEncryptionAndUpload } from '$lib/file'
+  import {
+    encryptString,
+    generateMasterKey,
+    generateKeyPair,
+    exportRawKey,
+    createHash
+  } from '$lib/crypto'
 
   import Dropzone from '$components/DropZone.svelte'
   import Button from '$components/Button.svelte'
@@ -34,29 +40,36 @@
     const bucket = PUBLIC_FLOW_S3_BUCKET
 
     const alias = crypto.randomUUID()
-    const token = crypto.randomUUID()
-    const encryptionKey = await generateMasterKey()
+    const masterKey = await generateMasterKey()
+    const keyPair = await generateKeyPair()
+    const privateKey = keyPair.privateKey
 
-    link = `${baseUrl}/s#${alias}/${encryptionKey}`
+    const aliasEncryptedAndHashed = await createHash(await encryptString(alias, masterKey))
+    const publicKeyRaw = await exportRawKey(keyPair.publicKey)
 
-    const fileName = crypto.randomUUID()
+    link = `${baseUrl}/s#${alias}/${masterKey}`
 
-    const { uuid, numberOfChunks } = await handleFileEncryptionAndUpload({
+    const chunks = await handleFileEncryptionAndUpload({
       file,
       bucket,
-      fileName,
-      encryptionKey,
+      masterKey,
+      privateKey,
       progressCallback: (p) => {
         progress = p
         console.log(`% Done = ${p.toFixed(2)}`)
       }
     })
 
-    const content = await encryptFileReference(
-      file,
-      { uuid, bucket, numberOfChunks },
-      encryptionKey
-    )
+    const { name, size, type } = file
+    const fileReference = {
+      name,
+      size,
+      mimeType: type,
+      bucket,
+      chunks
+    }
+
+    const content = await encryptString(JSON.stringify(fileReference), masterKey)
 
     return api<SecretsResponse>('/secrets', {
       method: 'POST',
@@ -64,8 +77,8 @@
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        alias,
-        token,
+        alias: aliasEncryptedAndHashed,
+        publicKey: publicKeyRaw,
         content
       })
     })

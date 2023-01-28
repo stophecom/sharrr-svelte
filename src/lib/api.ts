@@ -42,10 +42,10 @@ export async function api<T>(
   }
 }
 
-export const asyncPool = async (
+export const asyncPool = async <T>(
   concurrency: number,
   iterable: number[],
-  iteratorFn: (x: number, y: number[]) => any
+  iteratorFn: (x: number, y: number[]) => T
 ) => {
   const ret = [] // Store all asynchronous tasks
   const executing = new Set() // Stores executing asynchronous tasks
