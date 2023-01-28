@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let color: 'bg-pink-500'
+  export let color = 'bg-pink-500'
   export let label: string = 'Uploading…'
   export let fileName: string = ''
   export let progress: number = 0
