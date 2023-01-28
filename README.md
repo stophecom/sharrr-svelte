@@ -13,7 +13,7 @@ npm run dev
 npm run dev -- --open
 ```
 
-### Connect PlanetScale DB
+### DB (PlanetScale) & Prisma
 
 ```bash
 # Authenticate PlanetScale
@@ -22,6 +22,12 @@ pscale auth login
 # Connect to DB dev branch
 # DATABASE_URL='mysql://root@127.0.0.1:3309/sharrr'
 pscale connect sharrr dev --port 3309
+
+# Init primsa
+npx prisma init
+
+# Push schema to PlanetScale
+npx prisma db push
 ```
 
 ## Building
