@@ -2,6 +2,9 @@ import axios from 'axios'
 
 import { encryptFile, decryptData, createHash, signMessage } from '$lib/crypto'
 import { api, asyncPool } from '$lib/api'
+import { CHUNK_SIZE } from '$lib/constants'
+
+const chunkSize = CHUNK_SIZE
 
 type SignedUrlGetResponse = {
   url: string
@@ -25,11 +28,6 @@ export interface SecretFile extends FileReference {
   alias: string
   decryptionKey: string
 }
-
-export const MB = 10 ** 6 // 1000000 Bytes = 1 MB.
-export const GB = 10 ** 9 // 1000000000 Bytes = 1 GB.
-
-const chunkSize = 1 * MB // @todo increase this
 
 type HandleFileEncryptionAndUpload = {
   file: File
