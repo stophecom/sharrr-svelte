@@ -64,7 +64,7 @@
 />
 
 <div
-  class="relative border-2 bg-primary text-white dz:bg-white dz:text-primary dz:border-dashed rounded-2xl dz:rounded-lg border-primary  focus-within:border-blue-500 focus-within:shadow-xl shadow-lg  shadow-primary/30 dz:shadow-none dz:hover:shadow-lg hover:shadow-black-200/50  hover:border-solid transition"
+  class="relative border-2 bg-primary text-white dz:bg-white dz:text-primary dz:border-dashed rounded-2xl dz:rounded-lg border-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary focus-within:shadow-xl shadow-lg  shadow-primary/30 dz:shadow-none dz:hover:shadow-lg hover:shadow-black-200/50  hover:border-solid transition"
 >
   <div class="p-2 sm:p-4 flex flex-col items-center justify-center">
     <div class="flex w-9 h-9 mb-2">
@@ -72,7 +72,7 @@
     </div>
     <!-- We show a simple button on smaller screens, and a drag/drop area on larger screens. -->
     <span class="hidden dz:inline text-center">Drop file here, or click to select a file</span>
-    <span class="sm:hidden text-center text-lg">Select a file</span>
+    <span class="dz:hidden text-center text-lg">Select a file</span>
   </div>
 
   <div
