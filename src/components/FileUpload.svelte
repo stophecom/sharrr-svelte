@@ -102,10 +102,15 @@
     {#await promiseSaveFile then message}
       {#if message}
         <p class="text-sm text-primary">{message}</p>
-        <div class="truncate">
-          {link}
+        <div class="mt-4 flex items-center p-4 bg-white/70 border-2 border-primary rounded-lg">
+          <div class="grid flex-col">
+            <div class="text-sm font-semibold">Sharable link:</div>
+            <div class="truncate mr-4">
+              {link}
+            </div>
+          </div>
+          <Button class="shrink-0" primary on:click={copyLink}>COPY</Button>
         </div>
-        <Button primary on:click={copyLink}>COPY</Button>
       {/if}
     {:catch error}
       <p style="color: red">{error.message}</p>

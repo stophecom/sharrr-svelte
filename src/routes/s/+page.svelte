@@ -91,5 +91,5 @@
         <Button primary on:click={fetchSecretFile}>Download and Decrypt</Button>
       {/if}
     </div>
-  </div></Page
->
+  </div>
+</Page>
