@@ -33,6 +33,19 @@ npx prisma db push
 npx prisma studio
 ```
 
+### Tests
+
+```bash
+# Run unit tests with vitest
+# Important: Node 19+ is required (Support for crypto modules)
+npm run test:unit
+
+
+# E2E tests with playwright
+npm run test
+
+```
+
 ## Building
 
 To create a production version of your app:
