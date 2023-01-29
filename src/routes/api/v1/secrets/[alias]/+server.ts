@@ -11,6 +11,7 @@ export const GET: RequestHandler = async ({ params }) => {
   }
 
   const secret = await prisma.secret.findUnique({ where: { alias: alias } })
+
   if (!secret) {
     throw error(400, `No secret for alias ${alias}.`)
   }
