@@ -47,6 +47,7 @@ export const handleFileEncryptionAndUpload = async ({
   const numberOfChunks = typeof chunkSize === 'number' ? Math.ceil(fileSize / chunkSize) : 1
   const concurrentUploads = Math.min(3, numberOfChunks)
   let numberOfChunksUploaded = 0
+  const progressOfEachChunk: number[] = []
   progressCallback(0)
 
   if (!fileSize) {
@@ -70,8 +71,9 @@ export const handleFileEncryptionAndUpload = async ({
       fileName: await createHash(fileName),
       size: chunkFileSize,
       progressCallback: (p) => {
-        const totalProgress = (numberOfChunksUploaded * 100) / numberOfChunks + p / numberOfChunks
-        progressCallback(totalProgress)
+        progressOfEachChunk[i] = p
+        const sum = progressOfEachChunk.reduce((partialSum, a) => partialSum + a, 0)
+        progressCallback(sum)
       }
     })
     numberOfChunksUploaded++
