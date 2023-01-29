@@ -1,42 +1,29 @@
-const encodeText = (text: string) => {
+export const arrayBufferToString = (buffer: ArrayBuffer) =>
+  String.fromCharCode(...new Uint8Array(buffer))
+
+export const stringToArrayBuffer = (str: string) => {
+  const uint8Array = Uint8Array.from(str, (c) => c.charCodeAt(0))
+  return uint8Array.buffer
+}
+
+export const encodeText = (text: string) => {
   const encoder = new TextEncoder()
   return encoder.encode(text)
 }
 
-const decodeText = (data: ArrayBuffer) => {
+export const decodeText = (data: ArrayBuffer) => {
   const decoder = new TextDecoder()
   return decoder.decode(data)
 }
 
-const binaryToBase64 = (arrayBuffer: ArrayBuffer) =>
-  window.btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)))
-
-const base64ToBinary = (base64: string) => {
-  const base64Decoded = window.atob(base64)
-  const uint8Array = Uint8Array.from(base64Decoded, (c) => c.charCodeAt(0))
-
-  return uint8Array.buffer
+export const binaryToBase64 = (arrayBuffer: ArrayBuffer) => {
+  return btoa(arrayBufferToString(arrayBuffer))
 }
 
-export const exportRawKey = async (key: CryptoKey) => {
-  const exportedKey = await crypto.subtle.exportKey('raw', key)
-  return binaryToBase64(exportedKey)
-}
+export const base64ToBinary = (base64: string) => {
+  const base64Decoded = atob(base64)
 
-const importRawKey = async (base64: string) => {
-  const rawKey = base64ToBinary(base64)
-
-  const importedKey = await crypto.subtle.importKey(
-    'raw',
-    rawKey,
-    {
-      name: 'ECDSA',
-      namedCurve: 'P-384'
-    },
-    true,
-    ['sign', 'verify']
-  )
-  return importedKey
+  return stringToArrayBuffer(base64Decoded)
 }
 
 const blobToBase64 = async (blob: Blob) => {
@@ -155,10 +142,9 @@ export const decryptString = async (base64DataUrl: string, masterKey: string) =>
 }
 
 // Digital signature
-
 // Generate public/private key pair
 export const generateKeyPair = async () =>
-  crypto.subtle.generateKey(
+  await global.crypto.subtle.generateKey(
     {
       name: 'ECDSA',
       namedCurve: 'P-384'
@@ -167,10 +153,40 @@ export const generateKeyPair = async () =>
     ['sign', 'verify']
   )
 
+// Export (public) key as PEM
+const pemHeader = '-----BEGIN PUBLIC KEY-----'
+const pemFooter = '-----END PUBLIC KEY-----'
+
+export const exportPublicKey = async (key: CryptoKey) => {
+  const exported = await crypto.subtle.exportKey('spki', key)
+  const exportedAsBase64 = binaryToBase64(exported)
+  const pemExported = `${pemHeader}\n${exportedAsBase64}\n${pemFooter}`
+
+  return pemExported
+}
+
+export const importPublicKey = (pem: string) => {
+  // fetch the part of the PEM string between header and footer
+  const pemContents = pem.substring(pemHeader.length, pem.length - pemFooter.length)
+
+  const binaryKey = base64ToBinary(pemContents)
+
+  return crypto.subtle.importKey(
+    'spki',
+    binaryKey,
+    {
+      name: 'ECDSA',
+      namedCurve: 'P-384'
+    },
+    true,
+    ['verify']
+  )
+}
+
 // Create a signature using the private key
 export const signMessage = async (message: string, privateKey: CryptoKey) => {
   const encoded = encodeText(message)
-  const signature = await window.crypto.subtle.sign(
+  const signature = await crypto.subtle.sign(
     {
       name: 'ECDSA',
       hash: { name: 'SHA-384' }
@@ -183,22 +199,29 @@ export const signMessage = async (message: string, privateKey: CryptoKey) => {
 }
 
 // Verify messsage signature
-export const verifyMessage = async (
+export const verifyMessageSignature = async (
   message: string,
-  signature: ArrayBuffer,
+  signature: string,
   publicKey: CryptoKey
 ) => {
   const encoded = encodeText(message)
+  const signatureDecoded = base64ToBinary(signature)
 
-  const result = await window.crypto.subtle.verify(
+  const result = await crypto.subtle.verify(
     {
       name: 'ECDSA',
       hash: { name: 'SHA-384' }
     },
     publicKey,
-    signature,
+    signatureDecoded,
     encoded
   )
 
   return result
+}
+
+export const encryptAndHash = async (message: string, masterKey: string) => {
+  // @todo This currently doesn't work b/c nonce is different every time this runs. Returning just hash for now.
+  // return await createHash(await encryptString(message, masterKey))
+  return await createHash(message)
 }

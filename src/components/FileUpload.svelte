@@ -6,8 +6,8 @@
     encryptString,
     generateMasterKey,
     generateKeyPair,
-    exportRawKey,
-    createHash
+    exportPublicKey,
+    encryptAndHash
   } from '$lib/crypto'
 
   import Dropzone from '$components/DropZone.svelte'
@@ -44,8 +44,8 @@
     const keyPair = await generateKeyPair()
     const privateKey = keyPair.privateKey
 
-    const aliasEncryptedAndHashed = await createHash(await encryptString(alias, masterKey))
-    const publicKeyRaw = await exportRawKey(keyPair.publicKey)
+    const aliasEncryptedAndHashed = await encryptAndHash(alias, masterKey)
+    const publicKeyRaw = await exportPublicKey(keyPair.publicKey)
 
     link = `${baseUrl}/s#${alias}/${masterKey}`
 
@@ -71,17 +71,19 @@
 
     const content = await encryptString(JSON.stringify(fileReference), masterKey)
 
-    return api<SecretsResponse>('/secrets', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
+    console.log(aliasEncryptedAndHashed)
+
+    return api<SecretsResponse>(
+      '/secrets',
+      {
+        method: 'POST'
       },
-      body: JSON.stringify({
+      {
         alias: aliasEncryptedAndHashed,
         publicKey: publicKeyRaw,
         content
-      })
-    })
+      }
+    )
       .then((data) => {
         progress = 100
         return data.message
