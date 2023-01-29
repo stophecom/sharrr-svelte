@@ -12,13 +12,9 @@
 
 <style>
   .banter-loader {
-    position: absolute;
-    left: 50%;
-    top: 50%;
+    --main-bg-color: #ff0083;
     width: 72px;
     height: 72px;
-    margin-left: -36px;
-    margin-top: -36px;
   }
 
   .banter-loader__box {
@@ -36,7 +32,7 @@
     top: 0;
     width: 100%;
     height: 100%;
-    background: #fff;
+    background: var(--main-bg-color);
   }
 
   .banter-loader__box:nth-child(3n) {
