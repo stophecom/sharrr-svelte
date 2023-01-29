@@ -13,6 +13,7 @@
   import Dropzone from '$components/DropZone.svelte'
   import Button from '$components/Button.svelte'
   import ProgressBar from '$components/ProgressBar.svelte'
+  import Error from '$components/Error.svelte'
   import { status } from '$lib/store'
   import type { Status } from '$lib/store'
 
@@ -86,16 +87,12 @@
         publicKey: publicKeyRaw,
         content
       }
-    )
-      .then((data) => {
-        progress = 100
-        setStatus('done')
+    ).then((data) => {
+      progress = 100
+      setStatus('done')
 
-        return data.message
-      })
-      .catch((e) => {
-        throw new Error('Something went wrong.')
-      })
+      return data.message
+    })
   }
 
   const onDrop = (files: File[]) => {
@@ -123,7 +120,7 @@
         </div>
       {/if}
     {:catch error}
-      <p style="color: red">{error.message}</p>
+      <Error>{error?.message}</Error>
     {/await}
   {:else}
     <Dropzone {onDrop} />

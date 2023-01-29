@@ -2,6 +2,9 @@
   import MdFileUpload from 'svelte-icons/md/MdFileUpload.svelte'
   import gif from '$lib/images/snoop.webp'
 
+  import Error from '$components/Error.svelte'
+  import { MAX_FILE_SIZE, GB } from '$lib/constants'
+
   type OnDrop = (files: File[]) => void
   export let onDrop: OnDrop
   type OnEnter = () => void
@@ -9,6 +12,7 @@
   type OnLeave = () => void
   export let onLeave: OnLeave | null = null
 
+  export let error = ''
   export let multiple = false
   export let disabled = false
   export let capture: 'user' | 'environment' | null = null
@@ -28,7 +32,14 @@
       onLeave()
     }
   }
+
+  const handleError = (e: string) => {
+    error = e
+    isOver = false
+    return
+  }
   const handleDrop = (e: DragEvent) => {
+    error = ''
     e.preventDefault()
     if (disabled) {
       return
@@ -38,6 +49,18 @@
       return
     }
     const items = Array.from(e.dataTransfer.files)
+
+    if (!multiple) {
+      if (items.length > 1) {
+        return handleError(
+          'Sorry, multiple files are not supported. If you need to send more than one file, create a package first.'
+        )
+      }
+      if (items[0].size > MAX_FILE_SIZE) {
+        return handleError(`File too big. Maximum file size is ${MAX_FILE_SIZE / GB} GB.`)
+      }
+    }
+
     onDrop(items)
     isOver = false
   }
@@ -96,3 +119,6 @@
     on:change={handleChange}
   />
 </div>
+{#if error}
+  <Error message={error} />
+{/if}
