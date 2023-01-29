@@ -23,7 +23,7 @@
 
   export let baseUrl: string
 
-  let selectedFile: File
+  let selectedFile: File | null
   let link: string
   let progress: number = 0
   let promiseSaveFile: Promise<string>
@@ -101,6 +101,11 @@
     selectedFile = files[0]
     promiseSaveFile = postSecret(selectedFile)
   }
+
+  const reset = () => {
+    setStatus('initial')
+    selectedFile = null
+  }
 </script>
 
 <div>
@@ -108,15 +113,19 @@
     <ProgressBar {progress} fileName={selectedFile.name} />
     {#await promiseSaveFile then message}
       {#if message}
-        <p class="text-sm text-primary">{message}</p>
-        <div class="mt-4 flex items-center p-4 bg-white/70 border-2 border-primary rounded-lg">
+        <p class="text-sm py-1 text-primary">{message}</p>
+        <div class="my-4 flex items-center p-4 bg-white/70 border-2 border-primary rounded-lg">
           <div class="grid flex-col">
             <div class="text-sm font-semibold">Sharable link:</div>
             <div class="truncate mr-4">
               {link}
             </div>
           </div>
-          <Button class="shrink-0" primary on:click={copyLink}>COPY</Button>
+          <Button class="shrink-0 uppercase" primary on:click={copyLink}>Copy</Button>
+        </div>
+
+        <div class="flex">
+          <Button size="small" class="" on:click={reset}>Share another file</Button>
         </div>
       {/if}
     {:catch error}

@@ -87,7 +87,7 @@
 />
 
 <div
-  class="relative border-2 bg-primary text-white dz:bg-white/70 dz:text-primary dz:border-dashed rounded-2xl dz:rounded-lg border-primary focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-primary focus-within:shadow-xl shadow-lg  shadow-primary/30 dz:shadow-none dz:hover:shadow-lg hover:shadow-black-200/50  hover:border-solid transition"
+  class="relative border-2 bg-primary text-white dz:bg-white/70 dz:text-primary dz:border-dashed rounded-2xl dz:rounded-lg border-primary focus-within:outline-none focus-within:shadow-lg shadow-lg shadow-primary/30 dz:shadow-none dz:hover:shadow-lg hover:shadow-black-200/50  hover:border-solid focus-within:border-solid transition"
 >
   <div class="p-2 sm:p-4 flex flex-col items-center justify-center">
     <div class="flex w-9 h-9 mb-2">
