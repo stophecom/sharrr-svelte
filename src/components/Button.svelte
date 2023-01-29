@@ -1,9 +1,9 @@
 <script lang="ts">
   let buttonBaseClass =
-    ' font-bold py-2 px-4 rounded inline-flex items-center focus:outline-none focus:ring-2  focus:ring-offset-2'
+    'font-bold py-4 px-6 rounded-lg inline-flex items-center focus:outline-none focus:ring-2  focus:ring-offset-2'
 
   let buttonDefaultClass = 'bg-gray-300 hover:bg-gray-400 text-gray-800 focus:ring-gray-600'
-  let buttonPrimaryClass = 'bg-pink-500 hover:bg-pink-500 text-white focus:ring-pink-600'
+  let buttonPrimaryClass = 'bg-primary hover:bg-primary-200 text-white focus:ring-pink-600'
 
   export let primary: boolean = false
 
