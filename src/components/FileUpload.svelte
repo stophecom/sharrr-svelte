@@ -13,6 +13,8 @@
   import Dropzone from '$components/DropZone.svelte'
   import Button from '$components/Button.svelte'
   import ProgressBar from '$components/ProgressBar.svelte'
+  import { status } from '$lib/store'
+  import type { Status } from '$lib/store'
 
   type SecretsResponse = {
     message: string
@@ -24,6 +26,10 @@
   let link: string
   let progress: number = 0
   let promiseSaveFile: Promise<string>
+
+  function setStatus(newStatus: Status) {
+    status.update(() => newStatus)
+  }
 
   const copyLink = () => {
     navigator.clipboard.writeText(link).then(
@@ -83,6 +89,8 @@
     )
       .then((data) => {
         progress = 100
+        setStatus('done')
+
         return data.message
       })
       .catch((e) => {
@@ -91,6 +99,8 @@
   }
 
   const onDrop = (files: File[]) => {
+    setStatus('uploading')
+
     selectedFile = files[0]
     promiseSaveFile = postSecret(selectedFile)
   }
