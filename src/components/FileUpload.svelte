@@ -56,7 +56,6 @@
       privateKey,
       progressCallback: (p) => {
         progress = p
-        console.log(`% Done = ${p.toFixed(2)}`)
       }
     })
 
@@ -70,8 +69,6 @@
     }
 
     const content = await encryptString(JSON.stringify(fileReference), masterKey)
-
-    console.log(aliasEncryptedAndHashed)
 
     return api<SecretsResponse>(
       '/secrets',

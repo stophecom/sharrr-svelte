@@ -1,8 +1,9 @@
 <script lang="ts">
   import type { SecretFile } from '$lib/file'
-  import { decryptString } from '$lib/crypto'
+  import { encryptAndHash, decryptString } from '$lib/crypto'
 
   import Page from '$components/Page.svelte'
+  import Button from '$components/Button.svelte'
 
   let fileMeta: SecretFile | undefined
 
@@ -10,7 +11,7 @@
     const fileInfo = {
       ...secretFile,
       decryptionKey,
-      url: `/api/v1/service-worker-file-download/${secretFile.uuid}`
+      url: `/api/v1/service-worker-file-download/${secretFile.alias}`
     }
 
     await sendMessageToSw({
@@ -45,15 +46,19 @@
   async function fetchSecretFile() {
     const hashData = window.location.hash.substring(1).split('/')
     const alias = hashData[0]
-    const decryptionKey = hashData[1]
+    const masterKey = hashData[1]
 
-    const { content } = await fetch(`/api/v1/secrets/${alias}`).then((response) => response.json())
+    const referenceAlias = await encryptAndHash(alias, masterKey)
 
-    const decryptedSecretFileMeta = await decryptString(content, decryptionKey)
+    const { content } = await fetch(`/api/v1/secrets/${referenceAlias}`).then((response) =>
+      response.json()
+    )
+
+    const decryptedSecretFileMeta = await decryptString(content, masterKey)
     fileMeta = JSON.parse(decryptedSecretFileMeta)
 
     if (fileMeta) {
-      await downloadFile(fileMeta, decryptionKey)
+      await downloadFile({ ...fileMeta, alias: referenceAlias }, masterKey)
     }
 
     // history.replaceState(null, 'Secret destroyed', 'l/🔥')
@@ -67,16 +72,8 @@
 <Page title={'You received a file'} subtitle={`The most secure way to transfer data over the web.`}>
   <div class="mt-8 flex justify-center">
     <div class="flex flex-col items-center justify-center">
-      <button
-        class="mb-3 px-4 py-1 text-sm text-white font-semibold rounded-md border border-pink-500 bg-pink-500 hover:text-white hover:bg-pink-600 hover:border-transparent focus:outline-none focus:ring-2 focus:ring-pink-600 focus:ring-offset-2"
-        type="button"
-        on:click={fetchSecretFile}>Download and Decrypt</button
-      >
-
-      <p>{fileMeta?.name}</p>
-      {fileMeta?.size}
-
-      {fileMeta?.numberOfChunks}
+      <Button primary on:click={fetchSecretFile}>Download and Decrypt</Button>
+      <p>{JSON.stringify(fileMeta)}</p>
     </div>
-  </div>
-</Page>
+  </div></Page
+>

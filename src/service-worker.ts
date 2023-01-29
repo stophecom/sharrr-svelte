@@ -31,9 +31,9 @@ async function decryptStream(uuid: string) {
       'Content-Type': file.mimeType ?? 'application/octet-stream'
     }
 
-    const { uuid, numberOfChunks, decryptionKey } = file
+    const { alias, chunks, bucket, decryptionKey } = file
 
-    const responseStream = handleFileChunksDownload({ uuid, numberOfChunks, decryptionKey })
+    const responseStream = handleFileChunksDownload({ alias, chunks, bucket, decryptionKey })
 
     return new Response(responseStream, { headers: responseHeaders })
   } catch (e) {
@@ -106,12 +106,12 @@ self.onmessage = async (event: ExtendableMessageEvent) => {
 
   switch (request) {
     case 'file_info': {
-      map.set(data.uuid, data)
+      map.set(data.alias, data)
       event.ports[0].postMessage('File info received.')
       break
     }
     case 'progress': {
-      const fileInfo = map.get(data?.uuid)
+      const fileInfo = map.get(data?.alias)
 
       if (!fileInfo?.progress) {
         event.ports[0].postMessage(-1)

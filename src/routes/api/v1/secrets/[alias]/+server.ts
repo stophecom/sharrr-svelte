@@ -10,10 +10,9 @@ export const GET: RequestHandler = async ({ params }) => {
     throw error(400, 'No alias provided.')
   }
 
-  try {
-    const secret = await prisma.secret.findUnique({ where: { alias: alias } })
-    return new Response(JSON.stringify(secret))
-  } catch (e) {
-    throw error(500, 'Error fetching secret.')
+  const secret = await prisma.secret.findUnique({ where: { alias: alias } })
+  if (!secret) {
+    throw error(400, `No secret for alias ${alias}.`)
   }
+  return new Response(JSON.stringify(secret))
 }

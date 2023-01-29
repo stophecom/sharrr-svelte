@@ -2,23 +2,28 @@ import axios from 'axios'
 
 import { encryptFile, decryptData, createHash, signMessage } from '$lib/crypto'
 import { api, asyncPool } from '$lib/api'
+
 type SignedUrlGetResponse = {
   url: string
 }
 type PresignedPostResponse = { url: string; fields: Record<string, string> }
 
-export interface FileMeta {
-  uuid: string
-  bucket: string
-  numberOfChunks: number
-  mimeType?: string
+type Chunk = {
+  key: string
+  signature: string
 }
 
-export interface SecretFile extends FileMeta, Pick<File, 'name' | 'size'> {
+type FileReference = {
+  name: string
+  size: number
+  mimeType: string
+  bucket: string
+  chunks: Chunk[]
+}
+
+export interface SecretFile extends FileReference {
+  alias: string
   decryptionKey: string
-  message?: string
-  isEncryptedWithUserPassword?: boolean // TBD
-  receipt?: Record<string, unknown> // TBD
 }
 
 export const MB = 10 ** 6 // 1000000 Bytes = 1 MB.
@@ -33,11 +38,6 @@ type HandleFileEncryptionAndUpload = {
   privateKey: CryptoKey
   progressCallback: (progress: number) => void
 }
-
-type Chunk = {
-  key: string
-  signature: string
-}
 export const handleFileEncryptionAndUpload = async ({
   file,
   bucket,
@@ -50,6 +50,10 @@ export const handleFileEncryptionAndUpload = async ({
   const concurrentUploads = Math.min(3, numberOfChunks)
   let numberOfChunksUploaded = 0
   progressCallback(0)
+
+  if (!fileSize) {
+    throw new Error('Empty file (zero bytes). Please select another file.')
+  }
 
   return asyncPool(concurrentUploads, [...new Array(numberOfChunks).keys()], async (i: number) => {
     const start = i * chunkSize
@@ -125,18 +129,25 @@ const uploadFileChunk = async ({
 }
 
 export const handleFileChunksDownload = ({
-  uuid,
-  numberOfChunks,
+  alias,
+  bucket,
+  chunks,
   decryptionKey
-}: Pick<SecretFile, 'uuid' | 'numberOfChunks' | 'decryptionKey'>) => {
+}: Pick<SecretFile, 'alias' | 'bucket' | 'chunks' | 'decryptionKey'>) => {
   const decryptionStream = new ReadableStream({
     async start(controller) {
       // We download the chunks in sequence.
       // We could do concurrent fetching but the order of the chunks in the stream is important.
-      let i = 0
-      while (i < numberOfChunks) {
-        const key = `${uuid}-${i}`
-        const { url } = await api<SignedUrlGetResponse>(`/files/${key}`, { method: 'GET' })
+      for (const chunk of chunks) {
+        const key = chunk.key
+        const signature = chunk.signature
+        const keyHash = await createHash(key)
+
+        const { url } = await api<SignedUrlGetResponse>(
+          `/files/${key}`,
+          { method: 'POST' },
+          { alias, bucket, keyHash, signature }
+        )
         const response = await fetch(url)
 
         if (!response.ok) {
@@ -147,7 +158,6 @@ export const handleFileChunksDownload = ({
         const decryptedFileChunk = await decryptData(encryptedFileChunk, decryptionKey)
 
         controller.enqueue(new Uint8Array(decryptedFileChunk))
-        i++
       }
 
       controller.close()
