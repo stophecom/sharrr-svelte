@@ -144,7 +144,7 @@ export const decryptString = async (base64DataUrl: string, masterKey: string) =>
 // Digital signature
 // Generate public/private key pair
 export const generateKeyPair = async () =>
-  await global.crypto.subtle.generateKey(
+  await crypto.subtle.generateKey(
     {
       name: 'ECDSA',
       namedCurve: 'P-384'
