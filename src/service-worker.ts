@@ -1,5 +1,5 @@
-import { handleFileChunksDownload } from './lib/file'
-import type { SecretFile } from './lib/file'
+import { handleFileChunksDownload } from './lib/file-upload'
+import type { SecretFile } from './lib/file-upload'
 
 // Request URL we intercept to initiate stream
 const DOWNLOAD_URL = /\/api\/v1\/service-worker-file-download\/([\w-]{1,128})/
