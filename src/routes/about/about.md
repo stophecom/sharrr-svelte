@@ -32,29 +32,44 @@ It is worth noting here that the alias and master key **never leave the client**
 
 #### Upload (Encryption)
 
-Upload is straight forward. Split files into chunks, encrypt each chunk and store a reference to each chunk together with a signature and an public key into the database.
+Encrypting the file is straight forward: Split files into chunks, encrypt each chunk and store a reference to each chunk together with a signature and an public key into the database.
 
 ![Encryption](/images/about/about-encryption.jpg)
 
 #### Download (Decryption)
 
-![Encryption](/images/about/about-decryption.jpg)
+The download is the tricky part. Not only do we need to make sure the client is allowed to request a certain file (solved with a cryptographic signature, see blue box), but also it is not possible to stream files directly into the download folder. We therefore need a [service worker](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API) in between. If you want to learn more about how this works, I recommend [this video](https://www.youtube.com/watch?v=SdePc87Ffik) or this [blog post](https://proton.me/blog/proton-drive-web-encryption-technique) by the Proton Drive team.
+
+![Decryption](/images/about/about-decryption.jpg)
+
+## Cryptography
+
+For encryption/decryption only built-in browser APIs are used, namely the **Web Crypto API**. As a side effect, this program won't run in legacy browsers or with older node versions.
+
+The security relies on two algorithms:
+
+- [**AES-GCM** (Advanced Encryption Standard - Galois/Counter Mode)](https://en.wikipedia.org/wiki/Galois/Counter_Mode) for symmetric encryption: This is used for the master key that encrypts/decrypts all file chunks and the data stored in the database.
+- [**ECDSA** (Elliptic Curve Digital Signature Algorithm)](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) for asymmetric encryption: This is used to sign the file chunk keys in order make sure the later download request is allowed to access this specific chunk file.
 
 ## Tech stack
 
 - SvelteKit
 - Tailwind (CSS)
-- PlanetScale (MySQL DB)
+- PlanetScale (MySQL)
 - Prisma (ORM)
-- Web Crypto API
-- S3 Object Storage
+
+### Infrastructure
+
+- Website on [Vercel](https://vercel.com/)
+- DB on [PlanetScale](https://planetscale.com/)
+- S3 Object Storage with [flow.swiss](https://flow.swiss)
 
 ## Resources/Inspiration
 
-This project is heavily inspired by a great online community and open source projects, namely:
+This project is heavily inspired by a great online community and amazing open source projects:
 
 - [hat.sh](https://hat.sh/) - A client-side file encryption project
-- [Proton Drive security model](https://proton.me/blog/protondrive-security) explained
-- [Firefox Send](https://github.com/mozilla/send) (Archived)
-- [Talk from Thomas Konrad](https://www.youtube.com/watch?v=SdePc87Ffik) about end-to-end encryption
-- [MDN Docs](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API) about Web Crypto
+- [Proton Drive security model explained](https://proton.me/blog/protondrive-security) (Blog)
+- [Firefox Send](https://github.com/mozilla/send) (Archived Repo)
+- [Thomas Konrad on end-to-end encryption](https://www.youtube.com/watch?v=SdePc87Ffik) (Video)
+- [MDN Docs about Web Crypto API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Crypto_API)
