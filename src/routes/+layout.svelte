@@ -17,8 +17,6 @@
 <style lang="postcss">
   :global(html) {
     background-color: theme(colors.gray.100);
-    background: rgb(255, 255, 255);
-    background: radial-gradient(circle, rgb(255 255 255) 0%, rgb(234 228 244) 100%);
     background: radial-gradient(circle, rgb(255 255 255) 0%, rgb(190 199 212) 100%);
     min-height: 100vh;
   }
