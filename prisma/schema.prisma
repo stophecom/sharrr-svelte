@@ -17,3 +17,9 @@ model Secret {
   publicKey String   @db.VarChar(300)
   content   String   @db.Text
 }
+
+model FilesToDelete {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  key       String
+}
