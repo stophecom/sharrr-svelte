@@ -1,7 +1,7 @@
 <script lang="ts">
   import { PUBLIC_FLOW_S3_BUCKET } from '$env/static/public'
   import { api } from '$lib/api'
-  import { handleFileEncryptionAndUpload } from '$lib/file'
+  import { handleFileEncryptionAndUpload } from '$lib/file-upload'
   import {
     encryptString,
     generateMasterKey,

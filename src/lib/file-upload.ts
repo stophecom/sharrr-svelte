@@ -1,8 +1,12 @@
 import axios from 'axios'
+import axiosRetry from 'axios-retry'
 
 import { encryptFile, decryptData, createHash, signMessage } from '$lib/crypto'
 import { api, asyncPool } from '$lib/api'
 import { CHUNK_SIZE } from '$lib/constants'
+
+// If the request fails, we retry
+axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay })
 
 const chunkSize = CHUNK_SIZE
 
@@ -46,7 +50,6 @@ export const handleFileEncryptionAndUpload = async ({
   const fileSize = file.size
   const numberOfChunks = typeof chunkSize === 'number' ? Math.ceil(fileSize / chunkSize) : 1
   const concurrentUploads = Math.min(3, numberOfChunks)
-  let numberOfChunksUploaded = 0
   const progressOfEachChunk: number[] = []
   progressCallback(0)
 
@@ -76,7 +79,6 @@ export const handleFileEncryptionAndUpload = async ({
         progressCallback(sum)
       }
     })
-    numberOfChunksUploaded++
 
     return {
       key: fileName,

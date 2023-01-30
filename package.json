@@ -44,6 +44,7 @@
     "@aws-sdk/s3-request-presigner": "^3.254.0",
     "@prisma/client": "^4.9.0",
     "axios": "^1.2.3",
+    "axios-retry": "^3.4.0",
     "dotenv": "^16.0.3",
     "svelte-icons": "^2.1.0"
   }
