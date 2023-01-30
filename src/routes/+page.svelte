@@ -23,7 +23,7 @@
   />
   <meta
     name="keywords"
-    content="pirates, share file, end-to-end encrypted file sharing, pirates sharrr, arrr"
+    content="pirates, share file, end-to-end encrypted file sharing, zero knowledge encrypted file transfer, pirates sharrr, arrr"
   />
 </svelte:head>
 

@@ -10,7 +10,7 @@
   <meta name="description" content="About this app" />
 </svelte:head>
 
-<Page title={'About'} subtitle={`Pirates don't share, pirates sharrr.`}>
+<Page title={'About'} subtitle={`People share, pirates sharrr.`}>
   <div class="mx-auto prose rounded-xl sm:bg-white/50 sm:px-6 py-6">
     <SvelteMarkdown source={readme} />
   </div>
