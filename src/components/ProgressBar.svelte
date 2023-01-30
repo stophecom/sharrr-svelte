@@ -1,7 +1,7 @@
 <script lang="ts">
   export let label: string = 'Uploading…'
   export let fileName: string = ''
-  export let progress: number = 0
+  export let progress: number = 0 // 0 - 100
 
   $: label = progress === 100 ? 'Done' : label
 </script>

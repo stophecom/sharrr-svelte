@@ -129,12 +129,12 @@ const uploadFileChunk = async ({
   })
 }
 
-export const handleFileChunksDownload = ({
-  alias,
-  bucket,
-  chunks,
-  decryptionKey
-}: Pick<SecretFile, 'alias' | 'bucket' | 'chunks' | 'decryptionKey'>) => {
+export const handleFileChunksDownload = (file: SecretFile & { progress: number }) => {
+  const { alias, chunks, bucket, decryptionKey } = file
+
+  let i = 0
+  const totalChunks = chunks.length
+
   const decryptionStream = new ReadableStream({
     async start(controller) {
       // We download the chunks in sequence.
@@ -158,8 +158,13 @@ export const handleFileChunksDownload = ({
         const encryptedFileChunk = await response.blob()
         const decryptedFileChunk = await decryptData(encryptedFileChunk, decryptionKey)
 
+        file.progress = i / totalChunks
+
         controller.enqueue(new Uint8Array(decryptedFileChunk))
+        i++
       }
+
+      file.progress = 1
 
       controller.close()
     }

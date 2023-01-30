@@ -6,7 +6,6 @@ const DOWNLOAD_URL = /\/api\/v1\/service-worker-file-download\/([\w-]{1,128})/
 const map = new Map()
 
 self.addEventListener('install', (event) => {
-  // console.log('Installing file decryption Service Worker ...');
   // @ts-ignore
   event.waitUntil(self.skipWaiting())
 })
@@ -17,7 +16,7 @@ self.addEventListener('activate', (event) => {
 })
 
 async function decryptStream(uuid: string) {
-  const file: SecretFile = map.get(uuid)
+  const file: SecretFile & { progress: number } = map.get(uuid)
 
   if (!file) {
     return new Response(null, { status: 400 })
@@ -31,9 +30,7 @@ async function decryptStream(uuid: string) {
       'Content-Type': file.mimeType ?? 'application/octet-stream'
     }
 
-    const { alias, chunks, bucket, decryptionKey } = file
-
-    const responseStream = handleFileChunksDownload({ alias, chunks, bucket, decryptionKey })
+    const responseStream = handleFileChunksDownload(file)
 
     return new Response(responseStream, { headers: responseHeaders })
   } catch (e) {

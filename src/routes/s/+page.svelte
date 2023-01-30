@@ -9,9 +9,12 @@
   import Button from '$components/Button.svelte'
   import Spinner from '$components/Spinner.svelte'
   import Alert from '$components/Alert.svelte'
+  import ProgressBar from '$components/ProgressBar.svelte'
 
   let fileMeta: SecretFile | undefined
   let status: 'initial' | 'downloading' | 'done' | 'error' = 'initial'
+  let referenceAlias = ''
+  let progress = 0
 
   const downloadFile = async (secretFile: SecretFile, decryptionKey: string) => {
     const fileInfo = {
@@ -55,7 +58,7 @@
     const alias = hashData[0]
     const masterKey = hashData[1]
 
-    const referenceAlias = await encryptAndHash(alias, masterKey)
+    referenceAlias = await encryptAndHash(alias, masterKey)
 
     const { content } = await api<Pick<Secret, 'content'>>(`/secrets/${referenceAlias}`)
 
@@ -64,7 +67,19 @@
 
     if (fileMeta) {
       await downloadFile({ ...fileMeta, alias: referenceAlias }, masterKey)
-      status = 'done'
+
+      // Check download progress every second
+      const progressInterval = setInterval(async () => {
+        progress = (await sendMessageToSw({
+          request: 'progress',
+          data: { alias: referenceAlias }
+        })) as number
+
+        if (progress === 1) {
+          status = 'done'
+          clearInterval(progressInterval)
+        }
+      }, 1000)
     }
 
     // history.replaceState(null, 'Secret destroyed', 'l/🔥')
@@ -80,9 +95,10 @@
     <div class="flex flex-col items-center justify-center">
       {#if status === 'downloading'}
         <Spinner />
-        <p class="text-gray-700 mt-4">This might take a while…</p>
+        <p class="text-gray-700 mt-4 mb-4">This might take a while…</p>
+        <ProgressBar progress={progress * 100} fileName={fileMeta?.name} />
       {:else if status === 'done'}
-        <p class="text-green-700">In progress!</p>
+        <p class="text-green-700">Done!</p>
       {:else}
         <Alert class="mt-4 mb-4">
           Important! We have absolutely no knowledge about the contents of the file. Be sure to
