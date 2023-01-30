@@ -6,7 +6,7 @@
   const chunkSize = getChunkSize(PUBLIC_ENV)
 
   import { api } from '$lib/api'
-  import { handleFileEncryptionAndUpload } from '$lib/file-upload'
+  import { handleFileEncryptionAndUpload } from '$lib/file-transfer'
   import {
     encryptString,
     generateMasterKey,

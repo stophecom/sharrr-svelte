@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Secret } from '@prisma/client'
 
-  import type { SecretFile } from '$lib/file-upload'
+  import type { SecretFile } from '$lib/file-transfer'
   import { encryptAndHash, decryptString } from '$lib/crypto'
   import { api } from '$lib/api'
 
