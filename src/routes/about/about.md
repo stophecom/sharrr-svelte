@@ -1,18 +1,18 @@
 ## Intro
 
-This project is proof-of-concept on how to transmit large files over the internet in the most secure way possible, using **zero-knowledge encryption**.
+This project is **proof-of-concept** on how to transfer large files over the internet in the most secure way possible, using **zero-knowledge encryption**.
 
 All code is [open source on Github](https://github.com/stophecom/sharrr-svelte).
 
 #### Disclaimer
 
-I am no security engineer or cryptographer and this project is solely based on self-taught expertise. Use with caution. That said, feedback on security aspects or potential vulnerabilities is much appreciated.
+I am not a security engineer or cryptographer and this project is solely based on self-taught expertise. Use with caution. That said, feedback on security aspects or potential vulnerabilities is much appreciated.
 
 Find me on [Twitter](https://twitter.com/stophecom), [Mastodon](https://mastodon.social/@stophecom). I have a [website](https://www.stophe.com/) and [blog](https://blog.stophe.com/).
 
 ## Security concept
 
-Main idea is that only the client is ever able to access the decrypted data (Build the file). Even if all other systems (API, DB, S3) would be compromised, it shouldn't be possible to access or reverse-engineer the original file. Apart from the end-to-end encryption, the file shall only be downloaded once (within a defined period of time) - after that all traces shall be erased.
+The main idea is that, after the file has been encrypted and uploaded, only the recipient of the download link is ever able to download and access the decrypted data (Build the file). Even if all other systems (API, DB, S3) would be compromised, it shouldn't be possible to decompile or reverse-engineer the original file. Apart from the end-to-end encryption, the file shall only be downloaded once (within a defined period of time) - after that all traces shall be erased.
 
 ### Challenges
 
