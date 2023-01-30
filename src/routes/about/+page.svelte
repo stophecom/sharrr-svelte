@@ -11,7 +11,7 @@
 </svelte:head>
 
 <Page title={'About'} subtitle={`Pirates don't share, pirates sharrr.`}>
-  <div class="mx-auto prose rounded-xl bg-white/50 px-4 py-5">
+  <div class="mx-auto prose rounded-xl sm:bg-white/50 sm:px-6 py-6">
     <SvelteMarkdown source={readme} />
   </div>
 </Page>
