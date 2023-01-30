@@ -1,5 +1,8 @@
 <script lang="ts">
+  import SvelteMarkdown from 'svelte-markdown'
+
   import Page from '$components/Page.svelte'
+  import readme from './about.md?raw'
 </script>
 
 <svelte:head>
@@ -8,7 +11,7 @@
 </svelte:head>
 
 <Page title={'About'} subtitle={`Pirates don't share, pirates sharrr.`}>
-  <p class="sm:text-center">
-    The most secure way to transmit data over the web: Encrypted. Disposable.
-  </p>
+  <div class="mx-auto prose rounded-xl bg-white/50 px-4 py-5">
+    <SvelteMarkdown source={readme} />
+  </div>
 </Page>

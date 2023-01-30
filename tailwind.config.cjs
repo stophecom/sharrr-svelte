@@ -9,8 +9,15 @@ module.exports = {
       },
       screens: {
         dz: { raw: '(hover: hover) and (pointer: fine)' } // For dropzone vs button
+      },
+      typography: {
+        DEFAULT: {
+          css: {
+            maxWidth: '80ch' // Overwrites prose max-width
+          }
+        }
       }
     }
   },
-  plugins: []
+  plugins: [require('@tailwindcss/typography')]
 }
