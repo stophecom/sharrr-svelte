@@ -7,10 +7,10 @@
 </script>
 
 <div class="flex justify-between mb-1">
-  <div class="text-base dark:text-white max-w-full truncate">
+  <div class="flex flex-wrap items-baseline text-base dark:text-white max-w-full truncate">
     <span class="font-medium mr-2">{label}</span>
     {#if fileName}
-      <div class="font-normal truncate text-gray-700">{fileName}</div>
+      <div class="font-normal text-sm truncate text-gray-700">{fileName}</div>
     {/if}
   </div>
   <span class="flex-shrink-0 ml-2 w-14 text-right text-sm font-medium text-primary dark:text-white"
