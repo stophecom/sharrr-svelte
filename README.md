@@ -31,6 +31,10 @@ npx prisma db push
 
 # Open prisma studio locally
 npx prisma studio
+
+# After changes in DB are made
+# https://www.prisma.io/docs/concepts/components/prisma-client#4-evolving-your-application
+npx prisma generate
 ```
 
 ### Tests
