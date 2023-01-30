@@ -1,6 +1,8 @@
 <script lang="ts">
   import MdCheck from 'svelte-icons/md/MdCheck.svelte'
+  import prettyBytes from 'pretty-bytes'
 
+  import { MAX_FILE_SIZE } from '$lib/constants'
   import FileUpload from '$components/FileUpload.svelte'
   import Page from '$components/Page.svelte'
 
@@ -35,7 +37,7 @@
         <ul class="pt-10 text-sm sm:text-base  text-gray-700 ">
           <li class="flex items-center">
             <div class="w-6 h-6 mr-2"><MdCheck /></div>
-            Up to&nbsp;<strong>100GB</strong>&nbsp;files
+            Up to&nbsp;<strong>{prettyBytes(MAX_FILE_SIZE)}</strong>&nbsp;files
           </li>
           <li class="flex items-center">
             <div class="w-6 h-6 mr-2"><MdCheck /></div>

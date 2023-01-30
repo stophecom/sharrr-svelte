@@ -46,6 +46,7 @@
     "axios": "^1.2.3",
     "axios-retry": "^3.4.0",
     "dotenv": "^16.0.3",
+    "pretty-bytes": "^6.0.0",
     "svelte-icons": "^2.1.0"
   }
 }
