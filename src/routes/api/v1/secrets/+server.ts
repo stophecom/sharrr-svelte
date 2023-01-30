@@ -15,6 +15,7 @@ export const POST: RequestHandler = async ({ request }) => {
         throw error(500, 'Alias need to be unique.')
       }
     }
+    console.error(e)
 
     throw error(500, 'Error storing secret.')
   }
