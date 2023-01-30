@@ -3,12 +3,9 @@ import axiosRetry from 'axios-retry'
 
 import { encryptFile, decryptData, createHash, signMessage } from '$lib/crypto'
 import { api, asyncPool } from '$lib/api'
-import { CHUNK_SIZE } from '$lib/constants'
 
 // If the request fails, we retry
 axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay })
-
-const chunkSize = CHUNK_SIZE
 
 type SignedUrlGetResponse = {
   url: string
@@ -38,6 +35,7 @@ type HandleFileEncryptionAndUpload = {
   bucket: string
   masterKey: string
   privateKey: CryptoKey
+  chunkSize: number
   progressCallback: (progress: number) => void
 }
 export const handleFileEncryptionAndUpload = async ({
@@ -45,6 +43,7 @@ export const handleFileEncryptionAndUpload = async ({
   bucket,
   masterKey,
   privateKey,
+  chunkSize,
   progressCallback
 }: HandleFileEncryptionAndUpload): Promise<Chunk[]> => {
   const fileSize = file.size

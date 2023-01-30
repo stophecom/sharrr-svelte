@@ -2,8 +2,11 @@
   import MdFileUpload from 'svelte-icons/md/MdFileUpload.svelte'
   import gif from '$lib/images/snoop.webp'
 
+  import { PUBLIC_ENV } from '$env/static/public'
   import Error from '$components/Error.svelte'
-  import { MAX_FILE_SIZE, GB } from '$lib/constants'
+  import { getMaxFileSize, GB } from '$lib/constants'
+
+  const MAX_FILE_SIZE = getMaxFileSize(PUBLIC_ENV)
 
   type OnDrop = (files: File[]) => void
   export let onDrop: OnDrop

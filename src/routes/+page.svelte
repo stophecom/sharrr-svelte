@@ -2,7 +2,8 @@
   import MdCheck from 'svelte-icons/md/MdCheck.svelte'
   import prettyBytes from 'pretty-bytes'
 
-  import { MAX_FILE_SIZE } from '$lib/constants'
+  import { PUBLIC_ENV } from '$env/static/public'
+  import { getMaxFileSize } from '$lib/constants'
   import FileUpload from '$components/FileUpload.svelte'
   import Page from '$components/Page.svelte'
 
@@ -10,6 +11,8 @@
   import { status } from '$lib/store'
 
   export let data: PageServerData
+
+  const MAX_FILE_SIZE = getMaxFileSize(PUBLIC_ENV)
 </script>
 
 <svelte:head>

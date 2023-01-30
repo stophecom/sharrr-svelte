@@ -1,5 +1,10 @@
 <script lang="ts">
   import { PUBLIC_FLOW_S3_BUCKET } from '$env/static/public'
+
+  import { PUBLIC_ENV } from '$env/static/public'
+  import { getChunkSize } from '$lib/constants'
+  const chunkSize = getChunkSize(PUBLIC_ENV)
+
   import { api } from '$lib/api'
   import { handleFileEncryptionAndUpload } from '$lib/file-upload'
   import {
@@ -61,6 +66,7 @@
       bucket,
       masterKey,
       privateKey,
+      chunkSize,
       progressCallback: (p) => {
         progress = p
       }
