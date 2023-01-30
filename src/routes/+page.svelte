@@ -26,7 +26,7 @@
 
 <Page
   title={'Pretty secure file transfer.'}
-  subtitle={'One-time, end-to-end encrypted file sharing for massive files.'}
+  subtitle={'Zero knowledge encryption. Without a trace.'}
 >
   <div class="mx-auto max-w-xl">
     <FileUpload baseUrl={data.vercelUrl} />
@@ -41,22 +41,24 @@
           </li>
           <li class="flex items-center">
             <div class="w-6 h-6 mr-2"><MdCheck /></div>
-            End-to-end encrypted (AES-GCM)
+            End-to-end encrypted
           </li>
           <li class="flex items-center">
             <div class="w-6 h-6 mr-2"><MdCheck /></div>
-            Files stored in Switzerland 🇨🇭
+            One-time download
           </li>
           <li class="flex items-center">
             <div class="w-6 h-6 mr-2"><MdCheck /></div>
-            One-time download link
+            <strong>Free</strong>&nbsp;and open source
           </li>
           <li class="flex items-center">
             <div class="w-6 h-6 mr-2"><MdCheck /></div>
-            FREE and open source
+            Stored in Switzerland 🇨🇭
           </li>
         </ul>
-        <div class="ml-8"><a href="/about" class="text-primary underline">...and more.</a></div>
+        <div class="ml-8">
+          <a href="/about" class="text-primary underline">...learn more.</a>
+        </div>
       </div>
     </div>
   {/if}
