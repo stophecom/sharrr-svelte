@@ -15,10 +15,20 @@
       <nav class="grow flex flex-row justify-center">
         <ul class="flex flex-row items-center">
           <li class="flex" aria-current={$page.url.pathname === '/' ? 'page' : undefined}>
-            <a class="flex px-3 hover:text-primary" href="/">Home</a>
+            <a
+              class="flex px-3 hover:text-primary {$page.url.pathname === '/'
+                ? 'text-primary'
+                : undefined}"
+              href="/">Home</a
+            >
           </li>
           <li class="flex" aria-current={$page.url.pathname === '/about' ? 'page' : undefined}>
-            <a class="flex px-3 hover:text-primary" href="/about">About</a>
+            <a
+              class="flex px-3 hover:text-primary {$page.url.pathname === '/about'
+                ? 'text-primary'
+                : undefined}"
+              href="/about">About</a
+            >
           </li>
         </ul>
       </nav>
