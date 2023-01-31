@@ -82,7 +82,7 @@
           setTimeout(() => {
             status = 'done'
             clearInterval(progressInterval)
-          }, 1000)
+          }, 100)
         }
       }, 1000)
     }
