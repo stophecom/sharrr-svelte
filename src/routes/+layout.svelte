@@ -4,6 +4,10 @@
   import '../app.css'
 </script>
 
+<svelte:head>
+  <script defer data-domain="sharrr.com" src="https://plausible.io/js/script.js"></script>
+</svelte:head>
+
 <div class="app">
   <Header />
 
