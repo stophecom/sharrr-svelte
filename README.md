@@ -2,6 +2,8 @@
 
 One-time end-to-end encrypted file transfer.
 
+Visit [sharrr.com](https://sharrr.com)
+
 ## Developing
 
 ```bash
@@ -63,6 +65,8 @@ npm run build
 You can preview the production build with `npm run preview`.
 
 ## About
+
+[Read more](https://sharrr.com/about) about the project.
 
 ### Stack
 
