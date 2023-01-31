@@ -6,7 +6,7 @@
 </script>
 
 <div
-  class="{className} flex items-center p-4 leading-normal text-indigo-600 bg-indigo-50 border border-indigo-500 rounded-lg"
+  class="{className} flex items-center p-4 leading-normal text-success bg-white/70 border border-success rounded-lg"
   role="alert"
 >
   <div class="flex shrink-0 w-6 h-6 mr-2">

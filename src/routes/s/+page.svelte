@@ -106,7 +106,7 @@
         />
         {#if status === 'done'}
           <div class="py-4 flex flex-col items-center justify-center">
-            <div class="flex mb-4 w-10 h-10 text-[#199c97]">
+            <div class="flex mb-4 w-10 h-10 text-success">
               <FaRegCheckCircle />
             </div>
             <Button href="/" size="small" class="">Share another file</Button>

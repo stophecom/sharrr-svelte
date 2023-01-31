@@ -119,7 +119,8 @@
     <ProgressBar {progress} fileName={selectedFile.name} />
     {#await promiseSaveFile then message}
       {#if message}
-        <p class="text-sm py-1 text-primary">{message}</p>
+        <p class="text-sm py-1 text-success">{message}</p>
+
         <div class="my-4 flex items-center p-4 bg-white/70 border-2 border-primary rounded-lg">
           <div class="grid flex-col">
             <div class="text-sm font-semibold">Sharable link:</div>
