@@ -16,7 +16,7 @@ self.addEventListener('activate', (event) => {
 })
 
 async function decryptStream(uuid: string) {
-  const file: SecretFile & { progress: number } = map.get(uuid)
+  const file: SecretFile = map.get(uuid)
 
   if (!file) {
     return new Response(null, { status: 400 })
@@ -108,14 +108,14 @@ self.onmessage = async (event: ExtendableMessageEvent) => {
       break
     }
     case 'progress': {
-      const fileInfo = map.get(data?.alias)
+      const file = map.get(data?.alias)
 
-      if (!fileInfo?.progress) {
-        event.ports[0].postMessage(-1)
+      if (!file?.progress) {
+        event.ports[0].postMessage(0)
         return
       }
 
-      event.ports[0].postMessage(fileInfo.progress)
+      event.ports[0].postMessage(file.progress)
       break
     }
 

@@ -15,6 +15,7 @@ type PresignedPostResponse = { url: string; fields: Record<string, string> }
 type Chunk = {
   key: string
   signature: string
+  size: number
 }
 
 type FileReference = {
@@ -28,6 +29,7 @@ type FileReference = {
 export interface SecretFile extends FileReference {
   alias: string
   decryptionKey: string
+  progress: number
 }
 
 type HandleFileEncryptionAndUpload = {
@@ -81,7 +83,8 @@ export const handleFileEncryptionAndUpload = async ({
 
     return {
       key: fileName,
-      signature
+      signature,
+      size: chunk.size
     }
   })
 }
@@ -129,19 +132,19 @@ const uploadFileChunk = async ({
   })
 }
 
-export const handleFileChunksDownload = (file: SecretFile & { progress: number }) => {
+// Function runs in Service Worker, which means no access to DOM, etc.
+export const handleFileChunksDownload = (file: SecretFile) => {
   const { alias, chunks, bucket, decryptionKey } = file
 
-  let i = 0
-  const totalChunks = chunks.length
+  let loaded = 0
+  const totalSize = chunks.map((o) => o['size']).reduce((a, b) => a + b)
 
   const decryptionStream = new ReadableStream({
     async start(controller) {
       // We download the chunks in sequence.
       // We could do concurrent fetching but the order of the chunks in the stream is important.
       for (const chunk of chunks) {
-        const key = chunk.key
-        const signature = chunk.signature
+        const { key, signature } = chunk
         const keyHash = await createHash(key)
 
         const { url } = await api<SignedUrlGetResponse>(
@@ -151,20 +154,34 @@ export const handleFileChunksDownload = (file: SecretFile & { progress: number }
         )
         const response = await fetch(url)
 
-        if (!response.ok) {
+        if (!response.ok || !response.body) {
           throw new Error(`Couldn't retrieve file - it may no longer exist.`)
         }
 
-        const encryptedFileChunk = await response.blob()
+        // This stream is for reading the download progress
+        const res = new Response(
+          new ReadableStream({
+            async start(controller) {
+              const reader = response.body!.getReader()
+              for (;;) {
+                const { done, value } = await reader.read()
+                if (done) {
+                  break
+                }
+                loaded += value.byteLength
+                file.progress = loaded / totalSize
+                controller.enqueue(value)
+              }
+              controller.close()
+            }
+          })
+        )
+
+        const encryptedFileChunk = await res.blob()
         const decryptedFileChunk = await decryptData(encryptedFileChunk, decryptionKey)
 
-        file.progress = i / totalChunks
-
         controller.enqueue(new Uint8Array(decryptedFileChunk))
-        i++
       }
-
-      file.progress = 1
 
       controller.close()
     }

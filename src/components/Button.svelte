@@ -9,6 +9,7 @@
   let sizeClass = ''
 
   export let primary: boolean = false
+  export let href: string = ''
   export let size: 'small' | 'medium' | 'large' = 'medium'
 
   switch (size) {
@@ -36,6 +37,12 @@
   }
 </script>
 
-<button on:click on:mouseover on:mouseenter on:mouseleave {...buttonProps}>
-  <slot />
-</button>
+{#if href}
+  <a {href} {...buttonProps}>
+    <slot />
+  </a>
+{:else}
+  <button on:click on:mouseover on:mouseenter on:mouseleave {...buttonProps}>
+    <slot />
+  </button>
+{/if}
