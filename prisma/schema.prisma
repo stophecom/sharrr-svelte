@@ -11,12 +11,12 @@ datasource db {
 }
 
 model Secret {
-  id        Int       @id @default(autoincrement())
-  createdAt DateTime  @default(now())
-  alias     String    @unique
-  publicKey String    @db.VarChar(300)
-  content   String    @db.Text
-  deletedAt DateTime?
+  id          Int       @id @default(autoincrement())
+  createdAt   DateTime  @default(now())
+  alias       String    @unique
+  publicKey   String    @db.VarChar(300)
+  content     String    @db.Text
+  retrievedAt DateTime?
 }
 
 model Stats {

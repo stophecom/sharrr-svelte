@@ -12,6 +12,19 @@ export const GET: RequestHandler = async ({ params }) => {
 
   const secret = await prisma.secret.findUnique({ where: { alias: alias } })
 
+  if (!secret?.retrievedAt) {
+    await prisma.secret.update({
+      where: { alias: alias },
+      data: {
+        retrievedAt: new Date()
+      }
+    })
+  } else {
+    throw error(410, {
+      message: `This link has already been accessed, therefor the file no longer exists.`
+    })
+  }
+
   if (!secret) {
     throw error(400, `No secret for alias ${alias}.`)
   }
