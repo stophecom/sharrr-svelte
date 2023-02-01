@@ -1,10 +1,9 @@
 <script lang="ts">
   import { PUBLIC_FLOW_S3_BUCKET } from '$env/static/public'
-
   import { PUBLIC_ENV } from '$env/static/public'
-  import { getChunkSize } from '$lib/constants'
-  const chunkSize = getChunkSize(PUBLIC_ENV)
+  import { onDestroy } from 'svelte'
 
+  import { getChunkSize } from '$lib/constants'
   import { api } from '$lib/api'
   import { handleFileEncryptionAndUpload } from '$lib/file-transfer'
   import {
@@ -32,6 +31,8 @@
   let link: string
   let progress: number = 0
   let promiseSaveFile: Promise<string>
+
+  const chunkSize = getChunkSize(PUBLIC_ENV)
 
   function setStatus(newStatus: Status) {
     status.update(() => newStatus)
@@ -112,6 +113,10 @@
     setStatus('initial')
     selectedFile = null
   }
+
+  onDestroy(async () => {
+    reset()
+  })
 </script>
 
 <div>
