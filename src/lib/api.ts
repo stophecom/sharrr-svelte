@@ -13,33 +13,29 @@ export async function api<T>(
   options?: RequestInit,
   data?: Record<string, unknown> | null
 ): Promise<T> {
-  try {
-    // Default options are marked with *
-    const response = await fetch(`/api/v1${url}`, {
-      method: 'GET', // *GET, POST, PUT, DELETE, etc.
-      mode: 'cors', // no-cors, *cors, same-origin
-      cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: 'same-origin', // include, *same-origin, omit
-      headers: {
-        'Content-Type': 'application/json',
-        // 'Content-Type': 'application/x-www-form-urlencoded',
-        ...options?.headers
-      },
-      redirect: 'follow', // manual, *follow, error
-      referrerPolicy: 'no-referrer', // no-referrer, *client
-      ...options,
-      ...(data ? { body: JSON.stringify(data) } : {}) // body data type must match "Content-Type" header
-    })
+  // Default options are marked with *
+  const response = await fetch(`/api/v1${url}`, {
+    method: 'GET', // *GET, POST, PUT, DELETE, etc.
+    mode: 'cors', // no-cors, *cors, same-origin
+    cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: 'same-origin', // include, *same-origin, omit
+    headers: {
+      'Content-Type': 'application/json',
+      // 'Content-Type': 'application/x-www-form-urlencoded',
+      ...options?.headers
+    },
+    redirect: 'follow', // manual, *follow, error
+    referrerPolicy: 'no-referrer', // no-referrer, *client
+    ...options,
+    ...(data ? { body: JSON.stringify(data) } : {}) // body data type must match "Content-Type" header
+  })
 
-    if (!response.ok) {
-      const errorResponse = (await response.json()) as CustomError
-      throw new Error(errorResponse.message ?? response.statusText)
-    }
-
-    return response.json() as Promise<T>
-  } catch (err) {
-    throw new Error(err instanceof Error ? err.message : 'Unexpected error')
+  if (!response.ok) {
+    const errorResponse = (await response.json()) as CustomError
+    throw new Error(errorResponse.message ?? 'Unexpected API error.')
   }
+
+  return response.json() as Promise<T>
 }
 
 export const asyncPool = async <T>(
