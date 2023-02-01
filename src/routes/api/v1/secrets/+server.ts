@@ -4,10 +4,29 @@ import { Prisma } from '@prisma/client'
 
 import prisma from '$lib/prisma'
 
+type SecretsRequest = {
+  alias: string
+  publicKey: string
+  content: string
+  fileSize: number
+}
+export type SecretsResponse = {
+  message: string
+}
+
 export const POST: RequestHandler = async ({ request }) => {
   try {
-    const body = await request.json()
-    await prisma.secret.create({ data: body })
+    const body: SecretsRequest = await request.json()
+    const { alias, publicKey, content, fileSize } = body
+    await prisma.secret.create({ data: { alias, publicKey, content } })
+
+    await prisma.stats.update({
+      where: { id: 1 },
+      data: {
+        totalFilesUploaded: { increment: 1 },
+        totalBytesUploaded: { increment: fileSize }
+      }
+    })
   } catch (e) {
     console.error(e)
     if (e instanceof Prisma.PrismaClientKnownRequestError) {

@@ -20,10 +20,7 @@
   import Error from '$components/Error.svelte'
   import { status } from '$lib/store'
   import type { Status } from '$lib/store'
-
-  type SecretsResponse = {
-    message: string
-  }
+  import type { SecretsResponse } from '$api/secrets/+server'
 
   export let baseUrl: string
 
@@ -92,7 +89,8 @@
       {
         alias: aliasEncryptedAndHashed,
         publicKey: publicKeyRaw,
-        content
+        content,
+        fileSize: size
       }
     ).then((data) => {
       progress = 100
