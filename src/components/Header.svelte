@@ -10,6 +10,7 @@
       <a class="flex flex-row items-center" href="/">
         <img class="w-16 sm:w-24" src={logo} alt="Sharrr" />
         <span class="sr-only">Home</span>
+        <small class="bg-primary text-white rounded-sm px-2 py-1 text-xs ml-2">BETA</small>
       </a>
 
       <nav class="grow flex flex-row justify-center">
