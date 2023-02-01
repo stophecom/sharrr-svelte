@@ -23,6 +23,25 @@
 
   let isOver = false
 
+  const validateFiles = (files: File[]) => {
+    console.log(MAX_FILE_SIZE)
+    if (!multiple) {
+      if (files.length > 1) {
+        handleError(
+          'Sorry, multiple files are not supported. If you need to send more than one file, create a package first.'
+        )
+        return false
+      }
+    }
+
+    // Only checking first file for now
+    if (files[0].size > MAX_FILE_SIZE) {
+      handleError(`File too big. Maximum file size is ${MAX_FILE_SIZE / GB} GB.`)
+      return false
+    }
+    return true
+  }
+
   const handleEnter = () => {
     isOver = true
     if (onEnter) {
@@ -51,21 +70,12 @@
     if (!e?.dataTransfer?.items) {
       return
     }
-    const items = Array.from(e.dataTransfer.files)
+    const files = Array.from(e.dataTransfer.files)
 
-    if (!multiple) {
-      if (items.length > 1) {
-        return handleError(
-          'Sorry, multiple files are not supported. If you need to send more than one file, create a package first.'
-        )
-      }
-      if (items[0].size > MAX_FILE_SIZE) {
-        return handleError(`File too big. Maximum file size is ${MAX_FILE_SIZE / GB} GB.`)
-      }
+    if (validateFiles(files)) {
+      onDrop(files)
+      isOver = false
     }
-
-    onDrop(items)
-    isOver = false
   }
 
   const handleDragOver = (e: DragEvent) => {
@@ -77,8 +87,12 @@
 
   const handleChange = (e: Event) => {
     e.preventDefault()
-    let files: FileList = <FileList>(<HTMLInputElement>e.target).files
-    onDrop(Array.from(files))
+    const fileList: FileList = <FileList>(<HTMLInputElement>e.target).files
+    const files = Array.from(fileList)
+
+    if (validateFiles(files)) {
+      onDrop(files)
+    }
   }
 </script>
 
