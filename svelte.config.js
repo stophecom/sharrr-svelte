@@ -11,7 +11,8 @@ const config = {
     adapter: adapter(),
 
     alias: {
-      $components: 'src/components'
+      $components: 'src/components',
+      $api: 'src/routes/api/v1'
     }
 
     // csp: {
