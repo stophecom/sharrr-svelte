@@ -131,7 +131,7 @@
               {link}
             </div>
           </div>
-          <Button class="shrink-0 uppercase" primary on:click={copyLink}>Copy</Button>
+          <Button class="shrink-0 uppercase" variant="primary" on:click={copyLink}>Copy</Button>
         </div>
 
         <div class="flex">

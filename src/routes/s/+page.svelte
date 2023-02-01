@@ -124,8 +124,8 @@
             </Alert>
           {:else}
             <Alert class="mt-4 mb-4">
-              Important! We have absolutely no knowledge about the contents of the file. Be sure to
-              trust the sender!
+              <strong>Important:</strong> The file can only be downloaded once. And, be sure to trust
+              the sender!
             </Alert>
           {/if}
 

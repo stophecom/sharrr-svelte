@@ -34,5 +34,7 @@
   <div class="flex shrink-0 w-6 h-6 mr-2">
     <MdErrorOutline class="fill-current" />
   </div>
-  <slot />
+  <div>
+    <slot />
+  </div>
 </div>
