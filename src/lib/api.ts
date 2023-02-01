@@ -1,13 +1,3 @@
-export class CustomError extends Error {
-  public statusCode: number
-
-  constructor(statusCode: number, message: string) {
-    super(message) // 'Error' breaks prototype chain here
-    this.statusCode = statusCode
-    Object.setPrototypeOf(this, new.target.prototype) // restore prototype chain
-  }
-}
-
 export async function api<T>(
   url: RequestInfo,
   options?: RequestInit,
@@ -31,7 +21,7 @@ export async function api<T>(
   })
 
   if (!response.ok) {
-    const errorResponse = (await response.json()) as CustomError
+    const errorResponse = await response.json()
     throw new Error(errorResponse.message ?? 'Unexpected API error.')
   }
 

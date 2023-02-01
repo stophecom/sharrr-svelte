@@ -16,6 +16,7 @@
   let status: 'initial' | 'downloading' | 'done' | 'error' = 'initial'
   let referenceAlias = ''
   let progress = 0
+  let error: string = ''
 
   const downloadFile = async (secretFile: SecretFile, decryptionKey: string) => {
     const fileInfo = {
@@ -54,46 +55,49 @@
   }
 
   const fetchSecretFile = async () => {
-    status = 'downloading'
     const hashData = window.location.hash.substring(1).split('/')
     const alias = hashData[0]
     const masterKey = hashData[1]
 
     referenceAlias = await encryptAndHash(alias, masterKey)
+    let fileMeta
+    try {
+      const { content } = await api<Pick<Secret, 'content'>>(`/secrets/${referenceAlias}`)
 
-    const { content } = await api<Pick<Secret, 'content'>>(`/secrets/${referenceAlias}`)
+      const decryptedSecretFileMeta = await decryptString(content, masterKey)
+      fileMeta = JSON.parse(decryptedSecretFileMeta)
 
-    const decryptedSecretFileMeta = await decryptString(content, masterKey)
-    fileMeta = JSON.parse(decryptedSecretFileMeta)
+      status = 'downloading'
 
-    if (fileMeta) {
-      await downloadFile({ ...fileMeta, alias: referenceAlias }, masterKey)
+      if (fileMeta) {
+        await downloadFile({ ...fileMeta, alias: referenceAlias }, masterKey)
 
-      // Poll for download progress every second
-      const progressInterval = setInterval(async () => {
-        progress = (await sendMessageToSw({
-          request: 'progress',
-          data: { alias: referenceAlias }
-        })) as number
+        // Poll for download progress every second
+        const progressInterval = setInterval(async () => {
+          progress = (await sendMessageToSw({
+            request: 'progress',
+            data: { alias: referenceAlias }
+          })) as number
 
-        if (progress >= 1) {
-          // Sometimes progress is above 1 for some reason
-          progress = 1
-          setTimeout(() => {
-            status = 'done'
-            clearInterval(progressInterval)
-          }, 100)
-        }
-      }, 1000)
+          if (progress >= 1) {
+            // Sometimes progress is above 1 for some reason
+            progress = 1
+            setTimeout(() => {
+              status = 'done'
+              clearInterval(progressInterval)
+            }, 100)
+          }
+        }, 1000)
+      }
+    } catch (e) {
+      if (e instanceof Error) {
+        error = e.message
+      }
     }
 
     // history.replaceState(null, 'Secret destroyed', 'l/🔥')
   }
 </script>
-
-<svelte:head>
-  <title>Sharrr. Share end-to-end encrypted files.</title>
-</svelte:head>
 
 <Page title={'You received a file'} subtitle={`The most secure way to transfer data over the web.`}>
   <div class="mt-8">
@@ -114,11 +118,20 @@
         {/if}
       {:else}
         <div class="flex flex-col items-center justify-center">
-          <Alert class="mt-4 mb-4">
-            Important! We have absolutely no knowledge about the contents of the file. Be sure to
-            trust the sender!
-          </Alert>
-          <Button primary on:click={fetchSecretFile}>Download and Decrypt</Button>
+          {#if error}
+            <Alert class="mt-4 mb-4" variant={'error'}>
+              {error}
+            </Alert>
+          {:else}
+            <Alert class="mt-4 mb-4">
+              Important! We have absolutely no knowledge about the contents of the file. Be sure to
+              trust the sender!
+            </Alert>
+          {/if}
+
+          <Button disabled={!!error} variant={'primary'} on:click={fetchSecretFile}
+            >Download and Decrypt</Button
+          >
         </div>
       {/if}
     </div>

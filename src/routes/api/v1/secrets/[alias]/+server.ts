@@ -21,7 +21,7 @@ export const GET: RequestHandler = async ({ params }) => {
     })
   } else {
     throw error(410, {
-      message: `This link has already been accessed, therefor the file no longer exists.`
+      message: `This link has already been accessed - the file no longer exists.`
     })
   }
 
