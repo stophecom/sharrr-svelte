@@ -24,7 +24,6 @@
   let isOver = false
 
   const validateFiles = (files: File[]) => {
-    console.log(MAX_FILE_SIZE)
     if (!multiple) {
       if (files.length > 1) {
         handleError(
