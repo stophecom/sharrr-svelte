@@ -11,15 +11,16 @@ datasource db {
 }
 
 model Secret {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  alias     String   @unique
-  publicKey String   @db.VarChar(300)
-  content   String   @db.Text
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  alias     String    @unique
+  publicKey String    @db.VarChar(300)
+  content   String    @db.Text
+  deletedAt DateTime?
 }
 
-model FilesToDelete {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  key       String
+model Stats {
+  id                 Int    @id @default(autoincrement())
+  totalFilesUploaded Int
+  totalBytesUploaded BigInt
 }
