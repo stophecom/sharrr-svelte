@@ -6,7 +6,10 @@ module.exports = {
     extend: {
       colors: {
         primary: '#ff0083',
-        success: '#01759f'
+        success: '#028f83',
+        info: '#01759f',
+        warning: '#ff6b00',
+        error: '#e60909'
       },
       screens: {
         dz: { raw: '(hover: hover) and (pointer: fine)' } // For dropzone vs button
