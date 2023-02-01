@@ -10,6 +10,14 @@ I am not a security engineer or cryptographer and this project is solely based o
 
 Find me on [Twitter](https://twitter.com/stophecom), [Mastodon](https://mastodon.social/@stophecom). I have a [website](https://www.stophe.com/) and [blog](https://blog.stophe.com/).
 
+## Features
+
+- End-to-end encrypted file transfer
+- _Technically_ there is no file size limit
+- One-time download link
+- 7 day retention (Not accessed files are being deleted after that.)
+- Files are stored in Switzerland
+
 ## Security concept
 
 The main idea is that, after the file has been encrypted and uploaded, only the recipient of the download link is ever able to download and access the decrypted data (Build the file). Even if all other systems (API, DB, S3) would be compromised, it shouldn't be possible to decompile or reverse-engineer the original file. Apart from the end-to-end encryption, the file shall only be downloaded once (within a defined period of time) - after that all traces shall be erased.
