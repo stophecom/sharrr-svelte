@@ -15,18 +15,6 @@
   const MAX_FILE_SIZE = getMaxFileSize(PUBLIC_ENV)
 </script>
 
-<svelte:head>
-  <title>Sharrr. Share end-to-end encrypted files.</title>
-  <meta
-    name="description"
-    content="Pirates don't share, pirates sharrr. Share end-to-end encrypted files."
-  />
-  <meta
-    name="keywords"
-    content="pirates, share file, end-to-end encrypted file sharing, zero knowledge encrypted file transfer, pirates sharrr, arrr"
-  />
-</svelte:head>
-
 <Page
   title={'Pretty secure file transfer.'}
   subtitle={'Zero knowledge encryption. Without a trace.'}

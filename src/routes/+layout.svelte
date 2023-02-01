@@ -6,6 +6,15 @@
 
 <svelte:head>
   <script defer data-domain="sharrr.com" src="https://plausible.io/js/script.js"></script>
+  <title>Sharrr. Share end-to-end encrypted files.</title>
+  <meta
+    name="description"
+    content="Pirates don't share, pirates sharrr. Share end-to-end encrypted files."
+  />
+  <meta
+    name="keywords"
+    content="pirates, share file, end-to-end encrypted file sharing, zero knowledge encrypted file transfer, pirates sharrr, arrr"
+  />
 </svelte:head>
 
 <div class="app">
