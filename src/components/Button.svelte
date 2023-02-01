@@ -1,16 +1,27 @@
 <script lang="ts">
-  let buttonBaseClass =
-    'font-bold  rounded-lg inline-flex items-center focus:outline-none focus:ring-2 focus:ring-offset-2'
-
-  let buttonDefaultClass = 'bg-gray-300 hover:bg-gray-400 text-gray-800 focus:ring-gray-600'
-  let buttonPrimaryClass =
-    'bg-primary text-white focus:ring-pink-600 hover:shadow-lg hover:shadow-black-200/10 transition-shadow'
-
+  const baseClass =
+    'font-bold rounded-lg inline-flex items-center focus:outline-none focus:ring-2 focus:ring-offset-2'
+  const disabledClass = 'bg-gray-500 text-white pointer-events-none'
   let sizeClass = ''
+  let variantClass = ''
 
+  export let disabled: boolean = false
   export let primary: boolean = false
   export let href: string = ''
   export let size: 'small' | 'medium' | 'large' = 'medium'
+  export let variant: 'primary' | 'default' = 'default'
+
+  switch (variant) {
+    case 'primary': {
+      variantClass =
+        'bg-primary text-white focus:ring-pink-600 hover:shadow-lg hover:shadow-black-200/10 transition-shadow'
+      break
+    }
+    case 'default': {
+      variantClass = 'bg-gray-300 hover:bg-gray-400 text-gray-800 focus:ring-gray-600'
+      break
+    }
+  }
 
   switch (size) {
     case 'small': {
@@ -27,10 +38,10 @@
     }
   }
 
-  let buttonProps = {
+  $: buttonProps = {
     class: [
-      buttonBaseClass,
-      ...(primary ? [buttonPrimaryClass] : [buttonDefaultClass]),
+      baseClass,
+      ...(disabled ? [disabledClass] : [variantClass]),
       sizeClass,
       $$restProps.class
     ].join(' ')
@@ -42,7 +53,7 @@
     <slot />
   </a>
 {:else}
-  <button on:click on:mouseover on:mouseenter on:mouseleave {...buttonProps}>
+  <button {disabled} on:click on:mouseover on:mouseenter on:mouseleave {...buttonProps}>
     <slot />
   </button>
 {/if}
