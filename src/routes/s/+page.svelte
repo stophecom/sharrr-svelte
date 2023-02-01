@@ -12,8 +12,6 @@
   import Alert from '$components/Alert.svelte'
   import ProgressBar from '$components/ProgressBar.svelte'
 
-  type Progress = {}
-
   let fileMeta: SecretFile | undefined
   let status: 'initial' | 'downloading' | 'done' | 'error' = 'initial'
   let referenceAlias = ''
@@ -79,6 +77,8 @@
         })) as number
 
         if (progress >= 1) {
+          // Sometimes progress is above 1 for some reason
+          progress = 1
           setTimeout(() => {
             status = 'done'
             clearInterval(progressInterval)
