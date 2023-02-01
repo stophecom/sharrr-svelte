@@ -76,7 +76,7 @@ export const handleFileEncryptionAndUpload = async ({
       size: chunkFileSize,
       progressCallback: (p) => {
         progressOfEachChunk[i] = p
-        const sum = progressOfEachChunk.reduce((partialSum, a) => partialSum + a, 0)
+        const sum = (progressOfEachChunk.reduce((a, b) => a + b, 0) / numberOfChunks) * 100
         progressCallback(sum)
       }
     })
