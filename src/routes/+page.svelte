@@ -15,17 +15,17 @@
   const MAX_FILE_SIZE = getMaxFileSize(PUBLIC_ENV)
 </script>
 
-<Page title={'Just secure file transfer.'} subtitle={'Ephemeral. End-to-end encrypted.'}>
-  <div class="pt-6 mx-auto max-w-xl">
+<Page title={'Just secure file transfer.'} subtitle={'End-to-end encrypted. Ephemeral.'}>
+  <div class="mx-auto max-w-xl">
     <FileUpload baseUrl={data.vercelUrl} />
   </div>
   {#if $status === 'initial'}
     <div class="flex justify-center ">
       <div>
-        <ul class="pt-14 text-sm sm:text-base text-gray-700 ">
+        <ul class="pt-14 text-gray-700 ">
           <li class="flex items-center">
             <div class="w-6 h-6 mr-2"><MdCheck /></div>
-            Up to&nbsp;<strong>{prettyBytes(MAX_FILE_SIZE)}</strong>&nbsp;files
+            Up to&nbsp;<strong>{prettyBytes(MAX_FILE_SIZE)}</strong>&nbsp;file
           </li>
           <li class="flex items-center">
             <div class="w-6 h-6 mr-2"><MdCheck /></div>
