@@ -1,11 +1,16 @@
-import type { PlaywrightTestConfig } from '@playwright/test';
+import type { PlaywrightTestConfig } from '@playwright/test'
 
 const config: PlaywrightTestConfig = {
-	webServer: {
-		command: 'npm run build && npm run preview',
-		port: 4173
-	},
-	testDir: 'tests'
-};
+  use: {
+    contextOptions: {
+      permissions: ['clipboard-read', 'clipboard-write', 'accessibility-events']
+    }
+  },
+  webServer: {
+    command: 'npm run build && npm run preview',
+    port: 4173
+  },
+  testDir: 'tests'
+}
 
-export default config;
+export default config

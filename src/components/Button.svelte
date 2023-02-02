@@ -6,7 +6,6 @@
   let variantClass = ''
 
   export let disabled: boolean = false
-  export let primary: boolean = false
   export let href: string = ''
   export let size: 'small' | 'medium' | 'large' = 'medium'
   export let variant: 'primary' | 'default' = 'default'
@@ -49,11 +48,11 @@
 </script>
 
 {#if href}
-  <a {href} {...buttonProps}>
+  <a {href} {...$$restProps} {...buttonProps}>
     <slot />
   </a>
 {:else}
-  <button {disabled} on:click on:mouseover on:mouseenter on:mouseleave {...buttonProps}>
+  <button {disabled} on:click {...$$restProps} {...buttonProps}>
     <slot />
   </button>
 {/if}

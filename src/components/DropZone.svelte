@@ -18,7 +18,6 @@
   export let error = ''
   export let multiple = false
   export let disabled = false
-  export let capture: 'user' | 'environment' | null = null
   export let accept: string = '' // image/*, .gif etc.
 
   let isOver = false

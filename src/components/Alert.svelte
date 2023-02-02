@@ -28,6 +28,7 @@
 </script>
 
 <div
+  {...$$restProps}
   class="{className} {variantClass} flex items-center p-4 leading-normal border rounded-lg"
   role="alert"
 >

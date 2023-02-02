@@ -127,11 +127,16 @@
         <div class="my-4 flex items-center p-4 bg-white/70 border-2 border-primary rounded-lg">
           <div class="grid flex-col">
             <div class="text-sm font-semibold">Sharable link:</div>
-            <div class="truncate mr-4">
+            <div data-testid="download-link" class="truncate mr-4">
               {link}
             </div>
           </div>
-          <Button class="shrink-0 uppercase" variant="primary" on:click={copyLink}>Copy</Button>
+          <Button
+            data-testid="copy-link"
+            class="shrink-0 uppercase"
+            variant="primary"
+            on:click={copyLink}>Copy</Button
+          >
         </div>
 
         <div class="flex">

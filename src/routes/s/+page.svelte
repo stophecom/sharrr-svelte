@@ -119,7 +119,7 @@
       {:else}
         <div class="flex flex-col items-center justify-center">
           {#if error}
-            <Alert class="mt-4 mb-4" variant={'error'}>
+            <Alert data-testid="download-error" class="mt-4 mb-4" variant={'error'}>
               {error}
             </Alert>
           {:else}
@@ -129,8 +129,11 @@
             </Alert>
           {/if}
 
-          <Button disabled={!!error} variant={'primary'} on:click={fetchSecretFile}
-            >Download and Decrypt</Button
+          <Button
+            data-testid="download-button"
+            disabled={!!error}
+            variant={'primary'}
+            on:click={fetchSecretFile}>Download and Decrypt</Button
           >
         </div>
       {/if}
