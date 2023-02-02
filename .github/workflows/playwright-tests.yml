@@ -1,0 +1,17 @@
+# We are using Playwright but you may use your E2E framework of choice
+name: Playwright Tests
+
+on:
+  deployment_status:
+
+  run-e2es:
+    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install dependencies
+      run: npm ci && npx playwright install --with-deps
+    - name: Run tests
+        run: npx playwright test
+          env:
+              BASE_URL: ${{ github.event.deployment_status.target_url }}
