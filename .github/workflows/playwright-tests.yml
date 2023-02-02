@@ -1,4 +1,3 @@
-# We are using Playwright but you may use your E2E framework of choice
 name: Playwright Tests
 
 on:
