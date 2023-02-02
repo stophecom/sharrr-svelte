@@ -10,8 +10,10 @@
   <meta name="description" content="About this app" />
 </svelte:head>
 
-<Page title={'About'} subtitle={`People share, pirates sharrr.`}>
-  <div class="mx-auto prose rounded-xl sm:bg-white/50 sm:px-6 py-6">
-    <SvelteMarkdown source={readme} />
+<Page title={'About'} subtitle={`Most people share, smart people sharrr.`} isContainer={false}>
+  <div class="container mx-auto">
+    <div class="mx-auto px-6 lg:px-8 prose sm:rounded-xl bg-white/70 py-6">
+      <SvelteMarkdown source={readme} />
+    </div>
   </div>
 </Page>
