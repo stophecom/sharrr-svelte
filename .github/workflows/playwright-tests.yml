@@ -3,6 +3,14 @@ name: Playwright Tests
 on:
   deployment_status:
 
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  FLOW_S3_ENDPOINT: ${{ secrets.FLOW_S3_ENDPOINT }}
+  FLOW_S3_ACCESS_KEY: ${{ secrets.FLOW_S3_ACCESS_KEY }}
+  FLOW_S3_SECRET_KEY: ${{ secrets.FLOW_S3_SECRET_KEY }}
+  API_SECRET_KEY: ${{ secrets.API_SECRET_KEY }}
+  PUBLIC_FLOW_S3_BUCKET: ${{ secrets.PUBLIC_FLOW_S3_BUCKET }}
+
 jobs:
   run-e2e-ci:
     name: Run end-to-end tests
@@ -16,6 +24,7 @@ jobs:
         run: npx playwright test
         env:
           PUBLIC_ENV: ci
+          VERCEL_URL: http://localhost:4173
       - run: mkdir -p playwright-report/ci
       - name: Upload test results
         if: always()
