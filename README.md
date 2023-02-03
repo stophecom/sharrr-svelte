@@ -74,3 +74,4 @@ You can preview the production build with `npm run preview`.
 - Tailwind CSS
 - PlanetScale (MySQL DB)
 - Prisma (ORM)
+- Doppler (For env handling)

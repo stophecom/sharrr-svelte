@@ -18,6 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
       - name: Install dependencies
         run: npm ci && npx playwright install --with-deps
       - name: Run tests
@@ -25,7 +29,8 @@ jobs:
         env:
           PUBLIC_ENV: ci
           VERCEL_URL: http://localhost:4173
-      - run: mkdir -p playwright-report/ci
+      - name: Create folder for artifacts
+        run: mkdir -p playwright-report/ci
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v3
@@ -46,7 +51,8 @@ jobs:
         env:
           PUBLIC_ENV: preview
           VERCEL_URL: ${{ github.event.deployment_status.target_url }}
-      - run: mkdir -p playwright-report/published
+      - name: Create folder for artifacts
+        run: mkdir -p playwright-report/published
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v3
