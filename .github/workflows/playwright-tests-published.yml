@@ -24,4 +24,4 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: playwright-report-published
-          path: playwright-report/published
+          path: playwright-report/published/
