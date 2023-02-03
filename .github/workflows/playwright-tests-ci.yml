@@ -13,7 +13,6 @@ env:
 jobs:
   run-e2e-ci:
     name: Run end-to-end tests
-    if: github.event_name == 'deployment_status' && github.event.deployment_status.state == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
