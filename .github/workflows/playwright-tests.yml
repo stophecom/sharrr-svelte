@@ -17,6 +17,7 @@ jobs:
         env:
           PUBLIC_ENV: CI
           VERCEL_URL: ${{ github.event.deployment_status.target_url }}
+      - run: mkdir -p playwright-report
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v3
