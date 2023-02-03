@@ -1,4 +1,4 @@
-name: daily-cron
+name: Daily Cron
 on:
   schedule:
     - cron: '0 1 * * *'
