@@ -16,8 +16,8 @@ const config: PlaywrightTestConfig = {
     contextOptions: {
       permissions: ['clipboard-read', 'clipboard-write']
     },
-    video: 'retain-on-failure',
-    screenshot: 'only-on-failure'
+    video: 'on',
+    screenshot: 'on'
   },
   webServer: {
     command: 'VERCEL_URL=http://localhost:4173 npm run build && npm run preview',

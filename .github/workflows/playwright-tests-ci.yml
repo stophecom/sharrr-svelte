@@ -28,10 +28,11 @@ jobs:
           PUBLIC_ENV: ci
           VERCEL_URL: http://localhost:4173
       - name: Create folder for artifacts
-        run: mkdir -p playwright-report/ci
+        if: always()
+        run: mkdir -p tests/playwright-report/ci
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: playwright-report-ci
-          path: playwright-report/ci/
+          path: tests/playwright-report/ci

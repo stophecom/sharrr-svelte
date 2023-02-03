@@ -18,10 +18,11 @@ jobs:
           PUBLIC_ENV: preview
           VERCEL_URL: ${{ github.event.deployment_status.target_url }}
       - name: Create folder for artifacts
-        run: mkdir -p playwright-report/published
+        if: always()
+        run: mkdir -p tests/playwright-report/published
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: playwright-report-published
-          path: playwright-report/published/
+          path: tests/playwright-report/published
