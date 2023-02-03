@@ -1,16 +1,13 @@
 import type { PlaywrightTestConfig } from '@playwright/test'
 
-const isTest = process.env.PUBLIC_ENV === 'CI' // For tests ran on Github Actions
+const isPreviewTest = process.env.PUBLIC_ENV === 'preview' // For tests ran on Github Actions
 
 // Runs on published websites
-const configCI: PlaywrightTestConfig = {
+const configPublished: PlaywrightTestConfig = {
   use: {
-    contextOptions: {
-      permissions: ['clipboard-read', 'clipboard-write']
-    },
     baseURL: process.env.VERCEL_URL
   },
-  testDir: 'tests'
+  testDir: 'tests/published'
 }
 
 // Runs in local webserver
@@ -24,7 +21,7 @@ const config: PlaywrightTestConfig = {
     command: 'VERCEL_URL=http://localhost:4173 npm run build && npm run preview',
     port: 4173
   },
-  testDir: 'tests'
+  testDir: 'tests/ci'
 }
 
-export default isTest ? configCI : config
+export default isPreviewTest ? configPublished : config
