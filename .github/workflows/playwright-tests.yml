@@ -15,4 +15,11 @@ jobs:
       - name: Run tests
         run: npx playwright test
         env:
-          BASE_URL: ${{ github.event.deployment_status.target_url }}
+          PUBLIC_ENV: CI
+          VERCEL_URL: ${{ github.event.deployment_status.target_url }}
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: playwright-report
+          path: playwright-report
