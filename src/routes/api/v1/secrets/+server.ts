@@ -20,13 +20,18 @@ export const POST: RequestHandler = async ({ request }) => {
     const { alias, publicKey, content, fileSize } = body
     await prisma.secret.create({ data: { alias, publicKey, content } })
 
-    await prisma.stats.update({
-      where: { id: 1 },
-      data: {
-        totalFilesUploaded: { increment: 1 },
-        totalBytesUploaded: { increment: fileSize }
-      }
-    })
+    // Here we update stats. This is non-critical, therefore we catch potential errors.
+    try {
+      await prisma.stats.update({
+        where: { id: 1 },
+        data: {
+          totalFilesUploaded: { increment: 1 },
+          totalBytesUploaded: { increment: fileSize }
+        }
+      })
+    } catch (error) {
+      console.error(`Couldn't update stats.`, error)
+    }
   } catch (e) {
     console.error(e)
     if (e instanceof Prisma.PrismaClientKnownRequestError) {
