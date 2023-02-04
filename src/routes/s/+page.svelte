@@ -11,12 +11,19 @@
 
   import Alert from '$components/Alert.svelte'
   import ProgressBar from '$components/ProgressBar.svelte'
+  import { onMount } from 'svelte'
 
   let fileMeta: SecretFile | undefined
   let status: 'initial' | 'downloading' | 'done' | 'error' = 'initial'
   let referenceAlias = ''
   let progress = 0
   let error: string = ''
+
+  onMount(() => {
+    if (!('serviceWorker' in navigator)) {
+      error = 'Your browser is not supported: Service worker not available.'
+    }
+  })
 
   const downloadFile = async (secretFile: SecretFile, decryptionKey: string) => {
     const fileInfo = {
