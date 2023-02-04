@@ -15,10 +15,11 @@
   import Typewriter from '$components/Typewriter.svelte'
   import ProgressBar from '$components/ProgressBar.svelte'
   import { onMount } from 'svelte'
+  import Spinner from '$components/Spinner.svelte'
 
   let fileMeta: FileMeta | undefined
   let fileReference: FileReference | undefined
-  let status: 'initial' | 'downloading' | 'done' | 'error' = 'initial'
+  let status: 'initial' | 'preloading' | 'preview' | 'downloading' | 'done' | 'error' = 'initial'
   let masterKey = ''
   let referenceAlias = ''
   let progress = 0
@@ -74,6 +75,7 @@
   }
 
   onMount(async () => {
+    status = 'preloading'
     const hashData = window.location.hash.substring(1).split('/')
     const alias = hashData[0]
     masterKey = hashData[1]
@@ -88,9 +90,10 @@
       fileMeta = JSON.parse(decryptedSecretFileMeta)
     } catch (e) {
       if (e instanceof Error) {
-        error = e.message
+        error = e?.message
       }
     }
+    status = 'preview'
   })
 
   const fetchSecretFile = async () => {
@@ -138,27 +141,33 @@
 <Page title={'You received a file'} subtitle={`The file can only be downloaded once!`}>
   <div class="mt-8">
     <div class="container mx-auto max-w-md">
-      {#if status === 'downloading' || status === 'done'}
+      {#if error}
+        <Alert data-testid="download-error" class="mt-4 mb-4" variant={'error'}>
+          {error}
+        </Alert>
+      {:else if status === 'downloading' || status === 'done'}
         <ProgressBar
           label={status === 'done' ? 'Done' : 'Downloading'}
           progress={progress * 100}
           fileName={fileMeta?.name}
         />
-        {#if status === 'done'}
-          <div class="py-4 flex flex-col items-center justify-center">
-            <div class="flex mb-4 w-10 h-10 text-success">
+        <div class="py-4 flex flex-col items-center justify-center">
+          {#if status === 'done'}
+            <div class="flex mb-2 w-10 h-10 text-success">
               <FaRegCheckCircle />
             </div>
+            <div class="mb-4 text-success">Download complete.</div>
             <Button href="/" size="small" class="">Share another file</Button>
-          </div>
-        {/if}
+          {:else}
+            <Spinner />
+          {/if}
+        </div>
       {:else}
         <div class="flex flex-col items-center justify-center">
-          {#if error}
-            <Alert data-testid="download-error" class="mt-4 mb-4" variant={'error'}>
-              {error}
-            </Alert>
-          {:else}
+          {#if status === 'preloading'}
+            <Spinner />
+          {/if}
+          {#if status === 'preview'}
             <Alert class="mt-4 mb-4 w-full">
               <div slot="icon" class="flex shrink-0 w-9 h-9 mr-3">
                 <GoFileBinary class="fill-current" />
@@ -181,14 +190,14 @@
                 <Typewriter message={fileMeta?.mimeType} />
               </div>
             </Alert>
-          {/if}
 
-          <Button
-            data-testid="download-button"
-            disabled={!!error}
-            variant={'primary'}
-            on:click={fetchSecretFile}>Decrypt and Download</Button
-          >
+            <Button
+              data-testid="download-button"
+              disabled={!!error}
+              variant={'primary'}
+              on:click={fetchSecretFile}>Decrypt and Download</Button
+            >
+          {/if}
         </div>
       {/if}
     </div>
