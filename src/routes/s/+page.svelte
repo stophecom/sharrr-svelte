@@ -1,5 +1,6 @@
 <script lang="ts">
   import FaRegCheckCircle from 'svelte-icons/fa/FaRegCheckCircle.svelte'
+  import GoFileBinary from 'svelte-icons/go/GoFileBinary.svelte'
   import prettyBytes from 'pretty-bytes'
 
   import type { FileMeta, FileReference } from '$lib/file-transfer'
@@ -159,7 +160,10 @@
             </Alert>
           {:else}
             <Alert class="mt-4 mb-4 w-full">
-              <template slot="icon" />
+              <div slot="icon" class="flex shrink-0 w-9 h-9 mr-3">
+                <GoFileBinary class="fill-current" />
+              </div>
+
               <div class="flex">
                 <strong class="mr-1">Name:</strong>
                 <Typewriter message={fileMeta?.name} />

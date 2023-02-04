@@ -37,6 +37,7 @@
       <MdErrorOutline class="fill-current" />
     </div>
   </slot>
+
   <div class="min-w-0">
     <slot />
   </div>
