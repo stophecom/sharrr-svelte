@@ -15,6 +15,7 @@
     --main-bg-color: #ff0083;
     width: 72px;
     height: 72px;
+    transform: scale(0.5);
   }
 
   .banter-loader__box {
