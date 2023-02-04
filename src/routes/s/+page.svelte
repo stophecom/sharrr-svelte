@@ -1,7 +1,8 @@
 <script lang="ts">
   import FaRegCheckCircle from 'svelte-icons/fa/FaRegCheckCircle.svelte'
+  import prettyBytes from 'pretty-bytes'
 
-  import type { SecretFile } from '$lib/file-transfer'
+  import type { FileMeta, FileReference } from '$lib/file-transfer'
   import { encryptAndHash, decryptString } from '$lib/crypto'
   import { api } from '$lib/api'
   import type { Secret } from '@prisma/client'
@@ -10,11 +11,14 @@
   import Button from '$components/Button.svelte'
 
   import Alert from '$components/Alert.svelte'
+  import Typewriter from '$components/Typewriter.svelte'
   import ProgressBar from '$components/ProgressBar.svelte'
   import { onMount } from 'svelte'
 
-  let fileMeta: SecretFile | undefined
+  let fileMeta: FileMeta | undefined
+  let fileReference: FileReference | undefined
   let status: 'initial' | 'downloading' | 'done' | 'error' = 'initial'
+  let masterKey = ''
   let referenceAlias = ''
   let progress = 0
   let error: string = ''
@@ -25,11 +29,18 @@
     }
   })
 
-  const downloadFile = async (secretFile: SecretFile, decryptionKey: string) => {
+  const downloadFile = async (
+    referenceAlias: string,
+    fileMeta: FileMeta,
+    fileReference: FileReference,
+    decryptionKey: string
+  ) => {
     const fileInfo = {
-      ...secretFile,
+      alias: referenceAlias,
+      ...fileMeta,
+      ...fileReference,
       decryptionKey,
-      url: `/api/v1/service-worker-file-download/${secretFile.alias}`
+      url: `/api/v1/service-worker-file-download/${referenceAlias}`
     }
 
     await sendMessageToSw({
@@ -61,23 +72,40 @@
     })
   }
 
-  const fetchSecretFile = async () => {
+  onMount(async () => {
     const hashData = window.location.hash.substring(1).split('/')
     const alias = hashData[0]
-    const masterKey = hashData[1]
-
+    masterKey = hashData[1]
     referenceAlias = await encryptAndHash(alias, masterKey)
-    let fileMeta
-    try {
-      const { content } = await api<Pick<Secret, 'content'>>(`/secrets/${referenceAlias}`)
 
-      const decryptedSecretFileMeta = await decryptString(content, masterKey)
+    try {
+      const { fileMeta: fileMetaData } = await api<Pick<Secret, 'fileMeta'>>(
+        `/secrets/${referenceAlias}`
+      )
+
+      const decryptedSecretFileMeta = await decryptString(fileMetaData, masterKey)
       fileMeta = JSON.parse(decryptedSecretFileMeta)
+    } catch (e) {
+      if (e instanceof Error) {
+        error = e.message
+      }
+    }
+  })
+
+  const fetchSecretFile = async () => {
+    try {
+      const { fileReference: fileReferenceData } = await api<Pick<Secret, 'fileReference'>>(
+        `/secrets/${referenceAlias}?file=true`,
+        { method: 'DELETE' }
+      )
+
+      const decryptedSecretFileMeta = await decryptString(fileReferenceData, masterKey)
+      fileReference = JSON.parse(decryptedSecretFileMeta)
 
       status = 'downloading'
 
-      if (fileMeta) {
-        await downloadFile({ ...fileMeta, alias: referenceAlias }, masterKey)
+      if (fileMeta && fileReference) {
+        await downloadFile(referenceAlias, fileMeta, fileReference, masterKey)
 
         // Poll for download progress every second
         const progressInterval = setInterval(async () => {
@@ -106,7 +134,7 @@
   }
 </script>
 
-<Page title={'You received a file'} subtitle={`The most secure way to transfer data over the web.`}>
+<Page title={'You received a file'} subtitle={`The file can only be downloaded once!`}>
   <div class="mt-8">
     <div class="container mx-auto max-w-md">
       {#if status === 'downloading' || status === 'done'}
@@ -130,9 +158,24 @@
               {error}
             </Alert>
           {:else}
-            <Alert class="mt-4 mb-4">
-              <strong>Important:</strong> The file can only be downloaded once. And, be sure to trust
-              the sender!
+            <Alert class="mt-4 mb-4 w-full">
+              <template slot="icon" />
+              <div class="flex">
+                <strong class="mr-1">Name:</strong>
+                <Typewriter message={fileMeta?.name} />
+              </div>
+              <div class="flex">
+                <strong class="mr-1">Size:</strong>
+                <div class="truncate">
+                  {#if fileMeta?.size}
+                    <Typewriter message={prettyBytes(fileMeta.size)} />
+                  {/if}
+                </div>
+              </div>
+              <div class="flex">
+                <strong class="mr-1">Type:</strong>
+                <Typewriter message={fileMeta?.mimeType} />
+              </div>
             </Alert>
           {/if}
 
@@ -140,7 +183,7 @@
             data-testid="download-button"
             disabled={!!error}
             variant={'primary'}
-            on:click={fetchSecretFile}>Download and Decrypt</Button
+            on:click={fetchSecretFile}>Decrypt and Download</Button
           >
         </div>
       {/if}

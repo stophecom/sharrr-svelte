@@ -7,7 +7,8 @@ import prisma from '$lib/prisma'
 type SecretsRequest = {
   alias: string
   publicKey: string
-  content: string
+  fileMeta: string
+  fileReference: string
   fileSize: number
 }
 export type SecretsResponse = {
@@ -17,8 +18,8 @@ export type SecretsResponse = {
 export const POST: RequestHandler = async ({ request }) => {
   try {
     const body: SecretsRequest = await request.json()
-    const { alias, publicKey, content, fileSize } = body
-    await prisma.secret.create({ data: { alias, publicKey, content } })
+    const { alias, publicKey, fileReference, fileMeta, fileSize } = body
+    await prisma.secret.create({ data: { alias, publicKey, fileMeta, fileReference } })
 
     // Here we update stats. This is non-critical, therefore we catch potential errors.
     try {

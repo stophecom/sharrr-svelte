@@ -29,13 +29,15 @@
 
 <div
   {...$$restProps}
-  class="{className} {variantClass} flex items-center p-4 leading-normal border rounded-lg"
+  class="{className} {variantClass} flex items-center p-4 leading-normal border rounded-lg max-w-full"
   role="alert"
 >
-  <div class="flex shrink-0 w-6 h-6 mr-2">
-    <MdErrorOutline class="fill-current" />
-  </div>
-  <div>
+  <slot name="icon">
+    <div class="flex shrink-0 w-6 h-6 mr-2">
+      <MdErrorOutline class="fill-current" />
+    </div>
+  </slot>
+  <div class="min-w-0">
     <slot />
   </div>
 </div>

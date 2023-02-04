@@ -18,15 +18,17 @@ type Chunk = {
   size: number
 }
 
-type FileReference = {
+export type FileMeta = {
   name: string
   size: number
   mimeType: string
+}
+export type FileReference = {
   bucket: string
   chunks: Chunk[]
 }
 
-export interface SecretFile extends FileReference {
+export interface SecretFile extends FileMeta, FileReference {
   alias: string
   decryptionKey: string
   progress: number

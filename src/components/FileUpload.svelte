@@ -71,15 +71,9 @@
     })
 
     const { name, size, type } = file
-    const fileReference = {
-      name,
-      size,
-      mimeType: type,
-      bucket,
-      chunks
-    }
 
-    const content = await encryptString(JSON.stringify(fileReference), masterKey)
+    const fileMeta = await encryptString(JSON.stringify({ name, size, mimeType: type }), masterKey)
+    const fileReference = await encryptString(JSON.stringify({ bucket, chunks }), masterKey)
 
     return api<SecretsResponse>(
       '/secrets',
@@ -89,7 +83,8 @@
       {
         alias: aliasEncryptedAndHashed,
         publicKey: publicKeyRaw,
-        content,
+        fileReference,
+        fileMeta,
         fileSize: size
       }
     ).then((data) => {

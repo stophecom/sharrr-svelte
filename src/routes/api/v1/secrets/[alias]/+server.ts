@@ -12,6 +12,32 @@ export const GET: RequestHandler = async ({ params }) => {
 
   const secret = await prisma.secret.findUnique({ where: { alias: alias } })
 
+  if (!secret) {
+    throw error(400, `No secret for alias ${alias}.`)
+  }
+
+  if (secret?.retrievedAt) {
+    throw error(410, {
+      message: `This link has already been accessed - the file no longer exists.`
+    })
+  }
+
+  return new Response(JSON.stringify({ fileMeta: secret.fileMeta }))
+}
+
+export const DELETE: RequestHandler = async ({ params }) => {
+  const alias = params.alias
+
+  if (!alias) {
+    throw error(400, 'No alias provided.')
+  }
+
+  const secret = await prisma.secret.findUnique({ where: { alias: alias } })
+
+  if (!secret) {
+    throw error(400, `No secret for alias ${alias}.`)
+  }
+
   if (!secret?.retrievedAt) {
     await prisma.secret.update({
       where: { alias: alias },
@@ -25,8 +51,5 @@ export const GET: RequestHandler = async ({ params }) => {
     })
   }
 
-  if (!secret) {
-    throw error(400, `No secret for alias ${alias}.`)
-  }
-  return new Response(JSON.stringify(secret))
+  return new Response(JSON.stringify({ fileReference: secret.fileReference }))
 }
