@@ -2,7 +2,8 @@
 
 One-time end-to-end encrypted file transfer.
 
-Visit [sharrr.com](https://sharrr.com)
+Live version: [sharrr.com](https://sharrr.com)  
+Technical details: [sharrr.com/about](https://sharrr.com/about)
 
 ## Developing
 
@@ -64,9 +65,21 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-## About
+## Maintenance
 
-[Read more](https://sharrr.com/about) about the project.
+### Cron jobs
+
+There is a Github workflow `cron-cleanup-files.yml` that runs every day to cleanup old files.
+See `src/routes/api/v1/cron/+server.ts` for more info.
+
+You can trigger the cron job locally with:
+
+```bash
+curl --request POST \
+     --url 'http://localhost:3000/api/v1/cron' \
+     --header 'Authorization: Bearer API_SECRET_KEY'
+
+```
 
 ### Stack
 
