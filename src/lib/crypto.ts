@@ -40,6 +40,14 @@ const blobToBase64 = async (blob: Blob) => {
   })
 }
 
+// Initialization Vector (IV)
+const createIv = () => crypto.getRandomValues(new Uint8Array(16))
+
+export const createIvAsString = () => {
+  const iv = createIv()
+  return binaryToBase64(iv.buffer)
+}
+
 export const createHash = async (message: string) => {
   const buffer = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(message))
   return Array.prototype.map
@@ -48,7 +56,7 @@ export const createHash = async (message: string) => {
 }
 
 export const encryptData = async (data: ArrayBuffer, masterKey: string) => {
-  const iv = crypto.getRandomValues(new Uint8Array(16)) // Initialization Vector (IV)
+  const iv = createIv()
   const cryptoKey = await importMasterKey(masterKey)
   const result = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, cryptoKey, data)
 
@@ -141,6 +149,17 @@ export const decryptString = async (base64DataUrl: string, masterKey: string) =>
   return result
 }
 
+// Used to encrypt the alias. The IV is stored separately.
+export const encryptAndHash = async (message: string, ivAsString: string, masterKey: string) => {
+  const data = encodeText(message)
+  const iv = base64ToBinary(ivAsString)
+  const cryptoKey = await importMasterKey(masterKey)
+  const result = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, cryptoKey, data)
+  const decoded = decodeText(result)
+
+  return await createHash(decoded)
+}
+
 // Digital signature
 // Generate public/private key pair
 export const generateKeyPair = async () =>
@@ -218,10 +237,4 @@ export const verifyMessageSignature = async (
   )
 
   return result
-}
-
-export const encryptAndHash = async (message: string, masterKey: string) => {
-  // @todo This currently doesn't work b/c nonce is different every time this runs. Returning just hash for now.
-  // return await createHash(await encryptString(message, masterKey))
-  return await createHash(message)
 }

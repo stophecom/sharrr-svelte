@@ -11,7 +11,8 @@
     generateMasterKey,
     generateKeyPair,
     exportPublicKey,
-    encryptAndHash
+    encryptAndHash,
+    createIvAsString
   } from '$lib/crypto'
 
   import Dropzone from '$components/DropZone.svelte'
@@ -54,10 +55,11 @@
     const keyPair = await generateKeyPair()
     const privateKey = keyPair.privateKey
 
-    const aliasEncryptedAndHashed = await encryptAndHash(alias, masterKey)
+    const iv = createIvAsString()
+    const aliasEncryptedAndHashed = await encryptAndHash(alias, iv, masterKey)
     const publicKeyRaw = await exportPublicKey(keyPair.publicKey)
 
-    link = `${baseUrl}/s#${alias}/${masterKey}`
+    link = `${baseUrl}/s#${alias}/${iv}/${masterKey}`
 
     const chunks = await handleFileEncryptionAndUpload({
       file,

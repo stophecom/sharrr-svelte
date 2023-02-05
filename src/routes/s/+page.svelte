@@ -78,8 +78,9 @@
     status = 'preloading'
     const hashData = window.location.hash.substring(1).split('/')
     const alias = hashData[0]
-    masterKey = hashData[1]
-    referenceAlias = await encryptAndHash(alias, masterKey)
+    const iv = hashData[1]
+    masterKey = hashData[2]
+    referenceAlias = await encryptAndHash(alias, iv, masterKey)
 
     try {
       const { fileMeta: fileMetaData } = await api<Pick<Secret, 'fileMeta'>>(
