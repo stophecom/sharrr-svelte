@@ -5,12 +5,11 @@
 </script>
 
 <header class="bg-white/60">
-  <div class="container mx-auto px-4 py-3">
+  <div class="container mx-auto px-4 py-4">
     <div class="grid grid-cols-3 gap-4 items-center">
       <a class="flex flex-row items-center" href="/">
         <img class="w-16 sm:w-24" src={logo} alt="Sharrr" />
         <span class="sr-only">Home</span>
-        <small class="bg-gray-800 text-white rounded-sm px-2 py-1 text-xs ml-2">BETA</small>
       </a>
 
       <nav class="grow flex flex-row justify-center">
