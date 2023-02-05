@@ -48,7 +48,7 @@
           </li>
         </ul>
         <div class="ml-8">
-          <a href="/about" class="text-primary underline">Learn more.</a>
+          <a href="/about" class="text-primary underline">Learn more</a>
         </div>
       </div>
     </div>
