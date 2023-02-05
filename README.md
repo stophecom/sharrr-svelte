@@ -18,16 +18,11 @@ npm run dev
 npm run dev -- --open
 ```
 
-### DB (PlanetScale) & Prisma
+### DB
+
+#### Prisma ORM
 
 ```bash
-# Authenticate PlanetScale
-pscale auth login
-
-# Connect to DB dev branch
-# DATABASE_URL='mysql://root@127.0.0.1:3309/sharrr'
-pscale connect sharrr dev --port 3309
-
 # Init primsa
 npx prisma init
 
@@ -37,9 +32,23 @@ npx prisma db push
 # Open prisma studio locally
 npx prisma studio
 
-# After changes in DB are made
+# After changes in DB are made. Should not be necessary.
 # https://www.prisma.io/docs/concepts/components/prisma-client#4-evolving-your-application
 npx prisma generate
+```
+
+#### PlanetScale
+
+Using PlanetScale currently, but can be done with any Prisma compatible database.
+
+```bash
+# Authenticate PlanetScale
+pscale auth login
+
+# Connect to DB dev branch
+# DATABASE_URL='mysql://root@127.0.0.1:3309/sharrr'
+pscale connect sharrr dev --port 3309
+
 ```
 
 ### Tests
@@ -55,7 +64,7 @@ npm run test
 
 ```
 
-## Building
+### Building
 
 To create a production version of your app:
 
@@ -81,10 +90,16 @@ curl --request POST \
 
 ```
 
-### Stack
+## Stack
 
 - SvelteKit
 - Tailwind CSS
 - PlanetScale (MySQL DB)
 - Prisma (ORM)
 - Doppler (For env handling)
+
+### Infrastructure
+
+- Website on [Vercel](https://vercel.com/)
+- DB on [PlanetScale](https://planetscale.com/)
+- S3 Object Storage with [flow.swiss](https://flow.swiss)
