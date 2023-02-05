@@ -28,7 +28,7 @@
         <ul class="pt-14 text-gray-700 ">
           <li class="flex items-center">
             <div class="w-6 h-6 mr-2"><MdCheck /></div>
-            Up to&nbsp;<strong>{prettyBytes(MAX_FILE_SIZE)}</strong>&nbsp;file
+            Up to&nbsp;<strong>{prettyBytes(MAX_FILE_SIZE)}</strong>&nbsp;files
           </li>
           <li class="flex items-center">
             <div class="w-6 h-6 mr-2"><MdCheck /></div>
