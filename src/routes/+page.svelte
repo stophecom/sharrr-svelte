@@ -15,7 +15,10 @@
   const MAX_FILE_SIZE = getMaxFileSize(PUBLIC_ENV)
 </script>
 
-<Page title={'Just secure file transfer.'} subtitle={'End-to-end encrypted. Ephemeral.'}>
+<Page
+  title={'Pretty secure file transfer.'}
+  subtitle={'End-to-end encrypted. Ephemeral. Open source.'}
+>
   <div class="mx-auto max-w-xl">
     <FileUpload baseUrl={data.vercelUrl} />
   </div>
@@ -45,7 +48,7 @@
           </li>
         </ul>
         <div class="ml-8">
-          <a href="/about" class="text-primary underline">...learn more.</a>
+          <a href="/about" class="text-primary underline">Learn more.</a>
         </div>
       </div>
     </div>
