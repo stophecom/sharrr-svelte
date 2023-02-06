@@ -2,8 +2,7 @@
 
 One-time end-to-end encrypted file transfer.
 
-Live version: [sharrr.com](https://sharrr.com)  
-Technical details: [sharrr.com/about](https://sharrr.com/about)
+Live version: [sharrr.com](https://sharrr.com)
 
 ## Developing
 
@@ -90,7 +89,11 @@ curl --request POST \
 
 ```
 
-## Stack
+## About
+
+More info about the project and the technical implementation is [documented here](https://sharrr.com/about).
+
+### Stack
 
 - SvelteKit
 - Tailwind CSS
@@ -103,3 +106,7 @@ curl --request POST \
 - Website on [Vercel](https://vercel.com/)
 - DB on [PlanetScale](https://planetscale.com/)
 - S3 Object Storage with [flow.swiss](https://flow.swiss)
+
+### License
+
+This project is licensed under the terms of the MIT license.
