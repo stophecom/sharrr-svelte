@@ -5,7 +5,7 @@ import { encryptFile, decryptData, createHash, signMessage } from '$lib/crypto'
 import { api, asyncPool } from '$lib/api'
 
 // If the request fails, we retry
-axiosRetry(axios, { retries: 3, retryDelay: axiosRetry.exponentialDelay })
+axiosRetry(axios, { retries: 5, retryDelay: axiosRetry.exponentialDelay })
 
 type SignedUrlGetResponse = {
   url: string
