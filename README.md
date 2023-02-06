@@ -109,4 +109,4 @@ More info about the project and the technical implementation is [documented here
 
 ### License
 
-This project is licensed under the terms of the MIT license.
+MIT
