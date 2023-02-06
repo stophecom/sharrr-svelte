@@ -19,6 +19,14 @@ Find me on [Twitter](https://twitter.com/stophecom), [Mastodon](https://mastodon
 - 7 day retention period (Download link expires and files are being deleted afterwards.)
 - Files are stored in Switzerland
 
+### Fair use
+
+Play fair - this is a non-commercial project that is meant for personal use only.
+
+### Tipp
+
+Downloading large files seems to work best in Firefox.
+
 ## Technical details
 
 The main idea is that, after the file has been encrypted and uploaded, only the recipient of the download link is ever able to download and access the decrypted data (Build the file). Even if all other systems beside the client's browser (Backend, Database, S3 Storage) would be compromised, it shouldn't be possible to decompile or reverse-engineer the original file. Apart from the end-to-end encryption, the file shall only be downloaded once (within a defined period of time).
@@ -57,7 +65,7 @@ For encryption/decryption only built-in browser APIs are used, namely the **Web 
 - [**AES-GCM** (Advanced Encryption Standard - Galois/Counter Mode)](https://en.wikipedia.org/wiki/Galois/Counter_Mode) for symmetric encryption: This is used for the master key that encrypts/decrypts all file chunks and the data stored in the database.
 - [**ECDSA** (Elliptic Curve Digital Signature Algorithm)](https://en.wikipedia.org/wiki/Elliptic_Curve_Digital_Signature_Algorithm) for asymmetric encryption: This is used to sign the file chunk keys in order make sure the later download request is allowed to access this specific chunk file.
 
-## Resources/Inspiration
+## Resources
 
 This project is heavily inspired by a great online community and amazing open-source projects:
 
