@@ -23,6 +23,7 @@
   import { status } from '$lib/store'
   import type { Status } from '$lib/store'
   import type { SecretsResponse } from '$api/secrets/+server'
+  import { element } from 'svelte/internal'
 
   export let baseUrl: string
 
@@ -60,7 +61,9 @@
     const aliasEncryptedAndHashed = await encryptAndHash(alias, iv, masterKey)
     const publicKeyRaw = await exportPublicKey(keyPair.publicKey)
 
-    link = `${baseUrl}/s#${alias}/${iv}/${masterKey}`
+    // We encode each generated secret to make sure it doesn't contain '/' which we use to separate the parts.
+    const encodedHashParts = [alias, iv, masterKey].map((element) => encodeURIComponent(element))
+    link = `${baseUrl}/s#${encodedHashParts.join('/')}`
 
     const chunks = await handleFileEncryptionAndUpload({
       file,

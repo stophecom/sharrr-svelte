@@ -76,13 +76,26 @@
 
   onMount(async () => {
     status = 'preloading'
-    const hashData = window.location.hash.substring(1).split('/')
-    const alias = hashData[0]
-    const iv = hashData[1]
-    masterKey = hashData[2]
-    referenceAlias = await encryptAndHash(alias, iv, masterKey)
 
     try {
+      //Extract fragment (Everything after #)
+      const fragment = window.location.hash.substring(1)
+      if (fragment.includes('?')) {
+        throw new Error(
+          `Invalid URL: There are no query params (?=xyz) allowed after fragment (#).`
+        )
+      }
+
+      //Extract relevant parts for decryption
+      const hashData = fragment.split('/')
+      const [alias, iv, key] = hashData.map((element) => decodeURIComponent(element))
+      masterKey = key
+
+      if (hashData.length > 3 || !alias || !iv || !masterKey) {
+        throw new Error(`Invalid URL: Couldn't extract Alias, IV and/or Master Key.`)
+      }
+
+      referenceAlias = await encryptAndHash(alias, iv, masterKey)
       const { fileMeta: fileMetaData } = await api<Pick<Secret, 'fileMeta'>>(
         `/secrets/${referenceAlias}`
       )
