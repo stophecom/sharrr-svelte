@@ -91,7 +91,7 @@ curl --request POST \
 
 ## About
 
-More info about the project and the technical implementation is [documented here](https://sharrr.com/about).
+Learn more about the [technical implementation](https://sharrr.com/about). See how [sharrr compares](https://github.com/stophecom/sharrr-svelte/blob/main/src/routes/about/comparison.md) to other services.
 
 ### Stack
 
