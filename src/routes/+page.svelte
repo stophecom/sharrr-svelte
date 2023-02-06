@@ -13,6 +13,14 @@
   export let data: PageServerData
 
   const MAX_FILE_SIZE = getMaxFileSize(PUBLIC_ENV)
+
+  let usps = [
+    { item: `Up to&nbsp;<strong>${prettyBytes(MAX_FILE_SIZE)}</strong>&nbsp;files` },
+    { item: `Zero knowledge encryption` },
+    { item: `One-time download` },
+    { item: `<strong>Free</strong>&nbsp;and open source` },
+    { item: `Stored in Switzerland 🇨🇭` }
+  ]
 </script>
 
 <Page
@@ -26,26 +34,12 @@
     <div class="flex justify-center ">
       <div>
         <ul class="pt-14 text-gray-700 ">
-          <li class="flex items-center">
-            <div class="w-6 h-6 mr-2"><MdCheck /></div>
-            Up to&nbsp;<strong>{prettyBytes(MAX_FILE_SIZE)}</strong>&nbsp;files
-          </li>
-          <li class="flex items-center">
-            <div class="w-6 h-6 mr-2"><MdCheck /></div>
-            Zero knowledge encryption
-          </li>
-          <li class="flex items-center">
-            <div class="w-6 h-6 mr-2"><MdCheck /></div>
-            One-time download
-          </li>
-          <li class="flex items-center">
-            <div class="w-6 h-6 mr-2"><MdCheck /></div>
-            <strong>Free</strong>&nbsp;and open source
-          </li>
-          <li class="flex items-center">
-            <div class="w-6 h-6 mr-2"><MdCheck /></div>
-            Stored in Switzerland 🇨🇭
-          </li>
+          {#each usps as usp, i}
+            <li class="flex items-center">
+              <div class="w-6 h-6 mr-2"><MdCheck /></div>
+              {@html usp.item}
+            </li>
+          {/each}
         </ul>
         <div class="ml-8">
           <a href="/about" class="text-primary underline">Learn more</a>
