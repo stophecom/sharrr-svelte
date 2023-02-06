@@ -5,7 +5,7 @@
 </script>
 
 <header class="bg-white/60">
-  <div class="container mx-auto px-4 py-4">
+  <div class="container mx-auto px-4 py-4 sm:py-3">
     <div class="grid grid-cols-3 gap-4 items-center">
       <a class="flex flex-row items-center" href="/">
         <img class="w-16 sm:w-24" src={logo} alt="Sharrr" />

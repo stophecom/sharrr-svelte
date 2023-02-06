@@ -23,10 +23,10 @@
   <meta name="theme-color" content="#ffffff" />
 </svelte:head>
 
-<div class="app">
+<div class="app min-h-screen grid grid-flow-row">
   <Header />
 
-  <main>
+  <main class="min-h-full flex justify-center">
     <slot />
   </main>
 
@@ -34,6 +34,9 @@
 </div>
 
 <style lang="postcss">
+  .app {
+    grid-template-rows: min-content 1fr min-content;
+  }
   :global(html) {
     background-color: theme(colors.gray.100);
     background: radial-gradient(circle, rgb(255 255 255) 0%, rgb(190 199 212) 100%);
