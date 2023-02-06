@@ -23,7 +23,7 @@
   import { status } from '$lib/store'
   import type { Status } from '$lib/store'
   import type { SecretsResponse } from '$api/secrets/+server'
-  import { element } from 'svelte/internal'
+  import Spinner from './Spinner.svelte'
 
   export let baseUrl: string
 
@@ -121,30 +121,32 @@
 <div>
   {#if selectedFile}
     <ProgressBar {progress} fileName={selectedFile.name} />
-    {#await promiseSaveFile then message}
-      {#if message}
-        <p class="text-sm py-1 text-success">{message}</p>
+    {#await promiseSaveFile}
+      <div class="py-1 flex justify-center">
+        <Spinner />
+      </div>
+    {:then message}
+      <p class="text-sm py-1 text-success">{message}</p>
 
-        <div class="my-4 flex items-center p-4 bg-white/70 border-2 border-primary rounded-lg">
-          <div class="grid flex-col">
-            <div class="text-sm font-semibold">Sharable link:</div>
-            <div data-testid="download-link" class="truncate mb-1 mr-4">
-              {link}
-            </div>
-            <Countdown />
+      <div class="my-4 flex items-center p-4 bg-white/70 border-2 border-primary rounded-lg">
+        <div class="grid flex-col">
+          <div class="text-sm font-semibold">Sharable link:</div>
+          <div data-testid="download-link" class="truncate mb-1 mr-4">
+            {link}
           </div>
-          <Button
-            data-testid="copy-link"
-            class="shrink-0 uppercase"
-            variant="primary"
-            on:click={copyLink}>Copy</Button
-          >
+          <Countdown />
         </div>
+        <Button
+          data-testid="copy-link"
+          class="shrink-0 uppercase"
+          variant="primary"
+          on:click={copyLink}>Copy</Button
+        >
+      </div>
 
-        <div class="flex">
-          <Button size="small" class="" on:click={reset}>Share another file</Button>
-        </div>
-      {/if}
+      <div class="flex">
+        <Button size="small" class="" on:click={reset}>Share another file</Button>
+      </div>
     {:catch error}
       <Error>{error?.message}</Error>
     {/await}
