@@ -125,7 +125,9 @@
       Drop it like it's hot
     </div>
   </div>
+  <label class="sr-only" for="dropzone">Choose a file to encrypt and share</label>
   <input
+    id="dropzone"
     class="opacity-0 absolute top-0 left-0 w-full h-full cursor-pointer"
     type="file"
     {multiple}

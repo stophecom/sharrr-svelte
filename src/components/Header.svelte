@@ -8,7 +8,7 @@
   <div class="container mx-auto px-4 py-4 sm:py-3">
     <div class="grid grid-cols-3 gap-4 items-center">
       <a class="flex flex-row items-center" href="/">
-        <img class="w-16 sm:w-24" src={logo} alt="Sharrr" />
+        <img class="w-17 h-6 sm:w-24 sm:h-8" src={logo} alt="Sharrr" />
         <span class="sr-only">Home</span>
       </a>
 
@@ -35,7 +35,7 @@
 
       <div class="flex justify-end">
         <a href="https://github.com/stophecom/sharrr-svelte">
-          <img class="w-6 sm:w-7" src={github} alt="GitHub" />
+          <img class="w-6 h-6 sm:w-7 sm:h-7" src={github} alt="GitHub" />
           <span class="sr-only">GitHub</span>
         </a>
       </div>
