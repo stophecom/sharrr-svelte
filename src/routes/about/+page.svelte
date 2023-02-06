@@ -6,8 +6,8 @@
 </script>
 
 <svelte:head>
-  <title>About</title>
-  <meta name="description" content="About this app" />
+  <title>Sharrr - About</title>
+  <meta name="description" content="Learn more about the technical implementation." />
 </svelte:head>
 
 <Page title={'About'} subtitle={`Most people share, smart people sharrr.`} isContainer={false}>

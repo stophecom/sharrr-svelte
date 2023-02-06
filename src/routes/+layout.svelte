@@ -6,14 +6,14 @@
 
 <svelte:head>
   <script defer data-domain="sharrr.com" src="https://plausible.io/js/script.js"></script>
-  <title>Sharrr. Share end-to-end encrypted files.</title>
+  <title>Sharrr - End-to-end encrypted file transfer.</title>
   <meta
     name="description"
-    content="Pirates don't share, pirates sharrr. Share end-to-end encrypted files."
+    content="The most secure way to share files online. End-to-end encrypted. One time."
   />
   <meta
     name="keywords"
-    content="pirates, share file, end-to-end encrypted file sharing, zero knowledge encrypted file transfer, pirates sharrr, arrr"
+    content="share file, end-to-end encrypted file sharing, zero knowledge encrypted file transfer, pirates sharrr, arrr, secure file transfer"
   />
   <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
