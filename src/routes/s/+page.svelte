@@ -25,10 +25,44 @@
   let progress = 0
   let error: string = ''
 
-  onMount(() => {
+  onMount(async () => {
     if (!('serviceWorker' in navigator)) {
       error = 'Your browser is not supported: Service worker not available.'
     }
+
+    status = 'preloading'
+
+    try {
+      //Extract fragment (Everything after #)
+      const fragment = window.location.hash.substring(1)
+      if (fragment.includes('?')) {
+        throw new Error(
+          `Invalid URL: There are no query params (?=xyz) allowed after fragment (#).`
+        )
+      }
+
+      //Extract relevant parts for decryption
+      const hashData = fragment.split('/')
+      const [alias, iv, key] = hashData.map((element) => decodeURIComponent(element))
+      masterKey = key
+
+      if (hashData.length > 3 || !alias || !iv || !masterKey) {
+        throw new Error(`Invalid URL: Couldn't extract Alias, IV and/or Master Key.`)
+      }
+
+      referenceAlias = await encryptAndHash(alias, iv, masterKey)
+      const { fileMeta: fileMetaData } = await api<Pick<Secret, 'fileMeta'>>(
+        `/secrets/${referenceAlias}`
+      )
+
+      const decryptedSecretFileMeta = await decryptString(fileMetaData, masterKey)
+      fileMeta = JSON.parse(decryptedSecretFileMeta)
+    } catch (e) {
+      if (e instanceof Error) {
+        error = e?.message
+      }
+    }
+    status = 'preview'
   })
 
   const downloadFile = async (
@@ -74,42 +108,6 @@
     })
   }
 
-  onMount(async () => {
-    status = 'preloading'
-
-    try {
-      //Extract fragment (Everything after #)
-      const fragment = window.location.hash.substring(1)
-      if (fragment.includes('?')) {
-        throw new Error(
-          `Invalid URL: There are no query params (?=xyz) allowed after fragment (#).`
-        )
-      }
-
-      //Extract relevant parts for decryption
-      const hashData = fragment.split('/')
-      const [alias, iv, key] = hashData.map((element) => decodeURIComponent(element))
-      masterKey = key
-
-      if (hashData.length > 3 || !alias || !iv || !masterKey) {
-        throw new Error(`Invalid URL: Couldn't extract Alias, IV and/or Master Key.`)
-      }
-
-      referenceAlias = await encryptAndHash(alias, iv, masterKey)
-      const { fileMeta: fileMetaData } = await api<Pick<Secret, 'fileMeta'>>(
-        `/secrets/${referenceAlias}`
-      )
-
-      const decryptedSecretFileMeta = await decryptString(fileMetaData, masterKey)
-      fileMeta = JSON.parse(decryptedSecretFileMeta)
-    } catch (e) {
-      if (e instanceof Error) {
-        error = e?.message
-      }
-    }
-    status = 'preview'
-  })
-
   const fetchSecretFile = async () => {
     try {
       const { fileReference: fileReferenceData } = await api<Pick<Secret, 'fileReference'>>(
@@ -148,7 +146,7 @@
       }
     }
 
-    // history.replaceState(null, 'Secret destroyed', 'l/🔥')
+    // history.replaceState(null, 'Secret destroyed', 's/🔥')
   }
 </script>
 
