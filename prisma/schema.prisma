@@ -16,7 +16,7 @@ model Secret {
   alias         String    @unique
   publicKey     String    @db.VarChar(300)
   fileMeta      String    @db.Text
-  fileReference String    @db.Text
+  fileReference String    @db.LongText
   retrievedAt   DateTime?
 }
 
