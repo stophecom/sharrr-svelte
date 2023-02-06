@@ -15,6 +15,7 @@
     createIvAsString
   } from '$lib/crypto'
 
+  import Countdown from '$components/Countdown.svelte'
   import Dropzone from '$components/DropZone.svelte'
   import Button from '$components/Button.svelte'
   import ProgressBar from '$components/ProgressBar.svelte'
@@ -124,9 +125,10 @@
         <div class="my-4 flex items-center p-4 bg-white/70 border-2 border-primary rounded-lg">
           <div class="grid flex-col">
             <div class="text-sm font-semibold">Sharable link:</div>
-            <div data-testid="download-link" class="truncate mr-4">
+            <div data-testid="download-link" class="truncate mb-1 mr-4">
               {link}
             </div>
+            <Countdown />
           </div>
           <Button
             data-testid="copy-link"
