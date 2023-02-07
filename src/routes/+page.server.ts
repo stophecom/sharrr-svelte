@@ -7,6 +7,6 @@ const sanitizeUrl = (url: string) => (url.startsWith('http') ? url : `https://${
 
 export const load = (() => {
   return {
-    vercelUrl: PUBLIC_ENV === 'production' ? productionDomain : sanitizeUrl(VERCEL_URL)
+    baseUrl: PUBLIC_ENV === 'production' ? productionDomain : sanitizeUrl(VERCEL_URL)
   }
 }) satisfies PageServerLoad

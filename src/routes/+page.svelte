@@ -28,7 +28,7 @@
   subtitle={'End-to-end encrypted. Ephemeral. Open source.'}
 >
   <div class="mx-auto max-w-xl">
-    <FileUpload baseUrl={data.vercelUrl} />
+    <FileUpload baseUrl={data.baseUrl} />
   </div>
   {#if $status === 'initial'}
     <div class="flex justify-center ">
