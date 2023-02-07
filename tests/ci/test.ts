@@ -59,8 +59,6 @@ test('File download succeeds', async () => {
 
 test(`File can't be accessed twice`, async () => {
   await page.reload()
-  await page.getByTestId('download-button').click()
-
   await expect(page.getByTestId('download-error')).toBeVisible()
 })
 
