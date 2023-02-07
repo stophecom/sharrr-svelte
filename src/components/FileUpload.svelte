@@ -78,7 +78,10 @@
 
     const { name, size, type } = file
 
-    const fileMeta = await encryptString(JSON.stringify({ name, size, mimeType: type }), masterKey)
+    const fileMeta = await encryptString(
+      JSON.stringify({ name, size, mimeType: type, isSingleChunk: chunks.length === 1 }),
+      masterKey
+    )
     const fileReference = await encryptString(JSON.stringify({ bucket, chunks }), masterKey)
 
     return api<SecretsResponse>(

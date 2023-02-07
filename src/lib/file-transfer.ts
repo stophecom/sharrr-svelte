@@ -22,6 +22,7 @@ export type FileMeta = {
   name: string
   size: number
   mimeType: string
+  isSingleChunk: boolean
 }
 export type FileReference = {
   bucket: string
@@ -134,6 +135,27 @@ const uploadFileChunk = async ({
   })
 }
 
+const chunkDownload = async ({
+  alias,
+  bucket,
+  chunk
+}: Pick<SecretFile, 'alias' | 'bucket'> & { chunk: Chunk }) => {
+  const { key, signature } = chunk
+  const keyHash = await createHash(key)
+
+  const { url } = await api<SignedUrlGetResponse>(
+    `/files/${key}`,
+    { method: 'POST' },
+    { alias, bucket, keyHash, signature }
+  )
+  const response = await fetch(url)
+
+  if (!response.ok || !response.body) {
+    throw new Error(`Couldn't retrieve file - it may no longer exist.`)
+  }
+  return response
+}
+
 // Function runs in Service Worker, which means no access to DOM, etc.
 export const handleFileChunksDownload = (file: SecretFile) => {
   const { alias, chunks, bucket, decryptionKey } = file
@@ -146,19 +168,7 @@ export const handleFileChunksDownload = (file: SecretFile) => {
       // We download the chunks in sequence.
       // We could do concurrent fetching but the order of the chunks in the stream is important.
       for (const chunk of chunks) {
-        const { key, signature } = chunk
-        const keyHash = await createHash(key)
-
-        const { url } = await api<SignedUrlGetResponse>(
-          `/files/${key}`,
-          { method: 'POST' },
-          { alias, bucket, keyHash, signature }
-        )
-        const response = await fetch(url)
-
-        if (!response.ok || !response.body) {
-          throw new Error(`Couldn't retrieve file - it may no longer exist.`)
-        }
+        const response = await chunkDownload({ alias, bucket, chunk })
 
         // This stream is for reading the download progress
         const res = new Response(
