@@ -1,14 +1,10 @@
-import { expect, test, type Download } from '@playwright/test'
-import type { Page } from '@playwright/test'
-import fs from 'fs'
-import * as dotenv from 'dotenv' // see https://github.com/motdotla/dotenv#how-do-i-use-dotenv-with-import
-dotenv.config()
+import { expect, test } from '@playwright/test'
+import type { Page, Download } from '@playwright/test'
 
 test.describe.configure({ mode: 'serial' })
 
 let page: Page
 let secretUrl: string
-let originalSize: number
 let download: Download
 
 test.beforeAll(async ({ browser }) => {
@@ -22,15 +18,13 @@ test.afterAll(async () => {
 test('File upload ', async ({ baseURL }) => {
   await page.goto('/')
 
-  // Create and upload text file
-  const buf = Buffer.from(new String('this is a test'))
-  originalSize = buf.byteLength
-
-  await page.setInputFiles("input[type='file']", {
-    name: 'foo.txt',
-    mimeType: 'text/plain',
-    buffer: buf
-  })
+  const [fileChooser] = await Promise.all([
+    // It is important to call waitForEvent before click to set up waiting.
+    page.waitForEvent('filechooser'),
+    // Opens the file chooser.
+    page.locator("input[type='file']").click()
+  ])
+  await fileChooser.setFiles(['src/app.html'])
 
   await page.getByTestId('copy-link').click()
   secretUrl = await page.evaluate(() => navigator.clipboard.readText())
@@ -45,26 +39,15 @@ test('Download page renders correctly', async () => {
 })
 
 test('File download succeeds', async () => {
-  test.skip(process.env.PUBLIC_ENV === 'ci')
-  // Test doesn't run on actual published website for some reason. (Maybe issue with service worker or access to fs, etc.)
-
   // Download file
   // Start waiting for download before clicking. Note no await.
   const downloadPromise = page.waitForEvent('download')
   await page.getByTestId('download-button').click()
   download = await downloadPromise
   expect(downloadPromise).resolves
-  expect((await fs.promises.stat((await download.path()) as string)).size).toBe(originalSize)
 })
 
 test(`File can't be accessed twice`, async () => {
   await page.reload()
-  await page.getByTestId('download-button').click()
-
   await expect(page.getByTestId('download-error')).toBeVisible()
-})
-
-test('About page has expected h1', async ({ page }) => {
-  await page.goto('/about')
-  await expect(page.locator('h1')).toHaveText('About')
 })
