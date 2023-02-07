@@ -24,7 +24,7 @@
   import type { Status } from '$lib/store'
   import type { SecretsResponse } from '$api/secrets/+server'
   import Spinner from './Spinner.svelte'
-  import { copyText } from '$lib/utils'
+  import CopyButton from './CopyButton.svelte'
 
   export let baseUrl: string
 
@@ -129,12 +129,7 @@
           </div>
           <Countdown />
         </div>
-        <Button
-          data-testid="copy-link"
-          class="shrink-0 uppercase"
-          variant="primary"
-          on:click={() => copyText(link)}>Copy</Button
-        >
+        <CopyButton class={'shrink-0'} text={link} />
       </div>
 
       <div class="flex">
