@@ -1,5 +1,6 @@
 import type { PlaywrightTestConfig } from '@playwright/test'
 
+// Run local tests headed: PUBLIC_ENV=development npm run test -- --headed
 const isLocalTest = process.env.PUBLIC_ENV === 'development'
 
 // Runs in local webserver
@@ -15,7 +16,7 @@ const config: PlaywrightTestConfig = {
     command: 'VERCEL_URL=http://localhost:4173 npm run build && npm run preview',
     port: 4173
   },
-  testDir: 'tests/ci'
+  testDir: 'tests/local'
 }
 
 // Runs on published websites
@@ -26,10 +27,10 @@ const configPublished: PlaywrightTestConfig = {
     },
     video: 'off',
     screenshot: 'only-on-failure',
-    baseURL: process.env.VERCEL_URL
+    baseURL: process.env.VERCEL_URL || 'http://localhost:3000'
   },
 
-  testDir: 'tests/ci'
+  testDir: 'tests/published'
 }
 
 export default isLocalTest ? config : configPublished
