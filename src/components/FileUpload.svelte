@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { PUBLIC_FLOW_S3_BUCKET } from '$env/static/public'
+  import { PUBLIC_S3_BUCKET } from '$env/static/public'
   import { PUBLIC_ENV } from '$env/static/public'
   import { onDestroy } from 'svelte'
 
@@ -50,7 +50,7 @@
   }
 
   async function postSecret(file: File) {
-    const bucket = PUBLIC_FLOW_S3_BUCKET
+    const bucket = PUBLIC_S3_BUCKET
 
     const alias = crypto.randomUUID()
     const masterKey = await generateMasterKey()

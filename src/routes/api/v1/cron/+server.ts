@@ -3,12 +3,12 @@ import { error, json } from '@sveltejs/kit'
 import type { RequestHandler } from '@sveltejs/kit'
 
 import { API_SECRET_KEY } from '$env/static/private'
-import { PUBLIC_FLOW_S3_BUCKET } from '$env/static/public'
+import { PUBLIC_S3_BUCKET } from '$env/static/public'
 import { getS3Client } from '$lib/s3'
 import { fileRetentionPeriodInDays } from '$lib/constants'
 import prisma from '$lib/prisma'
 
-const BucketName = PUBLIC_FLOW_S3_BUCKET
+const BucketName = PUBLIC_S3_BUCKET
 const client = getS3Client()
 
 function subtractDays(date: Date, days: number) {

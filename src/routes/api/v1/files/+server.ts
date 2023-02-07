@@ -2,11 +2,11 @@ import { createPresignedPost } from '@aws-sdk/s3-presigned-post'
 import { error, json } from '@sveltejs/kit'
 import type { RequestEvent } from './$types'
 
-import { PUBLIC_FLOW_S3_BUCKET } from '$env/static/public'
+import { PUBLIC_S3_BUCKET } from '$env/static/public'
 import { getS3Client } from '$lib/s3'
 
 export const GET = async ({ url }: RequestEvent) => {
-  const Bucket = PUBLIC_FLOW_S3_BUCKET
+  const Bucket = PUBLIC_S3_BUCKET
 
   const key: string | null = url.searchParams.get('file')
 
