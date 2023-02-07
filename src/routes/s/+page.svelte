@@ -17,6 +17,7 @@
   import ProgressBar from '$components/ProgressBar.svelte'
   import { onMount } from 'svelte'
   import Spinner from '$components/Spinner.svelte'
+  import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/utils'
 
   let fileMeta: FileMeta | undefined
   let fileReference: FileReference | undefined
@@ -82,17 +83,6 @@
     }, 500)
   }
 
-  const createDownloadLinkAndClick = (url: string, fileName?: string) => {
-    const a = document.createElement('a')
-    a.href = url
-
-    if (fileName) {
-      a.download = fileName
-    }
-    document.body.appendChild(a)
-    a.click()
-  }
-
   const downloadFileAsStream = async (
     referenceAlias: string,
     fileMeta: FileMeta,
@@ -107,30 +97,12 @@
       url: `/api/v1/service-worker-file-download/${referenceAlias}`
     }
 
-    await sendMessageToSw({
+    await sendMessageToServiceWorker({
       request: 'file_info',
       data: fileInfo
     })
 
     createDownloadLinkAndClick(fileInfo.url)
-  }
-
-  const sendMessageToSw = <T>(msg: Record<string, unknown>): Promise<T> => {
-    return new Promise((resolve, reject) => {
-      const channel = new MessageChannel()
-
-      channel.port1.onmessage = (event) => {
-        if (event.data === undefined) {
-          reject('bad response from serviceWorker')
-        } else if (event.data.error !== undefined) {
-          reject(event.data.error)
-        } else {
-          resolve(event.data)
-        }
-      }
-
-      navigator?.serviceWorker?.controller?.postMessage(msg, [channel.port2])
-    })
   }
 
   const fetchSecretFile = async () => {
@@ -146,31 +118,30 @@
       status = 'downloading'
 
       if (fileMeta && fileReference) {
-        const file = {
-          alias: referenceAlias,
-          decryptionKey: masterKey,
-          ...fileReference,
-          ...fileMeta,
-          progress: 0
-        }
         // If only one chunk, we download immediately.
         if (fileMeta.isSingleChunk && fileReference.chunks.length === 1) {
+          const file = {
+            alias: referenceAlias,
+            decryptionKey: masterKey,
+            ...fileReference,
+            ...fileMeta,
+            progress: 0
+          }
           const res = new Response(handleFileChunksDownload(file))
 
           await handleProgress(() => Promise.resolve(file.progress))
-
           const blob = await res.blob()
-
           const decryptedFile = new File([blob], fileMeta.name)
           const url = window.URL.createObjectURL(decryptedFile)
           createDownloadLinkAndClick(url, fileMeta.name)
+
           return Promise.resolve('File saved!')
         }
 
         await downloadFileAsStream(referenceAlias, fileMeta, fileReference, masterKey)
 
         await handleProgress(() =>
-          sendMessageToSw<number>({
+          sendMessageToServiceWorker<number>({
             request: 'progress',
             data: { alias: referenceAlias }
           })
@@ -181,8 +152,6 @@
         error = e.message
       }
     }
-
-    // history.replaceState(null, 'Secret destroyed', 's/🔥')
   }
 </script>
 

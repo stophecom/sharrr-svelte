@@ -24,6 +24,7 @@
   import type { Status } from '$lib/store'
   import type { SecretsResponse } from '$api/secrets/+server'
   import Spinner from './Spinner.svelte'
+  import { copyText } from '$lib/utils'
 
   export let baseUrl: string
 
@@ -36,17 +37,6 @@
 
   function setStatus(newStatus: Status) {
     status.update(() => newStatus)
-  }
-
-  const copyLink = () => {
-    navigator.clipboard.writeText(link).then(
-      function () {
-        console.log('Async: Copying to clipboard was successful!')
-      },
-      function (err) {
-        console.error('Async: Could not copy text: ', err)
-      }
-    )
   }
 
   async function postSecret(file: File) {
@@ -143,7 +133,7 @@
           data-testid="copy-link"
           class="shrink-0 uppercase"
           variant="primary"
-          on:click={copyLink}>Copy</Button
+          on:click={() => copyText(link)}>Copy</Button
         >
       </div>
 
