@@ -19,10 +19,10 @@ jobs:
           VERCEL_URL: ${{ github.event.deployment_status.target_url }}
       - name: Create folder for artifacts
         if: always()
-        run: mkdir -p tests/playwright-report/published
+        run: mkdir -p test-results
       - name: Upload test results
         if: always()
         uses: actions/upload-artifact@v3
         with:
           name: playwright-report-published
-          path: tests/playwright-report/published
+          path: test-results

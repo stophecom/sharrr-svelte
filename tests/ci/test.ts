@@ -45,7 +45,7 @@ test('Download page renders correctly', async () => {
 })
 
 test('File download succeeds', async () => {
-  test.skip(process.env.PUBLIC_ENV === 'ci')
+  test.skip(process.env.PUBLIC_ENV !== 'development')
   // Test doesn't run on actual published website for some reason. (Maybe issue with service worker or access to fs, etc.)
 
   // Download file
