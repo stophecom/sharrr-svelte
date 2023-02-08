@@ -10,13 +10,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
       - name: Install dependencies
         run: npm ci && npx playwright install --with-deps
       - name: Run tests
-        run: npx playwright test
+        run: npx playwright test --debug
         env:
           PUBLIC_ENV: preview
           VERCEL_URL: ${{ github.event.deployment_status.target_url }}
+          DEBUG: pw:api
       - name: Create folder for artifacts
         if: always()
         run: mkdir -p test-results
