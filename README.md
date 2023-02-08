@@ -1,8 +1,12 @@
 # sharrr
 
-One-time end-to-end encrypted file transfer.
+**One-time end-to-end encrypted file transfer.**
 
-Live version: [sharrr.com](https://sharrr.com)
+Proof of concept on how to transfer files (of virtually unlimited size) over the internet in the most secure way possible.
+
+Learn more about the [technical implementation](https://sharrr.com/about). See how [sharrr compares](https://github.com/stophecom/sharrr-svelte/blob/main/src/routes/about/comparison.md) to other services.
+
+Live version: [www.sharrr.com](https://sharrr.com)
 
 ## Developing
 
@@ -90,8 +94,6 @@ curl --request POST \
 ```
 
 ## About
-
-Learn more about the [technical implementation](https://sharrr.com/about). See how [sharrr compares](https://github.com/stophecom/sharrr-svelte/blob/main/src/routes/about/comparison.md) to other services.
 
 ### Stack
 
