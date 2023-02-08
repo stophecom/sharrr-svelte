@@ -2,7 +2,7 @@
 
 **One-time end-to-end encrypted file transfer.**
 
-Proof of concept on how to transfer files (of virtually unlimited size) over the internet in the most secure way possible.
+This project is a proof of concept on how to transfer files (of virtually unlimited size) over the internet in the most secure way possible.
 
 Learn more about the [technical implementation](https://sharrr.com/about). See how [sharrr compares](https://github.com/stophecom/sharrr-svelte/blob/main/src/routes/about/comparison.md) to other services.
 
@@ -92,6 +92,34 @@ curl --request POST \
      --header 'Authorization: Bearer API_SECRET_KEY'
 
 ```
+
+## Self hosting
+
+## With Vercel & co.
+
+You will need the following secrets.
+
+```bash
+# Prisma compatible DB e.g. Planetscale
+DATABASE_URL='mysql://'
+
+# S3 compatible object storage e.g. AWS
+S3_ENDPOINT='<string>'
+S3_ACCESS_KEY='<string>'
+S3_SECRET_KEY='<string>'
+PUBLIC_S3_BUCKET='<string>'
+
+# Vercel specific, but can be easily replaced.
+VERCEL_URL='http://localhost:3000'
+PUBLIC_ENV='development' # preview/production
+
+# Only used for cron jobs that run using Github Actions.
+API_SECRET_KEY='<string>'
+```
+
+### With Docker
+
+Coming soon
 
 ## About
 
