@@ -21,6 +21,7 @@ const config: PlaywrightTestConfig = {
 
 // Runs on published websites
 const configPublished: PlaywrightTestConfig = {
+  timeout: 10000,
   use: {
     contextOptions: {
       permissions: ['clipboard-read', 'clipboard-write']

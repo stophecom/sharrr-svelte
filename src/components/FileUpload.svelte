@@ -24,6 +24,7 @@
   import type { Status } from '$lib/store'
   import type { SecretsResponse } from '$api/secrets/+server'
   import Spinner from './Spinner.svelte'
+  import CopyButton from './CopyButton.svelte'
 
   export let baseUrl: string
 
@@ -36,17 +37,6 @@
 
   function setStatus(newStatus: Status) {
     status.update(() => newStatus)
-  }
-
-  const copyLink = () => {
-    navigator.clipboard.writeText(link).then(
-      function () {
-        console.log('Async: Copying to clipboard was successful!')
-      },
-      function (err) {
-        console.error('Async: Could not copy text: ', err)
-      }
-    )
   }
 
   async function postSecret(file: File) {
@@ -78,7 +68,10 @@
 
     const { name, size, type } = file
 
-    const fileMeta = await encryptString(JSON.stringify({ name, size, mimeType: type }), masterKey)
+    const fileMeta = await encryptString(
+      JSON.stringify({ name, size, mimeType: type, isSingleChunk: chunks.length === 1 }),
+      masterKey
+    )
     const fileReference = await encryptString(JSON.stringify({ bucket, chunks }), masterKey)
 
     return api<SecretsResponse>(
@@ -136,12 +129,7 @@
           </div>
           <Countdown />
         </div>
-        <Button
-          data-testid="copy-link"
-          class="shrink-0 uppercase"
-          variant="primary"
-          on:click={copyLink}>Copy</Button
-        >
+        <CopyButton class={'shrink-0'} text={link} />
       </div>
 
       <div class="flex">

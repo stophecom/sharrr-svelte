@@ -3,6 +3,7 @@
   import GoFileBinary from 'svelte-icons/go/GoFileBinary.svelte'
   import prettyBytes from 'pretty-bytes'
 
+  import { handleFileChunksDownload } from '$lib/file-transfer'
   import type { FileMeta, FileReference } from '$lib/file-transfer'
   import { encryptAndHash, decryptString } from '$lib/crypto'
   import { api } from '$lib/api'
@@ -16,6 +17,7 @@
   import ProgressBar from '$components/ProgressBar.svelte'
   import { onMount } from 'svelte'
   import Spinner from '$components/Spinner.svelte'
+  import { createDownloadLinkAndClick, sendMessageToServiceWorker } from '$lib/utils'
 
   let fileMeta: FileMeta | undefined
   let fileReference: FileReference | undefined
@@ -26,10 +28,6 @@
   let error: string = ''
 
   onMount(async () => {
-    if (!('serviceWorker' in navigator)) {
-      error = 'Your browser is not supported: Service worker not available.'
-    }
-
     status = 'preloading'
 
     try {
@@ -57,6 +55,12 @@
 
       const decryptedSecretFileMeta = await decryptString(fileMetaData, masterKey)
       fileMeta = JSON.parse(decryptedSecretFileMeta)
+
+      if (!('serviceWorker' in navigator) && fileMeta && !fileMeta.isSingleChunk) {
+        throw Error(
+          'Your browser is not supported: Service worker not available. Try a different device or browser.'
+        )
+      }
     } catch (e) {
       if (e instanceof Error) {
         error = e?.message
@@ -65,7 +69,21 @@
     status = 'preview'
   })
 
-  const downloadFile = async (
+  const handleProgress = async (getProgress: () => Promise<number>) => {
+    const progressInterval = setInterval(async () => {
+      progress = await getProgress()
+
+      if (progress >= 1) {
+        // Sometimes progress is above 1 for some reason
+        progress = 1
+        status = 'done'
+        clearInterval(progressInterval)
+        return Promise.resolve('File saved!')
+      }
+    }, 500)
+  }
+
+  const downloadFileAsStream = async (
     referenceAlias: string,
     fileMeta: FileMeta,
     fileReference: FileReference,
@@ -79,33 +97,12 @@
       url: `/api/v1/service-worker-file-download/${referenceAlias}`
     }
 
-    await sendMessageToSw({
+    await sendMessageToServiceWorker({
       request: 'file_info',
       data: fileInfo
     })
 
-    const a = document.createElement('a')
-    a.href = fileInfo.url
-    document.body.appendChild(a)
-    a.click()
-  }
-
-  const sendMessageToSw = (msg: Record<string, unknown>) => {
-    return new Promise((resolve, reject) => {
-      const channel = new MessageChannel()
-
-      channel.port1.onmessage = (event) => {
-        if (event.data === undefined) {
-          reject('bad response from serviceWorker')
-        } else if (event.data.error !== undefined) {
-          reject(event.data.error)
-        } else {
-          resolve(event.data)
-        }
-      }
-
-      navigator?.serviceWorker?.controller?.postMessage(msg, [channel.port2])
-    })
+    createDownloadLinkAndClick(fileInfo.url)
   }
 
   const fetchSecretFile = async () => {
@@ -121,32 +118,40 @@
       status = 'downloading'
 
       if (fileMeta && fileReference) {
-        await downloadFile(referenceAlias, fileMeta, fileReference, masterKey)
+        // If only one chunk, we download immediately.
+        if (fileMeta.isSingleChunk && fileReference.chunks.length === 1) {
+          const file = {
+            alias: referenceAlias,
+            decryptionKey: masterKey,
+            ...fileReference,
+            ...fileMeta,
+            progress: 0
+          }
+          const res = new Response(handleFileChunksDownload(file))
 
-        // Poll for download progress every second
-        const progressInterval = setInterval(async () => {
-          progress = (await sendMessageToSw({
+          await handleProgress(() => Promise.resolve(file.progress))
+          const blob = await res.blob()
+          const decryptedFile = new File([blob], fileMeta.name)
+          const url = window.URL.createObjectURL(decryptedFile)
+          createDownloadLinkAndClick(url, fileMeta.name)
+
+          return Promise.resolve('File saved!')
+        }
+
+        await downloadFileAsStream(referenceAlias, fileMeta, fileReference, masterKey)
+
+        await handleProgress(() =>
+          sendMessageToServiceWorker<number>({
             request: 'progress',
             data: { alias: referenceAlias }
-          })) as number
-
-          if (progress >= 1) {
-            // Sometimes progress is above 1 for some reason
-            progress = 1
-            setTimeout(() => {
-              status = 'done'
-              clearInterval(progressInterval)
-            }, 100)
-          }
-        }, 1000)
+          })
+        )
       }
     } catch (e) {
       if (e instanceof Error) {
         error = e.message
       }
     }
-
-    // history.replaceState(null, 'Secret destroyed', 's/🔥')
   }
 </script>
 
