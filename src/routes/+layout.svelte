@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { PUBLIC_ENV } from '$env/static/public'
   import Header from '$components/Header.svelte'
   import Footer from '$components/Footer.svelte'
   import '../app.css'
@@ -21,6 +22,9 @@
   <link rel="manifest" href="/site.webmanifest" />
   <meta name="msapplication-TileColor" content="#da532c" />
   <meta name="theme-color" content="#ffffff" />
+  {#if PUBLIC_ENV !== 'production'}
+    <meta name="robots" content="noindex" />
+  {/if}
 </svelte:head>
 
 <div class="app min-h-screen grid grid-flow-row">
