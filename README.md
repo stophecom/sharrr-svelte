@@ -77,9 +77,7 @@ npm run build
 
 You can preview the production build with `npm run preview`.
 
-## Maintenance
-
-### Cron jobs
+### Maintenance
 
 There is a Github workflow `cron-cleanup-files.yml` that runs every day to cleanup old files.
 See `src/routes/api/v1/cron/+server.ts` for more info.
@@ -95,7 +93,7 @@ curl --request POST \
 
 ## Self hosting
 
-## With Vercel & co.
+### With Vercel & co.
 
 You will need the following secrets.
 
