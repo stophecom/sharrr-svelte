@@ -7,5 +7,6 @@ export const handle = (async ({ event, resolve }) => {
   if (PUBLIC_ENV !== 'production') {
     response.headers.set('X-Robots-Tag', 'noindex')
   }
+
   return response
 }) satisfies Handle
