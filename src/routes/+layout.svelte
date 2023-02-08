@@ -30,7 +30,7 @@
 <div class="app min-h-screen grid grid-flow-row">
   <Header />
 
-  <main class="min-h-full flex justify-center">
+  <main class="min-h-screen flex justify-center">
     <slot />
   </main>
 
