@@ -13,11 +13,19 @@ jobs:
       - uses: actions/setup-node@v3
       - name: Install dependencies
         run: npm ci && npx playwright install --with-deps
-      - name: Run tests
+      - name: Run tests on preview PR
+        if: github.base_ref != 'main'
         run: npx playwright test
         env:
           PUBLIC_ENV: preview
           VERCEL_URL: ${{ github.event.deployment_status.target_url }}
+          DEBUG: pw:api
+      - name: Run tests on production PR
+        if: github.base_ref == 'main'
+        run: npx playwright test
+        env:
+          PUBLIC_ENV: production
+          VERCEL_URL: https://sharrr.com
           DEBUG: pw:api
       - name: Create folder for artifacts
         if: always()
