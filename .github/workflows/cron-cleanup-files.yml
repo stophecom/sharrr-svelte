@@ -9,5 +9,5 @@ jobs:
       - name: Call our API route
         run: |
           curl --request POST \
-          --url 'https://sharrr.com/api/v1/cron' \
+          --url 'https://www.sharrr.com/api/v1/cron' \
           --header 'Authorization: Bearer ${{ secrets.API_SECRET_KEY }}'
