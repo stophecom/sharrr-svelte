@@ -8,7 +8,8 @@ All code is [open source on Github](https://github.com/stophecom/sharrr-svelte).
 
 I am not a security engineer or cryptographer. Use with caution. Feedback on security aspects or potential vulnerabilities is much appreciated.
 
-Find me on [Twitter](https://twitter.com/stophecom), [Mastodon](https://mastodon.social/@stophecom). I have a [website](https://www.stophe.com/) and [blog](https://blog.stophe.com/).
+Find me on [Twitter](https://twitter.com/stophecom), [Mastodon](https://mastodon.social/@stophecom).  
+Read the background story about this project in [my blog](https://blog.stophe.com/how-to-securely-share-a-file).
 
 ## Features
 
