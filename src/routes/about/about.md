@@ -24,7 +24,7 @@ Read the background story about this project in [my blog](https://blog.stophe.co
 
 Play fair - this is a non-commercial project that is meant for personal use only.
 
-### Tipp
+### Tip
 
 Downloading large files seems to work best in Firefox.
 
