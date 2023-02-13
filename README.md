@@ -2,7 +2,7 @@
 
 **One-time end-to-end encrypted file transfer.**
 
-This project is a proof of concept on how to transfer files (of virtually unlimited size) over the internet in the most secure way possible.
+This project is a proof-of-concept on how to transfer files (of virtually unlimited size) over the internet in the most secure way possible.
 
 Learn more about the [technical implementation](https://sharrr.com/about). See how [sharrr compares](https://github.com/stophecom/sharrr-svelte/blob/main/src/routes/about/comparison.md) to other services.
 
