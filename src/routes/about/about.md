@@ -1,6 +1,6 @@
 ## Intro
 
-This project is **proof-of-concept** on how to transfer large files over the internet in the most secure way possible, using **zero-knowledge encryption**.
+This project is **proof-of-concept** on how to transfer large files over the internet asynchronously and in the most secure way possible, using **zero-knowledge encryption**.
 
 All code is [open source on Github](https://github.com/stophecom/sharrr-svelte).
 
@@ -9,7 +9,7 @@ All code is [open source on Github](https://github.com/stophecom/sharrr-svelte).
 I am not a security engineer or cryptographer. Use with caution. Feedback on security aspects or potential vulnerabilities is much appreciated.
 
 Find me on [Twitter](https://twitter.com/stophecom), [Mastodon](https://mastodon.social/@stophecom).  
-Read the background story about this project in [my blog](https://blog.stophe.com/how-to-securely-share-a-file).
+ [Read the background story](https://blog.stophe.com/how-to-securely-share-a-file) about this project in my blog.
 
 ## Features
 
