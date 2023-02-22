@@ -2,7 +2,7 @@
 
 **One-time end-to-end encrypted file transfer.**
 
-This project is a proof of concept on how to transfer files (of virtually unlimited size) over the internet in the most secure way possible.
+This project is a proof-of-concept on how to transfer files (of virtually unlimited size) asynchronously and in the most secure way possible.
 
 Learn more about the [technical implementation](https://sharrr.com/about). See how [sharrr compares](https://github.com/stophecom/sharrr-svelte/blob/main/src/routes/about/comparison.md) to other services.
 
@@ -137,4 +137,6 @@ Coming soon
 
 ### License
 
-MIT
+[MIT](https://opensource.org/license/mit/) (Code)
+
+[CC BY-NC-ND](https://creativecommons.org/licenses/by-nc-nd/4.0/) (Creatives)
