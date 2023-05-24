@@ -28,23 +28,23 @@
     "@typescript-eslint/parser": "^5.45.0",
     "autoprefixer": "^10.4.13",
     "dotenv": "^16.0.3",
-    "eslint": "^8.36.0",
+    "eslint": "^8.41.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-svelte3": "^4.0.0",
     "postcss": "^8.4.21",
     "prettier": "^2.8.4",
-    "prettier-plugin-svelte": "^2.8.1",
+    "prettier-plugin-svelte": "^2.10.0",
     "prisma": "^4.10.0",
     "svelte": "^3.54.0",
     "svelte-check": "^3.0.3",
     "tailwindcss": "^3.2.4",
     "tslib": "^2.5.0",
-    "typescript": "^4.9.3",
-    "vite": "^4.1.4",
+    "typescript": "^5.0.4",
+    "vite": "^4.3.8",
     "vitest": "^0.29.2"
   },
   "dependencies": {
-    "@aws-sdk/client-s3": "^3.319.0",
+    "@aws-sdk/client-s3": "^3.338.0",
     "@aws-sdk/s3-presigned-post": "^3.267.0",
     "@aws-sdk/s3-request-presigner": "^3.254.0",
     "@prisma/client": "^4.13.0",
@@ -53,6 +53,6 @@
     "pretty-bytes": "^6.1.0",
     "svelte-icons": "^2.1.0",
     "svelte-markdown": "^0.2.3",
-    "svelte-typewriter": "^3.1.4"
+    "svelte-typewriter": "^3.1.6"
   }
 }
