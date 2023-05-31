@@ -41,7 +41,7 @@
     "tslib": "^2.5.0",
     "typescript": "^5.0.4",
     "vite": "^4.3.8",
-    "vitest": "^0.29.2"
+    "vitest": "^0.31.2"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.338.0",
