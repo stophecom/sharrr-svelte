@@ -20,12 +20,12 @@
   "type": "module",
   "devDependencies": {
     "@playwright/test": "^1.30.0",
-    "@sveltejs/adapter-auto": "^2.0.1",
-    "@sveltejs/kit": "^1.15.0",
+    "@sveltejs/adapter-auto": "^2.1.0",
+    "@sveltejs/kit": "^1.22.3",
     "@tailwindcss/typography": "^0.5.9",
     "@types/cookie": "^0.5.1",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
-    "@typescript-eslint/parser": "^5.45.0",
+    "@typescript-eslint/parser": "^5.62.0",
     "autoprefixer": "^10.4.13",
     "dotenv": "^16.0.3",
     "eslint": "^8.41.0",
@@ -41,7 +41,7 @@
     "tslib": "^2.5.0",
     "typescript": "^5.0.4",
     "vite": "^4.3.8",
-    "vitest": "^0.29.2"
+    "vitest": "^0.32.2"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.338.0",
