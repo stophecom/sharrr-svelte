@@ -19,7 +19,7 @@
   },
   "type": "module",
   "devDependencies": {
-    "@playwright/test": "^1.30.0",
+    "@playwright/test": "^1.37.1",
     "@sveltejs/adapter-auto": "^2.1.0",
     "@sveltejs/kit": "^1.22.3",
     "@tailwindcss/typography": "^0.5.9",
