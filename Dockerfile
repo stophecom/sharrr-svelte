@@ -5,4 +5,4 @@ WORKDIR /data
 
 RUN npm i
 
-CMD npm run build && npm run preview -- --host
+CMD npm run build && npm run dev -- --host

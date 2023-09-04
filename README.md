@@ -12,6 +12,8 @@ Like this project? [Sponsor me](https://github.com/sponsors/stophecom)!
 
 ## Developing
 
+Before you start, add an `.env` file at the root of the project. See below.
+
 ```bash
 # Initial installation
 npm i
@@ -95,9 +97,12 @@ curl --request POST \
 
 ## Self hosting
 
-### With Vercel & co.
+> **Note**
+> The project currently runs un Vercel, uses AWS S3 for storage and Planetscale as the DB solution. Self-hosting requires you to replace those 3rd party solutions.
 
-You will need the following secrets.
+### Current setup
+
+#### ENV Variables
 
 ```bash
 # Prisma compatible DB e.g. Planetscale
@@ -117,13 +122,12 @@ PUBLIC_ENV='development' # preview/production
 API_SECRET_KEY='<string>'
 ```
 
-### With Docker
+### With Docker (WIP)
 
-WIP
+You'll need to edit the environment variables within the `.env` file.
 
-#### Set Env Vars
-
-You'll need to edit the environment variables within the `env_vars` file.
+> **Note**
+> To run the app in Docker you still need to connect your own DB. Same goes if you want to run your own S3 storage solution. This part is not covered yet.
 
 Once you've done that, you can do the following:
 
