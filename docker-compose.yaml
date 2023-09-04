@@ -4,8 +4,7 @@ services:
   app:
     build: .
     container_name: sharrr
-    env_file: env_file
+    env_file: .env
     ports:
-      - "4173:4173"
+      - '4173:4173'
     restart: always
-
