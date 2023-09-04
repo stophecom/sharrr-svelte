@@ -8,6 +8,8 @@ Learn more about the [technical implementation](https://sharrr.com/about). See h
 
 Live version: [www.sharrr.com](https://sharrr.com)
 
+Like this project? [Sponsor me](https://github.com/sponsors/stophecom)!
+
 ## Developing
 
 ```bash
