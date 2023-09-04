@@ -119,7 +119,24 @@ API_SECRET_KEY='<string>'
 
 ### With Docker
 
-Coming soon
+WIP
+
+#### Set Env Vars
+
+You'll need to edit the environment variables within the `env_vars` file.
+
+Once you've done that, you can do the following:
+
+```bash
+# to start the docker container
+sudo docker compose up -d
+
+# to stop the docker container
+sudo docker compose down
+
+# to check logs
+sudo docker logs sharrr
+```
 
 ## About
 
