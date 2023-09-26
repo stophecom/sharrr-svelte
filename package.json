@@ -26,7 +26,7 @@
     "@types/cookie": "^0.5.1",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
     "@typescript-eslint/parser": "^5.62.0",
-    "autoprefixer": "^10.4.13",
+    "autoprefixer": "^10.4.16",
     "dotenv": "^16.0.3",
     "eslint": "^8.41.0",
     "eslint-config-prettier": "^8.5.0",
