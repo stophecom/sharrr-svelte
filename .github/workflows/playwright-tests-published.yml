@@ -14,7 +14,7 @@ jobs:
         with:
           version: 8
       - name: Install dependencies
-        run: pnpm ci && npx playwright install --with-deps
+        run: pnpm install && npx playwright install --with-deps
       - name: Run tests on preview PR
         if: github.event.deployment_status.environment != 'Production'
         run: npx playwright test
