@@ -1,10 +1,10 @@
 {
   "name": "sharrr-svelte",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "author": {
     "name": "Christophe S",
     "url": "https://stophe.com",
-    "email": "stophecom@pm.me"
+    "email": "x@stophe.com"
   },
   "scripts": {
     "dev": "vite dev --port 3000",
@@ -21,8 +21,9 @@
   "type": "module",
   "devDependencies": {
     "@playwright/test": "^1.38.1",
-    "@sveltejs/adapter-auto": "^2.1.0",
-    "@sveltejs/kit": "^1.25.1",
+    "@sveltejs/adapter-auto": "^3.0.0",
+    "@sveltejs/kit": "^2.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.0.0",
     "@tailwindcss/typography": "^0.5.10",
     "@types/cookie": "^0.5.1",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
@@ -36,19 +37,19 @@
     "prettier": "^2.8.4",
     "prettier-plugin-svelte": "^2.10.1",
     "prisma": "^5.4.1",
-    "svelte": "^3.59.2",
+    "svelte": "^4.0.0",
     "svelte-check": "^3.6.3",
     "tailwindcss": "^3.4.0",
     "tslib": "^2.6.2",
     "typescript": "^5.3.3",
-    "vite": "^4.4.9",
-    "vitest": "^0.32.2"
+    "vite": "^5.0.0",
+    "vitest": "^1.0.0"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.338.0",
     "@aws-sdk/s3-presigned-post": "^3.477.0",
     "@aws-sdk/s3-request-presigner": "^3.484.0",
-    "@prisma/client": "^5.7.1",
+    "@prisma/client": "^5.8.1",
     "axios": "^1.3.4",
     "axios-retry": "^3.4.0",
     "pretty-bytes": "^6.1.1",

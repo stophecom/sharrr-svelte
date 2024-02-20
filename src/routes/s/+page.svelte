@@ -190,7 +190,7 @@
                 <GoFileBinary class="fill-current" />
               </div>
 
-              <div class="flex">
+              <div class="grid grid-flow-col">
                 <strong class="mr-1">Name:</strong>
                 <Typewriter message={fileMeta?.name} />
               </div>

@@ -29,7 +29,7 @@ export const POST: RequestHandler = async ({ request }) => {
       { Bucket: BucketName }
     )) {
       if (!data.Contents) {
-        throw error(500, 'No Contents')
+        error(500, 'No Contents');
       }
 
       // Filter files by retention threshold date
@@ -71,6 +71,6 @@ export const POST: RequestHandler = async ({ request }) => {
     console.log(`Cron: Deleted ${count} entries from the Secrets database.`)
     return json({ success: true })
   } else {
-    throw error(401, 'Unauthorized')
+    error(401, 'Unauthorized');
   }
 }
