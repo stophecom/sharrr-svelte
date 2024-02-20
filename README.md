@@ -8,7 +8,7 @@ Learn more about the [technical implementation](https://sharrr.com/about). See h
 
 Live version: [www.sharrr.com](https://sharrr.com)
 
-About the author: [stophe.com](https://stophe.com)!
+About the author: [stophe.com](https://stophe.com)
 
 ## Developing
 
@@ -16,13 +16,13 @@ Before you start, add an `.env` file at the root of the project. See below.
 
 ```bash
 # Initial installation
-npm i
+pnpm i
 
 # Run dev server
-npm run dev
+pnpm run dev
 
 # or start the server and open the app in a new browser tab
-npm run dev -- --open
+pnpm run dev -- --open
 ```
 
 ### DB
@@ -63,11 +63,11 @@ pscale connect sharrr dev --port 3309
 ```bash
 # Run unit tests with vitest
 # Important: Node 19+ is required (Support for crypto modules)
-npm run test:unit
+pnpm run test:unit
 
 
 # E2E tests with playwright
-npm run test
+pnpm run test
 
 ```
 
@@ -76,10 +76,10 @@ npm run test
 To create a production version of your app:
 
 ```bash
-npm run build
+pnpm run build
 ```
 
-You can preview the production build with `npm run preview`.
+You can preview the production build with `pnpm run preview`.
 
 ### Maintenance
 
