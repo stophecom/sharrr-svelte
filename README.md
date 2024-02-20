@@ -8,7 +8,7 @@ Learn more about the [technical implementation](https://sharrr.com/about). See h
 
 Live version: [www.sharrr.com](https://sharrr.com)
 
-Like this project? [Sponsor me](https://github.com/sponsors/stophecom)!
+About the author: [stophe.com](https://stophe.com)!
 
 ## Developing
 
@@ -98,7 +98,7 @@ curl --request POST \
 ## Self hosting
 
 > **Note**
-> The project currently runs un Vercel, uses AWS S3 for storage and Planetscale as the DB solution. Self-hosting requires you to replace those 3rd party solutions.
+> The project currently runs un Vercel, uses S3 for storage and Planetscale as the DB solution. Self-hosting requires you to replace those 3rd party solutions.
 
 ### Current setup
 
