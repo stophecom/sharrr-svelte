@@ -7,19 +7,19 @@ export const GET: RequestHandler = async ({ params }) => {
   const alias = params.alias
 
   if (!alias) {
-    throw error(400, 'No alias provided.')
+    error(400, 'No alias provided.');
   }
 
   const secret = await prisma.secret.findUnique({ where: { alias: alias } })
 
   if (!secret) {
-    throw error(400, `No secret for alias ${alias}.`)
+    error(400, `No secret for alias ${alias}.`);
   }
 
   if (secret?.retrievedAt) {
-    throw error(410, {
-      message: `This link has already been accessed - the file no longer exists.`
-    })
+    error(410, {
+            message: `This link has already been accessed - the file no longer exists.`
+          });
   }
 
   return new Response(JSON.stringify({ fileMeta: secret.fileMeta }))
@@ -29,13 +29,13 @@ export const DELETE: RequestHandler = async ({ params }) => {
   const alias = params.alias
 
   if (!alias) {
-    throw error(400, 'No alias provided.')
+    error(400, 'No alias provided.');
   }
 
   const secret = await prisma.secret.findUnique({ where: { alias: alias } })
 
   if (!secret) {
-    throw error(400, `No secret for alias ${alias}.`)
+    error(400, `No secret for alias ${alias}.`);
   }
 
   if (!secret?.retrievedAt) {
@@ -46,9 +46,9 @@ export const DELETE: RequestHandler = async ({ params }) => {
       }
     })
   } else {
-    throw error(410, {
-      message: `This link has already been accessed - the file no longer exists.`
-    })
+    error(410, {
+            message: `This link has already been accessed - the file no longer exists.`
+          });
   }
 
   return new Response(JSON.stringify({ fileReference: secret.fileReference }))

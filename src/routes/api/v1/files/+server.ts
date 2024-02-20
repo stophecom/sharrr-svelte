@@ -31,6 +31,6 @@ export const GET = async ({ url }: RequestEvent) => {
     return json(post)
   } catch (err) {
     console.error(err)
-    throw error(400, 'Something went wrong.')
+    error(400, 'Something went wrong.');
   }
 }

@@ -19,23 +19,23 @@ export const POST = async ({ params, request }: RequestEvent) => {
   // const resourceAccessToken = request.headers['X-Sharrr-Access-Token']
 
   if (!Key) {
-    throw error(400, 'No file key provided.')
+    error(400, 'No file key provided.');
   }
 
   const secret = await prisma.secret.findUnique({ where: { alias: alias } })
 
   if (!secret) {
-    throw error(400, `No database entry for alias ${alias}.`)
+    error(400, `No database entry for alias ${alias}.`);
   }
 
   // Here we check if the requested file belongs to the "owner" via signature.
   const publicKey = await importPublicKey(secret.publicKey)
   if (!publicKey) {
-    throw error(400, `Public key missing or invalid.`)
+    error(400, `Public key missing or invalid.`);
   }
   const isSignatureValid = verifyMessageSignature(params.key, signature, publicKey)
   if (!isSignatureValid) {
-    throw error(400, `Invalid signature`)
+    error(400, `Invalid signature`);
   }
 
   const bucketParams = {
@@ -48,7 +48,7 @@ export const POST = async ({ params, request }: RequestEvent) => {
   })
 
   if (!url) {
-    throw error(400, `Couldn't get signed url. File no longer exist.`)
+    error(400, `Couldn't get signed url. File no longer exist.`);
   }
 
   return json({ url })
