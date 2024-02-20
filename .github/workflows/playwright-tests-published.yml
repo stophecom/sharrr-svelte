@@ -11,6 +11,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
+        with:
+          version: 8
       - name: Install dependencies
         run: pnpm ci && npx playwright install --with-deps
       - name: Run tests on preview PR
