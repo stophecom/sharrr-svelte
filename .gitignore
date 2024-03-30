@@ -11,3 +11,4 @@ node_modules
 test-results
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
+.env*.local
