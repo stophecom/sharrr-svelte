@@ -1,4 +1,27 @@
-<footer class="p-6 pt-8 text-center text-gray-600">
+<script lang="ts">
+  import FaHeart from 'svelte-icons/fa/FaHeart.svelte'
+  import Button from '$components/Button.svelte'
+</script>
+
+<footer class="p-6 pt-8 flex flex-col items-center text-center text-gray-600">
+  <div class="py-4 flex flex-col items-center justify-center text-center p-5 max-w-sm">
+    <small class="mb-3"
+      >*Funded by people like you. Together for privacy over profits: No ads, no tracking, no
+      bullshit.</small
+    >
+    <Button
+      href="https://donate.stripe.com/28oeV1gKP3bv4b6144"
+      variant="dark"
+      size="small"
+      class=""
+      target="_blank"
+    >
+      <div class="flex mr-2 w-4 h-4">
+        <FaHeart />
+      </div>
+      Donate</Button
+    >
+  </div>
   <small>
     Created by{' '}
     <a class="underline hover:text-primary" href="https://twitter.com/stophecom"> @stophecom</a>

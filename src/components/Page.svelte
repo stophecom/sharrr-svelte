@@ -5,10 +5,10 @@
 </script>
 
 <section class="flex items-center">
-  <div class="relative py-12">
+  <div class="relative pt-12">
     <div class="container mx-auto px-6 lg:px-8">
       <h1
-        class="mb-5 leading-tight text-5xl sm:text-5xl md:text-6xl font-bold tracking-tight sm:text-center "
+        class="mb-5 leading-tight text-5xl sm:text-5xl md:text-6xl font-bold tracking-tight sm:text-center"
       >
         {title}
       </h1>
