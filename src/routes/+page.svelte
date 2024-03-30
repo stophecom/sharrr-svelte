@@ -18,7 +18,7 @@
     { item: `Up to&nbsp;<strong>${prettyBytes(MAX_FILE_SIZE)}</strong>&nbsp;files` },
     { item: `Zero knowledge encryption` },
     { item: `One-time download` },
-    { item: `<strong>Free</strong>&nbsp;and open source` },
+    { item: `<strong>Free</strong>*&nbsp;and open source` },
     { item: `Stored in Switzerland 🇨🇭` }
   ]
 </script>
@@ -31,9 +31,9 @@
     <FileUpload baseUrl={data.baseUrl} />
   </div>
   {#if $status === 'initial'}
-    <div class="flex justify-center ">
+    <div class="flex justify-center">
       <div>
-        <ul class="pt-14 text-gray-700 ">
+        <ul class="pt-14 text-gray-700">
           {#each usps as usp, i}
             <li class="flex items-center">
               <div class="w-6 h-6 mr-2"><MdCheck /></div>

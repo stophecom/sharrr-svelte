@@ -2,13 +2,13 @@
 
 **One-time end-to-end encrypted file transfer.**
 
-This project is a proof-of-concept on how to transfer files (of virtually unlimited size) asynchronously and in the most secure way possible.
+Transfer files (of virtually unlimited size) asynchronously and in the most secure way possible.
 
 Learn more about the [technical implementation](https://sharrr.com/about). See how [sharrr compares](https://github.com/stophecom/sharrr-svelte/blob/main/src/routes/about/comparison.md) to other services.
 
-Live version: [www.sharrr.com](https://sharrr.com)
+Website: [www.sharrr.com](https://sharrr.com)
 
-About the author: [stophe.com](https://stophe.com)
+Help keep this project running: [Make a donation](https://donate.stripe.com/28oeV1gKP3bv4b6144)
 
 ## Developing
 
@@ -135,11 +135,13 @@ sudo docker logs sharrr
 
 ## About
 
+About the author: [stophe.com](https://stophe.com)
+
 ### Stack
 
 - SvelteKit
 - Tailwind CSS
-- PostgresSQL (Database)
+- PostgreSQL (Database)
 - Prisma (ORM)
 - Doppler (For env handling)
 
