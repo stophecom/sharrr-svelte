@@ -33,7 +33,7 @@ pnpm run dev -- --open
 # Init primsa
 npx prisma init
 
-# Push schema to PlanetScale
+# Push schema to Postgres
 npx prisma db push
 
 # Open prisma studio locally
@@ -44,19 +44,9 @@ npx prisma studio
 npx prisma generate
 ```
 
-#### PlanetScale
+#### Postgres Database
 
-Using PlanetScale currently, but can be done with any Prisma compatible database.
-
-```bash
-# Authenticate PlanetScale
-pscale auth login
-
-# Connect to DB dev branch
-# DATABASE_URL='mysql://root@127.0.0.1:3309/sharrr'
-pscale connect sharrr dev --port 3309
-
-```
+Using Vercel Postgres Database currently, but can be done with any Prisma compatible database.
 
 ### Tests
 
@@ -98,15 +88,16 @@ curl --request POST \
 ## Self hosting
 
 > **Note**
-> The project currently runs un Vercel, uses S3 for storage and Planetscale as the DB solution. Self-hosting requires you to replace those 3rd party solutions.
+> The project currently runs un Vercel, uses S3 for storage and Vercel Postgres DB. Self-hosting requires you to replace those 3rd party solutions.
 
 ### Current setup
 
 #### ENV Variables
 
 ```bash
-# Prisma compatible DB e.g. Planetscale
-DATABASE_URL='mysql://'
+# Postgres
+POSTGRES_PRISMA_URL='postgres://'
+POSTGRES_URL_NON_POOLING='postgres://' # Direct Connection
 
 # S3 compatible object storage e.g. AWS
 S3_ENDPOINT='<string>'
@@ -148,14 +139,13 @@ sudo docker logs sharrr
 
 - SvelteKit
 - Tailwind CSS
-- PlanetScale (MySQL DB)
+- PostgresSQL (Database)
 - Prisma (ORM)
 - Doppler (For env handling)
 
 ### Infrastructure
 
-- Website on [Vercel](https://vercel.com/)
-- DB on [PlanetScale](https://planetscale.com/)
+- Website and Postgres on [Vercel](https://vercel.com/)
 - S3 Object Storage with [flow.swiss](https://flow.swiss)
 
 ### License
