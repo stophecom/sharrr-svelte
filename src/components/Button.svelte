@@ -8,12 +8,17 @@
   export let disabled: boolean = false
   export let href: string = ''
   export let size: 'small' | 'medium' | 'large' = 'medium'
-  export let variant: 'primary' | 'default' = 'default'
+  export let variant: 'primary' | 'dark' | 'default' = 'default'
 
   switch (variant) {
     case 'primary': {
       variantClass =
         'bg-primary text-white focus:ring-pink-600 hover:shadow-lg hover:shadow-black-200/10 transition-shadow'
+      break
+    }
+    case 'dark': {
+      variantClass =
+        'bg-gray-900 text-white focus:ring-gray-900 hover:shadow-lg hover:shadow-black-200/10 transition-shadow'
       break
     }
     case 'default': {
