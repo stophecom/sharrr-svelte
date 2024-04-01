@@ -54,7 +54,7 @@
     "axios-retry": "^3.4.0",
     "pretty-bytes": "^6.1.1",
     "svelte-icons": "^2.1.0",
-    "svelte-markdown": "^0.2.3",
+    "svelte-markdown": "^0.4.1",
     "svelte-typewriter": "^3.1.6"
   }
 }
