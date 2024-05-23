@@ -6,8 +6,8 @@
 <footer class="p-6 pt-8 flex flex-col items-center text-center text-gray-600">
   <div class="py-4 flex flex-col items-center justify-center text-center p-5 max-w-sm">
     <small class="mb-3"
-      >*Funded by people like you. Together for privacy over profits: No ads, no tracking, no
-      bullshit.</small
+      >*No, you are not the product. The internet can still be a great place. Together for privacy
+      over profits.</small
     >
     <Button
       href="https://donate.stripe.com/28oeV1gKP3bv4b6144"
@@ -19,7 +19,7 @@
       <div class="flex mr-2 w-4 h-4">
         <FaHeart />
       </div>
-      Donate</Button
+      Support</Button
     >
   </div>
   <small>
