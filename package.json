@@ -47,7 +47,7 @@
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.338.0",
-    "@aws-sdk/s3-presigned-post": "^3.477.0",
+    "@aws-sdk/s3-presigned-post": "^3.587.0",
     "@aws-sdk/s3-request-presigner": "^3.484.0",
     "@prisma/client": "^5.8.1",
     "axios": "^1.7.2",
