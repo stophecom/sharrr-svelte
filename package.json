@@ -23,7 +23,7 @@
     "@playwright/test": "^1.38.1",
     "@sveltejs/adapter-auto": "^3.0.0",
     "@sveltejs/kit": "^2.0.0",
-    "@sveltejs/vite-plugin-svelte": "^3.0.0",
+    "@sveltejs/vite-plugin-svelte": "^3.1.1",
     "@tailwindcss/typography": "^0.5.10",
     "@types/cookie": "^0.6.0",
     "@typescript-eslint/eslint-plugin": "^5.57.0",
@@ -43,11 +43,11 @@
     "tslib": "^2.6.2",
     "typescript": "^5.3.3",
     "vite": "^5.0.0",
-    "vitest": "^1.0.0"
+    "vitest": "^1.6.0"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.338.0",
-    "@aws-sdk/s3-presigned-post": "^3.477.0",
+    "@aws-sdk/s3-presigned-post": "^3.587.0",
     "@aws-sdk/s3-request-presigner": "^3.484.0",
     "@prisma/client": "^5.8.1",
     "axios": "^1.7.2",
