@@ -15,8 +15,8 @@ dependencies:
     specifier: ^3.484.0
     version: 3.515.0
   '@prisma/client':
-    specifier: ^5.8.1
-    version: 5.10.1(prisma@5.10.1)
+    specifier: ^5.15.0
+    version: 5.15.0(prisma@5.10.1)
   axios:
     specifier: ^1.7.2
     version: 1.7.2
@@ -1730,8 +1730,8 @@ packages:
     resolution: {integrity: sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==}
     dev: true
 
-  /@prisma/client@5.10.1(prisma@5.10.1):
-    resolution: {integrity: sha512-4R8Vp6sSwVJSnOxw8WU1WSLqE/G3WJy1xA05XvW87cINoB1hEY7endw5Ppy6TrIBCCtHQim2lqfHkbPvv+i7bQ==}
+  /@prisma/client@5.15.0(prisma@5.10.1):
+    resolution: {integrity: sha512-wPTeTjbd2Q0abOeffN7zCDCbkp9C9cF+e9HPiI64lmpehyq2TepgXE+sY7FXr7Rhbb21prLMnhXX27/E11V09w==}
     engines: {node: '>=16.13'}
     requiresBuild: true
     peerDependencies:
