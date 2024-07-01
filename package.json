@@ -49,7 +49,7 @@
     "@aws-sdk/client-s3": "^3.338.0",
     "@aws-sdk/s3-presigned-post": "^3.587.0",
     "@aws-sdk/s3-request-presigner": "^3.484.0",
-    "@prisma/client": "^5.8.1",
+    "@prisma/client": "^5.16.1",
     "axios": "^1.7.2",
     "axios-retry": "^4.3.0",
     "pretty-bytes": "^6.1.1",
