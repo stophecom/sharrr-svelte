@@ -24,8 +24,8 @@ importers:
         specifier: ^1.7.2
         version: 1.7.2
       axios-retry:
-        specifier: ^4.3.0
-        version: 4.3.0(axios@1.7.2)
+        specifier: ^4.4.1
+        version: 4.4.1(axios@1.7.2)
       pretty-bytes:
         specifier: ^6.1.1
         version: 6.1.1
@@ -1347,8 +1347,8 @@ packages:
     peerDependencies:
       postcss: ^8.1.0
 
-  axios-retry@4.3.0:
-    resolution: {integrity: sha512-vUAQ3bi02Q++b8aAn3fuM03qRKFLZ6BPcqSVsOpgWeww2jrYFpu9SKb9VuctvxrJuRCWM/voDuuRAD7v3A1G5g==}
+  axios-retry@4.4.1:
+    resolution: {integrity: sha512-JGzNoglDHtHWIEvvAampB0P7jxQ/sT4COmW0FgSQkVg6o4KqNjNMBI6uFVOq517hkw/OAYYAG08ADtBlV8lvmQ==}
     peerDependencies:
       axios: 0.x || 1.x
 
@@ -4673,7 +4673,7 @@ snapshots:
       postcss: 8.4.39
       postcss-value-parser: 4.2.0
 
-  axios-retry@4.3.0(axios@1.7.2):
+  axios-retry@4.4.1(axios@1.7.2):
     dependencies:
       axios: 1.7.2
       is-retry-allowed: 2.2.0
