@@ -145,6 +145,8 @@ About the author: [stophe.com](https://stophe.com)
 - Prisma (ORM)
 - Doppler (For env handling)
 
+This project is tested with BrowserStack.
+
 ### Infrastructure
 
 - Website and Postgres on [Vercel](https://vercel.com/)
