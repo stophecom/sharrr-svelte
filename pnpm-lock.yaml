@@ -21,11 +21,11 @@ importers:
         specifier: ^5.16.1
         version: 5.16.1(prisma@5.18.0)
       axios:
-        specifier: ^1.7.4
-        version: 1.7.4
+        specifier: ^1.7.7
+        version: 1.7.7
       axios-retry:
         specifier: ^4.4.1
-        version: 4.4.1(axios@1.7.4)
+        version: 4.4.1(axios@1.7.7)
       pretty-bytes:
         specifier: ^6.1.1
         version: 6.1.1
@@ -1058,8 +1058,8 @@ packages:
     peerDependencies:
       axios: 0.x || 1.x
 
-  axios@1.7.4:
-    resolution: {integrity: sha512-DukmaFRnY6AzAALSH4J2M3k6PkaC+MfaAGdEERRWcC9q3/TWQwLpHR8ZRLKTdQ3aBDL64EdluRDjJqKw+BPZEw==}
+  axios@1.7.7:
+    resolution: {integrity: sha512-S4kL7XrjgBmvdGut0sN3yJxqYzrDOnivkBiN0OFs6hLiUam3UPvswUo0kqGyhqUZGEOytHyumEdXsAkgCOUf3Q==}
 
   axobject-query@4.0.0:
     resolution: {integrity: sha512-+60uv1hiVFhHZeO+Lz0RYzsVHy5Wr1ayX0mwda9KPDVLNJgZ1T9Ny7VmFbLDzxsH0D87I86vgj3gFrjTJUYznw==}
@@ -3655,12 +3655,12 @@ snapshots:
       postcss: 8.4.47
       postcss-value-parser: 4.2.0
 
-  axios-retry@4.4.1(axios@1.7.4):
+  axios-retry@4.4.1(axios@1.7.7):
     dependencies:
-      axios: 1.7.4
+      axios: 1.7.7
       is-retry-allowed: 2.2.0
 
-  axios@1.7.4:
+  axios@1.7.7:
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
