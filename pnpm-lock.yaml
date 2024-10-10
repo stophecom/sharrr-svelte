@@ -43,8 +43,8 @@ importers:
         specifier: ^1.46.1
         version: 1.46.1
       '@sveltejs/adapter-auto':
-        specifier: ^3.2.2
-        version: 3.2.2(@sveltejs/kit@2.5.0(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.18)(vite@5.4.8))(svelte@4.2.18)(vite@5.4.8))
+        specifier: ^3.2.5
+        version: 3.2.5(@sveltejs/kit@2.5.0(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.18)(vite@5.4.8))(svelte@4.2.18)(vite@5.4.8))
       '@sveltejs/kit':
         specifier: ^2.0.0
         version: 2.5.0(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.18)(vite@5.4.8))(svelte@4.2.18)(vite@5.4.8)
@@ -847,8 +847,8 @@ packages:
     resolution: {integrity: sha512-4pP0EV3iTsexDx+8PPGAKCQpd/6hsQBaQhqWzU4hqKPHN5epPsxKbvUTIiYIHTxaKt6/kEaqPBpu/ufvfbrRzw==}
     engines: {node: '>=16.0.0'}
 
-  '@sveltejs/adapter-auto@3.2.2':
-    resolution: {integrity: sha512-Mso5xPCA8zgcKrv+QioVlqMZkyUQ5MjDJiEPuG/Z7cV/5tmwV7LmcVWk5tZ+H0NCOV1x12AsoSpt/CwFwuVXMA==}
+  '@sveltejs/adapter-auto@3.2.5':
+    resolution: {integrity: sha512-27LR+uKccZ62lgq4N/hvyU2G+hTP9fxWEAfnZcl70HnyfAjMSsGk1z/SjAPXNCD1mVJIE7IFu3TQ8cQ/UH3c0A==}
     peerDependencies:
       '@sveltejs/kit': ^2.0.0
 
@@ -1281,6 +1281,7 @@ packages:
   eslint@8.56.0:
     resolution: {integrity: sha512-Go19xM6T9puCOWntie1/P997aXxFsOi37JIHRWI514Hc6ZnaHGKY9xFhrU65RT6CcBEzZoGG1e6Nq+DT04ZtZQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
 
   esm-env@1.0.0:
@@ -3412,7 +3413,7 @@ snapshots:
       '@smithy/types': 3.3.0
       tslib: 2.6.3
 
-  '@sveltejs/adapter-auto@3.2.2(@sveltejs/kit@2.5.0(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.18)(vite@5.4.8))(svelte@4.2.18)(vite@5.4.8))':
+  '@sveltejs/adapter-auto@3.2.5(@sveltejs/kit@2.5.0(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.18)(vite@5.4.8))(svelte@4.2.18)(vite@5.4.8))':
     dependencies:
       '@sveltejs/kit': 2.5.0(@sveltejs/vite-plugin-svelte@3.1.1(svelte@4.2.18)(vite@5.4.8))(svelte@4.2.18)(vite@5.4.8)
       import-meta-resolve: 4.1.0
