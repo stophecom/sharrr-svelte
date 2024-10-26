@@ -6,7 +6,11 @@
 </script>
 
 <svelte:head>
-  <script defer data-domain="sharrr.com" src="https://plausible.io/js/script.js"></script>
+  <script
+    defer
+    data-domain="sharrr.com"
+    src="https://plausible.io/js/script.tagged-events.js"
+  ></script>
   <title>Sharrr - End-to-end encrypted file transfer.</title>
   <meta
     name="description"
