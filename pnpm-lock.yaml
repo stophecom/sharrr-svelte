@@ -18,8 +18,8 @@ importers:
         specifier: ^3.678.0
         version: 3.678.0
       '@prisma/client':
-        specifier: ^5.21.1
-        version: 5.21.1(prisma@5.18.0)
+        specifier: ^6.0.0
+        version: 6.0.0(prisma@5.18.0)
       axios:
         specifier: ^1.7.8
         version: 1.7.8
@@ -684,9 +684,9 @@ packages:
   '@polka/url@1.0.0-next.24':
     resolution: {integrity: sha512-2LuNTFBIO0m7kKIQvvPHN6UE63VjpmL9rnEEaOOaiSPbZK+zUOYIzBAWcED+3XYzhYsd/0mD57VdxAEqqV52CQ==}
 
-  '@prisma/client@5.21.1':
-    resolution: {integrity: sha512-3n+GgbAZYjaS/k0M03yQsQfR1APbr411r74foknnsGpmhNKBG49VuUkxIU6jORgvJPChoD4WC4PqoHImN1FP0w==}
-    engines: {node: '>=16.13'}
+  '@prisma/client@6.0.0':
+    resolution: {integrity: sha512-tOBhG35ozqZ/5Y6B0TNOa6cwULUW8ijXqBXcgb12bfozqf6eGMyGs+jphywCsj6uojv5lAZZnxVSoLMVebIP+g==}
+    engines: {node: '>=18.18'}
     peerDependencies:
       prisma: '*'
     peerDependenciesMeta:
@@ -3720,7 +3720,7 @@ snapshots:
 
   '@polka/url@1.0.0-next.24': {}
 
-  '@prisma/client@5.21.1(prisma@5.18.0)':
+  '@prisma/client@6.0.0(prisma@5.18.0)':
     optionalDependencies:
       prisma: 5.18.0
 
