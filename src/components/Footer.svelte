@@ -18,12 +18,14 @@
       <div class="flex mr-2 w-4 h-4">
         <FaHeart />
       </div>
-      Yes, I care</Button
+      Donate</Button
     >
   </div>
   <small>
     Created by{' '}
-    <a class="underline hover:text-primary" href="https://twitter.com/stophecom"> @stophecom</a>
+    <a class="underline hover:text-primary" href="https://bsky.app/profile/stophe.com">
+      @stophe.com</a
+    >
     <!-- Use <a class="underline hover:text-primary" href="https://scrt.link">scrt.link</a> for greater needs. -->
     &bull;
     <a class="underline hover:text-primary" href="https://github.com/stophecom/sharrr-svelte">
