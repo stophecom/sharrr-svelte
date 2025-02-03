@@ -30,7 +30,7 @@
 
   let selectedFile: File | null
   let link: string
-  let progress: number = 0
+  let progress = 0
   let promiseSaveFile: Promise<string>
 
   const chunkSize = getChunkSize(PUBLIC_ENV)
