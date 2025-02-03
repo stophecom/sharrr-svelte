@@ -18,7 +18,7 @@
   export let error = ''
   export let multiple = false
   export let disabled = false
-  export let accept: string = '' // image/*, .gif etc.
+  export let accept = '' // image/*, .gif etc.
 
   let isOver = false
 
@@ -85,7 +85,10 @@
 
   const handleChange = (e: Event) => {
     e.preventDefault()
-    const fileList: FileList = <FileList>(<HTMLInputElement>e.target).files
+    const input = e.currentTarget as HTMLInputElement
+    const fileList = input.files
+
+    if (!fileList) return
     const files = Array.from(fileList)
 
     if (validateFiles(files)) {
@@ -102,7 +105,7 @@
 />
 
 <div
-  class="relative border-2 bg-primary text-white dz:bg-white/70 dz:text-primary dz:border-dashed rounded-2xl dz:rounded-lg border-primary focus-within:outline-none focus-within:shadow-lg shadow-lg shadow-primary/30 dz:shadow-none dz:hover:shadow-lg hover:shadow-black-200/50  hover:border-solid focus-within:border-solid transition"
+  class="relative border-2 bg-primary text-white dz:bg-white/70 dz:text-primary dz:border-dashed rounded-2xl dz:rounded-lg border-primary focus-within:outline-none focus-within:shadow-lg shadow-lg shadow-primary/30 dz:shadow-none dz:hover:shadow-lg hover:shadow-black-200/50 hover:border-solid focus-within:border-solid transition"
 >
   <div class="p-2 sm:p-4 flex flex-col items-center justify-center">
     <div class="flex w-9 h-9 mb-2">
