@@ -1,25 +1,7 @@
-<script lang="ts">
-  import FaHeart from 'svelte-icons/fa/FaHeart.svelte'
-  import Button from '$components/Button.svelte'
-</script>
-
 <footer class="p-6 pt-8 flex flex-col items-center text-center text-gray-600">
-  <div class="py-4 flex flex-col items-center justify-center text-center p-5 max-w-sm">
-    <small class="mb-3"
-      >*Together for privacy over profits. Your donation keeps this project running.</small
-    >
-    <Button
-      href="https://donate.stripe.com/28oeV1gKP3bv4b6144"
-      variant="dark"
-      size="small"
-      class="plausible-event-name=Donate"
-      target="_blank"
-    >
-      <div class="flex mr-2 w-4 h-4">
-        <FaHeart />
-      </div>
-      Donate</Button
-    >
+  <div class="py-4 items-center justify-center text-center p-5 max-w-sm text-sm">
+    Need additional privacy and security options? Checkout
+    <a class="text-primary underline" href="https://scrt.link" target="_blank">scrt.link</a> for more.
   </div>
   <small>
     Created by{' '}
