@@ -18,8 +18,8 @@ importers:
         specifier: ^3.678.0
         version: 3.678.0
       '@prisma/client':
-        specifier: ^6.3.0
-        version: 6.3.0(prisma@6.1.0)(typescript@5.8.3)
+        specifier: ^6.11.0
+        version: 6.11.0(prisma@6.1.0)(typescript@5.8.3)
       axios:
         specifier: ^1.7.8
         version: 1.7.8
@@ -657,8 +657,8 @@ packages:
   '@polka/url@1.0.0-next.28':
     resolution: {integrity: sha512-8LduaNlMZGwdZ6qWrKlfa+2M4gahzFkprZiAt2TF8uS0qQgBizKXpXURqvTJ4WtmupWxaLqjRb2UCTe72mu+Aw==}
 
-  '@prisma/client@6.3.0':
-    resolution: {integrity: sha512-BY3Fi28PUSk447Bpv22LhZp4HgNPo7NsEN+EteM1CLDnLjig5863jpW+3c3HHLFmml+nB/eJv1CjSriFZ8z7Cg==}
+  '@prisma/client@6.11.0':
+    resolution: {integrity: sha512-K9TkKepOYvCOg3qCuKz7ZHf6rf58BFKi08plKjU4qVv9y7/UxO6tLz7PlWcgODUZKURLPmRHjHERffIx/8az4w==}
     engines: {node: '>=18.18'}
     peerDependencies:
       prisma: '*'
@@ -3611,7 +3611,7 @@ snapshots:
 
   '@polka/url@1.0.0-next.28': {}
 
-  '@prisma/client@6.3.0(prisma@6.1.0)(typescript@5.8.3)':
+  '@prisma/client@6.11.0(prisma@6.1.0)(typescript@5.8.3)':
     optionalDependencies:
       prisma: 6.1.0
       typescript: 5.8.3
