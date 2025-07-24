@@ -137,6 +137,8 @@ sudo docker logs sharrr
 
 About the author: [stophe.com](https://stophe.com)
 
+Need additional privacy and security options? Checkout [scrt.link](https://scrt.link).
+
 ### Stack
 
 - SvelteKit
