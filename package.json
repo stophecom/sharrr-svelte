@@ -27,7 +27,7 @@
     "@typescript-eslint/eslint-plugin": "^5.57.0",
     "@typescript-eslint/parser": "^5.62.0",
     "autoprefixer": "^10.4.20",
-    "dotenv": "^16.4.7",
+    "dotenv": "^17.2.1",
     "eslint": "^9.32.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-svelte3": "^4.0.0",
