@@ -20,7 +20,7 @@
   },
   "type": "module",
   "devDependencies": {
-    "@playwright/test": "^1.46.1",
+    "@playwright/test": "^1.56.0",
     "@sveltejs/kit": "^2.26.1",
     "@sveltejs/vite-plugin-svelte": "^3.1.1",
     "@tailwindcss/typography": "^0.5.16",
